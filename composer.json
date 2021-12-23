@@ -6,12 +6,21 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "alibabacloud/iot": "^1.8",
+        "comodolab/nova-help": "^0.4.0",
+        "digital-creative/clickable-table-row": "^0.2.0",
+        "ebess/advanced-nova-media-library": "^3.6",
+        "eminiarts/nova-tabs": "^1.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.75",
+        "laravel/nova": "*",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
-        "laravel/nova": "*"
+        "predis/predis": "^1.1",
+        "spatie/laravel-medialibrary": "^9.11",
+        "vladimir-yuldashev/laravel-queue-rabbitmq": "^11.3",
+        "vyuldashev/nova-permission": "^3.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
@@ -26,7 +35,10 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "app/common.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

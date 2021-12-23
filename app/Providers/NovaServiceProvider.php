@@ -56,7 +56,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function cards()
     {
         return [
-            new Help,
+            // new Help,
+            new \App\Nova\Metrics\OrderTrend,
+            new \App\Nova\Metrics\OrderPriceTrend,
+            new \App\Nova\Metrics\UserTrend,
+            new \App\Nova\Metrics\BonusPercent,
+            new \App\Nova\Metrics\BonusPartition
         ];
     }
 
@@ -77,7 +82,11 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function tools()
     {
-        return [];
+        return [
+            \Vyuldashev\NovaPermission\NovaPermissionTool::make()
+                ->rolePolicy(\App\Policies\RootPolicy::class)
+                ->permissionPolicy(\App\Policies\RootPolicy::class),
+        ];
     }
 
     /**

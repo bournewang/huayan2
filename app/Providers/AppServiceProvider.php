@@ -24,5 +24,16 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+        \App\Cart::observe(\App\Observers\CartObserver::class);
+        \Nova::style('custom-css', public_path('css/store.css'));
+        
+        // \DB::connection()->enableQueryLog();
+        // \DB::listen(function($query) {
+        //     \Log::info(
+        //         $query->sql,
+        //         $query->bindings,
+        //         $query->time
+        //     );
+        // });
     }
 }

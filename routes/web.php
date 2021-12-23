@@ -14,5 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return redirect('/nova');
+    return	redirect('/nova');
 });
+
+Route::get('sales/{id}/relation', 'SalesController@relation');
