@@ -54,10 +54,10 @@ class Address extends Resource
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function cards(Request $request)
-    {
-        return [];
-    }
+    // public function cards(Request $request)
+    // {
+    //     return [];
+    // }
 
     /**
      * Get the filters available for the resource.
@@ -65,9 +65,13 @@ class Address extends Resource
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function filters(Request $request)
+    public function detachedFilters(Request $request)
     {
-        return [];
+        return [
+            new Filters\ProvinceFilter,
+            new Filters\CityFilter,
+            new Filters\DistrictFilter,            
+        ];
     }
 
     /**

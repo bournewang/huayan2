@@ -8,8 +8,10 @@ use Laravel\Nova\Fields\Text;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;
 use OptimistDigital\NovaDetachedFilters\NovaDetachedFilters;
+use OptimistDigital\NovaDetachedFilters\HasDetachedFilters;
 abstract class Resource extends NovaResource
 {
+    use HasDetachedFilters;
     public static $tableStyle = 'tight';
     public static $showColumnBorders = true;
     /**
@@ -87,10 +89,16 @@ abstract class Resource extends NovaResource
                    ->singleImageRules('dimensions:min_width=100');
     }
     
+    
+    public function detachedFilters(Request $request)
+    {
+        return [];
+    }
+    
     public function cards(Request $request)
     {
         return [
-            (new NovaDetachedFilters($this->filters($request)))->withReset()->width('full')
+            (new NovaDetachedFilters($this->detachedFilters($request)))->withReset()->width('full')
         ];
     }    
 }

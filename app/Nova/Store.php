@@ -19,7 +19,7 @@ use Comodolab\Nova\Fields\Help\Help;
 use Eminiarts\Tabs\Tabs;
 use Eminiarts\Tabs\Tab;
 use Eminiarts\Tabs\TabsOnEdit;
-class Store 
+class Store extends Resource
 {
     use TabsOnEdit;
     public static $model = \App\Store::class;

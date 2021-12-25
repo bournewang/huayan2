@@ -93,7 +93,7 @@ class Goods extends Resource
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function filters(Request $request)
+    public function detachedFilters(Request $request)
     {
         return [
             new Filters\CategoryFilter

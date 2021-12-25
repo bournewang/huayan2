@@ -93,12 +93,12 @@ class Shop extends Resource
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function filters(Request $request)
+    public function detachedFilters(Request $request)
     {
         return [
-            (new Filters\ProvinceFilter)->withMeta(['placeholder' => __('Province')]),
-            (new Filters\CityFilter),//->withMeta(['withReset' => true]),
-            (new Filters\DistrictFilter),//->withMeta(['withReset' => true]),
+            new Filters\ProvinceFilter,
+            new Filters\CityFilter,
+            new Filters\DistrictFilter,
         ];
     }
 
