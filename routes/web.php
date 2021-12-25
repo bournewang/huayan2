@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\SalesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,4 +17,4 @@ Route::get('/', function () {
     return	redirect('/nova');
 });
 
-Route::get('sales/{id}/relation', 'SalesController@relation');
+Route::get('sales/{id}/relation', [SalesController::class, 'relation']);

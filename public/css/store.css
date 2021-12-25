@@ -1,0 +1,102 @@
+.px-view {
+    padding-left: 1.125rem;
+    padding-right: 1.125rem;
+}
+
+.py-view {
+    padding-top: 0.25rem;
+    padding-bottom: 3.125rem;
+}
+
+.w-sidebar {
+    width: 9.75rem;
+    background: #275f8a;
+}
+.w-sidebar.h-header{
+    background: #5693c1;
+}
+.content {
+    max-width: calc(100vw - 9.75rem);
+}
+
+.content > div.h-header{
+    background: #5693c1;
+}
+.content > div.h-header span{
+    color: white;
+}
+
+.mb-6 {
+    margin-bottom: 0.5rem;
+}
+
+.nova-detached-filters-card {
+    display: flex;
+    flex-direction: row;
+}
+.nova-detached-filters-card .detached-filters {
+    padding-top: 2px; 
+    padding-bottom: 2px;
+}
+.nova-detached-filters-card .detached-filters-buttons{
+    position: relative !important;
+    top: 0 !important; 
+    z-index: 9999; 
+    display: flex; 
+}
+.nova-detached-filters-card .detached-filters-buttons .detached-filters-button svg {
+    cursor: pointer;
+    background: url(/images/clear.png);
+    background-size: cover;
+}
+.nova-detached-filters-card .detached-filters-buttons .detached-filters-button svg path{
+    display: none;
+}
+
+/* .nova-detached-filters-card .detached-filters .detached-filter h3{display: none;} */
+div[dusk$="index-component"] h1{
+    float: left;
+    margin-top: 0.2em;
+    margin-bottom: 0;
+    padding-right: 0.5em;
+}
+div[dusk$="index-component"] .card > .flex.items-center {padding-top: 1px; padding-bottom: 1px;}
+div[dusk$="detail-component"] a[dusk="attach-button"], 
+div[dusk$="detail-component"] a[dusk$="attached-button"], 
+div[dusk$="detail-component"] button[dusk$="delete-button"]
+/* div[dusk$="detail-component"] div[dusk$="index-component"] div.relative.h-9.flex-no-shrink.mb-6, */
+/* div[dusk$="detail-component"] div[dusk$="index-component"] div.flex.items-center.py-3.border-b.border-50 */
+{
+    display: none;
+}
+div[dusk$="detail-component"] > div > div.card  div.py-4,
+form > div > div.card  .flex.border-b.border-40 > .py-6
+ {
+   padding-top: .3rem;
+   padding-bottom: .3rem;
+}
+form > div > div.card  .flex.border-b.border-40 > .px-8{
+    padding-left: .3rem;
+    padding-right: .3rem;
+}
+div[dusk$="detail-component"] > div > div.card > div.flex
+/* div[dusk$="detail-component"] > div > div.card > .tab-content > div > div.flex */
+/* form > div > div.card  .flex.border-b.border-40  */
+{
+    width: 50%; 
+    float: left;
+}
+div[dusk$="detail-component"] div.card:after,
+form > div > div.card:after
+/* form > div > div.card > div.relationship-tabs-panel > div:after */
+{
+    content:"."; 
+    display:block; 
+    height:0; 
+    visibility:hidden; 
+    clear:both;
+}
+div[dusk="stores-detail-component"] a[dusk="attach-button"] {
+    display: block;
+}
+

@@ -2,7 +2,18 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\API\AddressController;
+use App\Http\Controllers\API\ApiBaseController;
+use App\Http\Controllers\API\BannerController;
+use App\Http\Controllers\API\CartController;
+use App\Http\Controllers\API\CategoryController;
+use App\Http\Controllers\API\ConfigController;
+use App\Http\Controllers\API\GoodsController;
+use App\Http\Controllers\API\OrderController;
+use App\Http\Controllers\API\RegionController;
+use App\Http\Controllers\API\SaleController;
+use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\WechatController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,51 +30,49 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-Route::any('/wechat', 'WechatController@serve');
+// Route::any('/wechat', 'WechatController@serve');
 
-Route::group(['middleware' => [], 'prefix' => 'shop/{store_id}'], function(){
-    Route::get('/config/values',        'API\ConfigController@get')->name('config.get');
-    Route::get('/province/list',        'API\RegionController@provinces')->name('province.index');
-    Route::get('/city/list',            'API\RegionController@cities')->name('city.index');
-    Route::get('/district/list',        'API\RegionController@districts')->name('district.index');
-    Route::get('/goods/list',           'API\GoodsController@index')->name('goods.index');
-    Route::get('/goods/{id}',           'API\GoodsController@detail')->name('goods.detail');
-    Route::get('/category/all',         'API\CategoryController@index')->name('category.index');
-    Route::get('/banner/list',          'API\BannerController@index')->name('banner.index');
-    Route::post('/user/wxapp/authorize','WechatController@login')->name('user.wxauthorize');
-    Route::post('/user/wxapp/register', 'WechatController@register')->name('user.wxregister');
-    Route::post('/user/wxapp/login',    'WechatController@login')->name('user.wxlogin');
-    Route::post('/wechat/notify','WechatController@notify'); //微信支付回调
-});
+// Route::group(['middleware' => []], function(){
+    Route::get('/config/values',        [ConfigController::class, 'get']); //->name('config.get');
+    Route::get('/province/list',        [RegionController::class, 'provinces']);
+    Route::get('/provinces/{province_id}/cities',   [RegionController::class, 'cities']);
+    Route::get('/cities/{city_id}/districts',       [RegionController::class, 'districts']);
+    Route::get('/goods/list',           [GoodsController::class, 'index']);
+    Route::get('/goods/{id}',           [GoodsController::class, 'detail']);
+    Route::get('/category/all',         [CategoryController::class, 'index']);
+    Route::get('/banner/list',          [BannerController::class, 'index']);
+    Route::post('/user/wxapp/authorize',[WechatController::class, 'login']);
+    Route::post('/user/wxapp/register', [WechatController::class, 'register']);
+    Route::post('/user/wxapp/login',    [WechatController::class, 'login']);
+    Route::post('/wechat/notify',       [WechatController::class, 'notify']);
+// });
 
-
-Route::group(['middleware' => ['auth:api'], 'prefix' => 'shop/{store_id}'], function(){
-    Route::get('/user/info',   'API\UserController@info')->name('user.info');
-    Route::post('/user/modify','API\UserController@modify')->name('user.modify');
-    Route::post('/user/mobile','API\UserController@mobile')->name('user.mobile');
-    Route::get ('/user/revenue','API\UserController@revenue')->name('user.revenue');
-    Route::get ('/user/qrcode','API\UserController@qrcode')->name('user.qrcode');
-    Route::get('/cart/info',   'API\CartController@info')->name('cart.info');
-    Route::post('/cart/add',   'API\CartController@add')->name('cart.add');
-    Route::post('/cart/update', 'API\CartController@update')->name('cart.update');
-    Route::post('/order/create',        'API\OrderController@create')->name('order.create');
-    Route::post('/order/{id}/place',    'API\OrderController@place')->name('order.place'); //生成微信支付订单
-    Route::get('/order/list',   'API\OrderController@index')->name('order.index');
-    Route::get('/order/{id}',   'API\OrderController@show')->name('order.show');
-    // Route::get('/goods/{id}/fav',   'API\GoodsController@fav')->name('goods.fav');
-    Route::post('/goods/{id}/like',  'API\GoodsController@like')->name('goods.like');
-    Route::delete('/goods/{id}/like', 'API\GoodsController@dislike')->name('goods.dislike');
-    Route::get      ('/address/list',   'API\AddressController@index')  ->name('address.index');
-    Route::get      ('/address/default','API\AddressController@default')->name('address.default');
-    Route::post     ('/address',        'API\AddressController@create') ->name('address.create');
-    Route::get      ('/address/current','API\AddressController@current')->name('address.current');
-    Route::get      ('/address/{id}',   'API\AddressController@show')   ->name('address.show');
-    Route::post     ('/address/{id}',   'API\AddressController@update') ->name('address.update');
-    Route::delete   ('/address/{id}',   'API\AddressController@delete') ->name('address.delete');
-    Route::post('/address/{id}/select', 'API\AddressController@select')->name('address.select');
+Route::group(['middleware' => ['auth:api']], function(){
+    Route::get('/user/info',   [UserController::class, 'info']);
+    Route::post('/user/modify',[UserController::class, 'modify']);
+    Route::post('/user/mobile',[UserController::class, 'mobile']);
+    Route::get ('/user/revenue',[UserController::class, 'revenue']);
+    Route::get ('/user/qrcode',[UserController::class, 'qrcode']);
+    Route::get('/cart/info',   [CartController::class, 'info']);
+    Route::post('/cart/add',   [CartController::class, 'add']);
+    Route::post('/cart/update', [CartController::class, 'update']);
+    Route::post('/order/create',        [OrderController::class, 'create']);
+    Route::post('/order/{id}/place',    [OrderController::class, 'place']);
+    Route::get('/order/list',   [OrderController::class, 'index']);
+    Route::get('/order/{id}',   [OrderController::class, 'show']);
+    Route::post('/goods/{id}/like',  [GoodsController::class, 'like']);
+    Route::delete('/goods/{id}/like', [GoodsController::class, 'dislike']);
+    Route::get      ('/address/list',   [AddressController::class, 'index']);
+    Route::get      ('/address/default',[AddressController::class, 'default']);
+    Route::post     ('/address',        [AddressController::class, 'create']);
+    Route::get      ('/address/current',[AddressController::class, 'current']);
+    Route::get      ('/address/{id}',   [AddressController::class, 'show']);
+    Route::post     ('/address/{id}',   [AddressController::class, 'update']);
+    Route::delete   ('/address/{id}',   [AddressController::class, 'delete']);
+    Route::post('/address/{id}/select', [AddressController::class, 'select']);
     
     
     // direct selling
-    Route::post('/sale/apply', 'API\SaleController@apply')->name('sale.apply');
-    Route::get('/sale/members','API\SaleController@members')->name('sale.members');
+    Route::post('/sale/apply', [SaleController::class, 'apply']);
+    Route::get('/sale/members',[SaleController::class, 'members']);
 });
