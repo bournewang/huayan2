@@ -9,22 +9,22 @@ use App\District;
 
 class RegionController extends ApiBaseController
 {
-    public function provinces($store_id, Request $request)
+    public function provinces(Request $request)
     {
-        return $this->sendResponse(hash2array(Province::all()->pluck('name','id')->all()));
+        return (hash2array(Province::all()->pluck('name','id')->all()));
     }
     
-    public function cities($store_id, Request $request)
+    public function cities($province_id, Request $request)
     {
-        if ($province = Province::find($request->input('province_id'))) {
-            return $this->sendResponse(hash2array($province->cities->pluck('name','id')->all()));
+        if ($province = Province::find($province_id)) {
+            return (hash2array($province->cities->pluck('name','id')->all()));
         }
     }
     
-    public function districts($store_id, Request $request)
+    public function districts($city_id, Request $request)
     {
-        if ($city = City::find($request->input('city_id'))) {
-            return $this->sendResponse(hash2array($city->districts->pluck('name','id')->all()));
+        if ($city = City::find($city_id)) {
+            return (hash2array($city->districts->pluck('name','id')->all()));
         }
     }
 }

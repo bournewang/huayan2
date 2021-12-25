@@ -31,7 +31,7 @@ function hash2array($hash)
 {
     $arr = [];
     foreach($hash as $val => $label){
-        $arr[] = ['id' => $val, 'name' => $label];
+        $arr[] = ['value' => $val, 'display' => $label];
     }
     return $arr;
 }

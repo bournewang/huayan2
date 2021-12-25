@@ -22,6 +22,7 @@ class Shop extends BaseModel
         'city_id',
         'district_id',
         'street',
+        'status',
         // 'contract',
         // 'photos',
     ];

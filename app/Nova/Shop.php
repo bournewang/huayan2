@@ -5,8 +5,10 @@ namespace App\Nova;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Hubertnnn\LaravelNova\Fields\DynamicSelect\DynamicSelect;
+use NovaAjaxSelect\AjaxSelect;
+use OptimistDigital\NovaDetachedFilters\NovaDetachedFilters;
 use App\Province;
 use App\City;
 use App\District;
@@ -33,9 +35,13 @@ class Shop extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'id', 'name', 'telephone', 'street'
     ];
 
+    public static function label()
+    {
+        return __('Shop');
+    }
     /**
      * Get the fields displayed by the resource.
      *
@@ -48,43 +54,21 @@ class Shop extends Resource
             ID::make(__('ID'), 'id')->sortable(),
             Text::make(__("Name"), 'name'),
             Text::make(__("Telephone"), 'telephone'),
-            DynamicSelect::make(__('Province'), 'province_id')
+            Select::make(__('Province'), 'province_id')
                 ->options(Province::pluck('name', 'id')->all())
-                ->displayUsing(function(){return $this->province ? $this->province->name : '';})
-                ->sortable()
-                ->onlyOnForms()
-                ->nullable()
-                ,
-            DynamicSelect::make(__('City'), 'city_id')
-                ->dependsOn(['province_id'])
-                ->displayUsing(function(){return $this->city ? $this->city->name : '';})
-                ->options(function($values) {
-                    if(isset($values['province_id']) && $province_id = $values['province_id']) {
-                        $query = City::where('province_id', $province_id);
-                    } else {
-                        $query = City::whereNotNull('id');
-                    }
-                    return $query->pluck('name', 'id')->all();
-                })
-                ->onlyOnForms()
-                ->sortable()
-                ->nullable()
-                ,
-            DynamicSelect::make(__('District'), 'district_id')
-                ->displayUsing(function(){return $this->district ? $this->district->name : '';})
-                ->dependsOn(['city_id'])
-                ->options(function($values) {
-                    if(isset($values['city_id']) && $city_id = $values['city_id']) {
-                        $query = District::where('city_id', $city_id);
-                    } else {
-                        $query = District::whereNotNull('id');
-                    }
-                    return $query->pluck('name', 'id')->all();
-                })
-                ->onlyOnForms()
-                ->sortable()
-                ->nullable()
-                ,
+                ->displayUsingLabels()
+                ->onlyOnForms(),
+            
+            AjaxSelect::make(__('City'), 'city_id')
+                ->get('/api/provinces/{province_id}/cities')
+                ->parent('province_id')
+                ->onlyOnForms(),
+
+            AjaxSelect::make(__('District'), 'district_id')
+                ->get('/api/cities/{city_id}/districts')
+                ->parent('city_id')
+                ->onlyOnForms(),
+            
             Text::make(__('Street'), 'street')->onlyOnForms(),  
             Text::make(__('Address'), 'address')->displayUsing(function(){return $this->display_address();})->exceptOnForms(),
             $this->mediaField(__('Contract'), 'contract'),
@@ -98,10 +82,10 @@ class Shop extends Resource
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function cards(Request $request)
-    {
-        return [];
-    }
+    // public function cards(Request $request)
+    // {
+    //     return [];
+    // }
 
     /**
      * Get the filters available for the resource.
@@ -111,7 +95,11 @@ class Shop extends Resource
      */
     public function filters(Request $request)
     {
-        return [];
+        return [
+            (new Filters\ProvinceFilter)->withMeta(['placeholder' => __('Province')]),
+            (new Filters\CityFilter),//->withMeta(['withReset' => true]),
+            (new Filters\DistrictFilter),//->withMeta(['withReset' => true]),
+        ];
     }
 
     /**

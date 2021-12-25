@@ -32,31 +32,29 @@ class User extends Authenticatable implements HasMedia
         'county',
         'qrcode',
         'id_no',
-        'id_img1',
-        'id_img2',
+        'id_status',
         // 'superiors',
         'senior_id',
         'email', 
         'password',
-        'level', 
-        'dd',
-        'dds',  // number of dd 
-        'ppv',  // personal point value 
-        'gpv',  // all other sales' personal point value in your group;
-        'tgpv', // gpv + ppv
-        'pgpv', // tgpv (exclude qualified directors' tgpv)
-        'agpv', // Accumulative Group Point Value  since your first month join
-        'income_ratio',
-        'retail_income',
-        'level_bonus',
-        'leader_bonus',
-        'hlb', // has leader bonus
-        'lbpv', // leader bonus point value
-        // 'tlbpv', // total leader bonus point value
-        'width_bonus',
-        'depth_bonus',
-        'total_income',
-        'apply_status',
+        // 'level', 
+        // 'dd',
+        // 'dds',  // number of dd 
+        // 'ppv',  // personal point value 
+        // 'gpv',  // all other sales' personal point value in your group;
+        // 'tgpv', // gpv + ppv
+        // 'pgpv', // tgpv (exclude qualified directors' tgpv)
+        // 'agpv', // Accumulative Group Point Value  since your first month join
+        // 'income_ratio',
+        // 'retail_income',
+        // 'level_bonus',
+        // 'leader_bonus',
+        // 'hlb', // has leader bonus
+        // 'lbpv', // leader bonus point value
+        // 'width_bonus',
+        // 'depth_bonus',
+        // 'total_income',
+        // 'apply_status',
         // 'sharing',
         'api_token'
     ];

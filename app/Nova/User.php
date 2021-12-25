@@ -55,17 +55,15 @@ class User extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make(__('Store'),'store', Store::class)->nullable(),
-            // Gravatar::make(__('Avatar'), 'avatar')->maxWidth(50)->default(function($val){return $val;}),
+            // BelongsTo::make(__('Store'),'store', Store::class)->nullable(),
             Image::make(__('Avatar'), 'avatar')->maxWidth(50)->preview(function($val){return $val;})->thumbnail(function($val){return $val;}),
-
             Text::make(__('Nickname'), 'nickname'),
             Text::make(__('Realname'), 'name')->sortable()->rules('required', 'max:255'),
             Text::make(__('Province'), 'province'),
             Text::make(__('City'), 'city'),
             Text::make(__('Gender'), 'gender'),
             Text::make(__('Mobile'), 'mobile'),
-            Image::make(__('QR Code'), 'qrcode'),
+            // Image::make(__('QR Code'), 'qrcode'),
             // Text::make(__('Email'), 'email')
             //     ->sortable()
             //     ->rules('required', 'email', 'max:254')
@@ -76,19 +74,7 @@ class User extends Resource
                 ->onlyOnForms()
                 ->creationRules('required', 'string', 'min:8')
                 ->updateRules('nullable', 'string', 'min:8'),
-            // Text::make(__('PPV'), 'ppv')->nullable(),
-            // Text::make(__('GPV'), 'gpv')->nullable(),
-            // Text::make(__('TGPV'), 'tgpv')->nullable(),
-            // Text::make(__('PGPV'), 'pgpv')->nullable(),
-            // Text::make(__('AGPV'), 'agpv')->nullable(),
-            // Text::make(__('Income').__('Ratio'), 'income_ratio')->nullable()->displayUsing(function($v){return "$v%";}),
-            // Text::make(__('Income'), 'income')->nullable(),
-            // Boolean::make(__('Direct Distributor'), 'dd'),
-            // BelongsTo::make(__('Senior'), 'senior', User::class)->nullable(),    
-            // Text::make(__('Sharing Ratio'), 'superior')->displayUsing(function(){
-            //     return $this->superiorsToString();
-            // })->asHtml()->exceptOnForms(),
-            $this->mediaField(__('ID'), 'id'),
+            $this->mediaField(__('ID'), 'id_img'),
             RoleBooleanGroup::make(__('Roles'), 'roles'),
             // PermissionBooleanGroup::make('Permissions'),
             HasMany::make(__("Address"), 'addresses', Address::class),

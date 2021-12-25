@@ -60,8 +60,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             new \App\Nova\Metrics\OrderTrend,
             new \App\Nova\Metrics\OrderPriceTrend,
             new \App\Nova\Metrics\UserTrend,
-            new \App\Nova\Metrics\BonusPercent,
-            new \App\Nova\Metrics\BonusPartition
+            // new \App\Nova\Metrics\BonusPercent,
+            // new \App\Nova\Metrics\BonusPartition
         ];
     }
 

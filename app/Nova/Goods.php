@@ -82,10 +82,10 @@ class Goods extends Resource
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function cards(Request $request)
-    {
-        return [];
-    }
+    // public function cards(Request $request)
+    // {
+    //     return [];
+    // }
 
     /**
      * Get the filters available for the resource.

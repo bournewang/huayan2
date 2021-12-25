@@ -6,7 +6,8 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Resource as NovaResource;
 use Laravel\Nova\Fields\Text;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
-
+use Illuminate\Http\Request;
+use OptimistDigital\NovaDetachedFilters\NovaDetachedFilters;
 abstract class Resource extends NovaResource
 {
     public static $tableStyle = 'tight';
@@ -85,4 +86,11 @@ abstract class Resource extends NovaResource
                    // ->rules('required', 'size:3') // validation rules for the collection of images
                    ->singleImageRules('dimensions:min_width=100');
     }
+    
+    public function cards(Request $request)
+    {
+        return [
+            (new NovaDetachedFilters($this->filters($request)))->withReset()->width('full')
+        ];
+    }    
 }
