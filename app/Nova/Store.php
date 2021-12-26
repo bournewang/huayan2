@@ -17,6 +17,7 @@ use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 use Comodolab\Nova\Fields\Help\Help;
+use WesselPerik\StatusField\StatusField;
 // use Eminiarts\Tabs\Tabs;
 // use Eminiarts\Tabs\Tab;
 // use Eminiarts\Tabs\TabsOnEdit;
@@ -75,8 +76,16 @@ class Store extends Resource
             $this->mediaField(__('Contract'), 'contract'),
             $this->mediaField(__('License'), 'license'),
             $this->mediaField(__('Photo'), 'photo'),
-            // BelongsToMany::make(__('Category'), 'categories', Category::class),
-            // HasMany::make(__('Sales'), 'users', User::class)//->fields(new Fields\SalesFields),
+            
+            // Select::make(__('Status'), 'status')->options((new \App\Store)->statusOptions())->onlyOnForms(),
+            StatusField::make(__('Status'), 'status')
+                    ->values([
+                        'inactive'  => $this->inactive == $this->status,
+                        'pending'   => $this->pending == $this->status,
+                        'active'    => $this->active == $this->status
+                    ])
+                    ->info($this->statusLabel())
+                    ->exceptOnForms()            
         ];
     }
 
@@ -113,7 +122,10 @@ class Store extends Resource
      */
     public function actions(Request $request)
     {
-        return [];
+        return [
+            new Actions\Active,
+            new Actions\Inactive
+        ];
     }
     
     public static function indexQuery(NovaRequest $request, $query)
