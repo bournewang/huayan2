@@ -9,6 +9,7 @@ class Category extends BaseModel
 {
     //
     use SoftDeletes;
+    use ShelfTrait;
 
     protected $primaryKey = 'id';
     
@@ -21,16 +22,13 @@ class Category extends BaseModel
         'pid',
         'id',
         'name',
-        'image',
-        'commission'
+        'status'
     ];    
     
     protected $casts = [
         'pid' => 'integer',
         'id' => 'integer',
         'name' => 'string',
-        'image' => 'string',
-        'commission' => 'integer'
     ];
     
     public static $rules = [
@@ -53,27 +51,12 @@ class Category extends BaseModel
         return $this->hasMany(Goods::class);
     }
     
-    public function stores()
-    {
-        return $this->belongsToMany(Store::class)->withPivot('recommend');
-    }
-    
     public function show()
     {
         return [
-            "icon" => storage_url($this->image),
             "id" =>  $this->id,
-            "isUse" =>  true,
-            "key" =>  "1",
-            "level" =>  1,
             "name" =>  $this->name,
-            "paixu" =>  0,
             "pid" => $this->pid,
-            "shopId" => 0,
-            "type" => "index",
-            "userId" => null,
-            "vopCid1" =>  null,
-            "vopCid2" =>  null
         ];
     }
 }

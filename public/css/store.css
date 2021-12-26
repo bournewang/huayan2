@@ -41,6 +41,7 @@
 .nova-detached-filters-card .detached-filters-buttons{
     position: relative !important;
     top: 0 !important; 
+    padding-top: 1em;
     z-index: 9999; 
     display: flex; 
 }

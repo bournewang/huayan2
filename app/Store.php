@@ -9,17 +9,12 @@ use Illuminate\Validation\ValidationException;
 class Store extends BaseModel
 {
     use SoftDeletes;
-    
-    // protected $primaryKey = 'id';
+    use StatusTrait;
     
     public $table = 'stores';
 
     protected $dates = ['deleted_at'];
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+
     protected $fillable = [
         // 'id',
         'name',
@@ -28,12 +23,13 @@ class Store extends BaseModel
         'account_no', 
         'contact_name',
         'telphone',
-        'license_img',
-        'tier_bonus',
-        'leader_bonus',
-        'bonus_title',
-        'width_bonus', 
-        'depth_bonus',
+        'province_id',
+        'city_id',
+        'district_id',
+        'street',
+        'status',
+        'manager_id',
+        'salesman_id',
         // 'commission'
     ];
     
@@ -44,12 +40,7 @@ class Store extends BaseModel
         'account_no' => 'string', 
         'contact_name' => 'string',
         'telphone' => 'string',
-        'license_img' => 'string',
-        'tier_bonus' => 'json',
-        'leader_bonus' => 'json',
-        'bonus_title' => 'json',
-        'width_bonus' => 'json', 
-        'depth_bonus' => 'json',
+        // 'license_img' => 'string',
         // 'commission' => 'integer'
     ];
 
@@ -67,48 +58,22 @@ class Store extends BaseModel
         // 'shopId',
     ];
     
-    protected static function beforesave(&$instance)
-    {
-        if ($instance->tier_bonus) {
-            $arr = [];
-            foreach ($instance->tier_bonus as $key => $val) {
-                $arr[intval($key)] = intval($val);
-            }
-            $instance->tier_bonus = $arr;
-        }
-        if ($instance->bonus_title) {
-            $arr = [];
-            foreach ($instance->bonus_title as $key => $val) {
-                $arr[intval($key)] = ($val);
-            }
-            $instance->bonus_title = $arr;
-        }
-    }
+
     
-    // const $_default_params = ['width_bonus', 'width_pgpv', 'width_dd_qty', 'depth_bonus', 'depth_dd_qty', 'tier_bonus', 'bonus_title'];
-    public static function boot()
-    {
-        parent::boot();
-        static::creating(function ($instance) {
-            self::beforesave($instance);
-            foreach (config('mall.store') as $key => $val) {
-                $instance->$key = $instance->$key ?? config('mall.store.'.$key);
-            }
-        });
-        static::updating(function ($instance) {
-            self::beforesave($instance);
-        });
-    }
-    
-    public function categories()
-    {
-        return $this->belongsToMany(Category::class)->withPivot('recommend');
-    }
-    
-    public function goods()
-    {
-        return $this->belongsToMany(Goods::class)->withPivot('recommend', 'hot');
-    }
+    // protected static function beforesave(&$instance)
+    // {
+    // }
+    // 
+    // public static function boot()
+    // {
+    //     parent::boot();
+    //     static::creating(function ($instance) {
+    //         self::beforesave($instance);
+    //     });
+    //     static::updating(function ($instance) {
+    //         self::beforesave($instance);
+    //     });
+    // }
     
     public function flush()
     {
@@ -125,42 +90,25 @@ class Store extends BaseModel
         return $this->users()->whereNull('senior_id')->get();
     }
     
-    public function banners()
-    {
-        return $this->hasMany(Banner::class);
-    }
-    
-    public function commission($goods)
-    {
-        return $goods->commission() ?? $this->commission;
-    }
-    
     public function orders()
     {
         return $this->hasMany(Order::class);
     }
-    
-    public function revenues()
+
+    public function province(){return $this->belongsTo(Province::class);}
+    public function city(){return $this->belongsTo(City::class);}
+    public function district(){return $this->belongsTo(District::class);}
+    public function manager(){return $this->belongsTo(User::class);}
+    public function salesman(){return $this->belongsTo(User::class);}
+
+    public function display_address($with_telephone = false)
     {
-        return $this->hasMany(Revenue::class);
-    }
-    
-    public function minDD()
-    {
-        return last(array_keys($this->tier_bonus));
-    }
-    
-    public function ratio($gpv)
-    {
-        $res = array_flip($this->tier_bonus);
-        krsort($res);
-        $ratio = 0;
-        foreach ($res as $r => $amount) {
-            if ($gpv >= $amount) {
-                $ratio = $r;
-                break;
-            }
-        }
-        return $ratio;
+        return implode(array_filter([
+            $this->province->name ?? null,
+            $this->city->name ?? null,
+            $this->district->name ?? null,
+            $this->street,
+            $with_telephone ? ' '.$this->telephone : '',
+        ]));
     }
 }

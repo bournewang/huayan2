@@ -15,26 +15,20 @@ class CreateGoodsTable extends Migration
     {
         Schema::create('goods', function (Blueprint $table) {
             $table->id();
-            $table->string('shopId');
             $table->bigInteger('category_id')->unsigned();
+            $table->bigInteger('supplier_id')->unsigned()->nullable();
             $table->string('name');
             $table->string('qty')->nullable(); 
-            $table->string('type')->nullable();
+            // $table->string('type')->nullable();
             $table->string('brand')->nullable();
-            $table->string('saleFlag')->nullable();
-            $table->string('price')->nullable();
-            $table->string('img')->nullable();
-            $table->string('img_s')->nullable();
-            $table->string('img_m')->nullable();
-            $table->string('pv')->nullable();
-            $table->string('saleCount')->nullable();
-            $table->string('customs_id')->nullable();
+            $table->decimal('price_ori', 8, 2)->nullable();
+            $table->decimal('price', 8, 2)->nullable();
             $table->text('detail')->nullable();
-            $table->integer('commission')->nullable();
-            
+            $table->enum('status', array_keys((new App\Goods)->statusOptions()))->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('category_id')->references('id')->on('categories');
+            $table->foreign('supplier_id')->references('id')->on('suppliers');
         });
     }
 

@@ -6,12 +6,12 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Image;
-use Laravel\Nova\Fields\Number;
+// use Laravel\Nova\Fields\Image;
+// use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Select;
 use App\Helpers\StoreHelper;
 
 class Category extends Resource
@@ -40,24 +40,14 @@ class Category extends Resource
      */
     public function fields(Request $request)
     {
-        $categories = StoreHelper::relationIds(1, 'categories');
-        $recommends = StoreHelper::relationIds(1, 'categories', 'recommend', 1);
-        // $goods = StoreHelper::goodsIds(1);
         return [
-            // Text::make(__('id'), 'id')->rules('required'),
             ID::make(),
             BelongsTo::make(__('Parent').__('Category'), 'parent', Category::class)->nullable(),
             Text::make(__('Name'), 'name')->rules('required', 'max:255'),
-            Image::make(__('Image'), 'image')->maxWidth(100),
-            Number::make(__('Commission'), 'commission')->nullable()->sortable(),
-            Boolean::make(__('Start Selling'))->displayUsing(function()use($categories){
-                return in_array($this->id, $categories);
-            })->exceptOnForms(),
-            Boolean::make(__('Recommend'))->displayUsing(function()use($recommends){
-                return in_array($this->id, $recommends);
-            })->exceptOnForms(),
+            Select::make(__('Status'), 'status')->options((new \App\Category)->statusOptions())->onlyOnForms(),
+            Text::make(__('Status'))->displayUsing(function(){return $this->statusRichLabel();})->asHtml()->exceptOnForms(),
+            $this->mediaField(__('Image'), 'photo'),
             HasMany::make(__('Goods'), 'goods', Goods::class),
-            // BelongsToMany::make(__('Store'), 'stores', Store::class),
         ];
     }
 
@@ -102,22 +92,11 @@ class Category extends Resource
      */
     public function actions(Request $request)
     {
-        if (!$request->user()->can(__('Action'). __('Category'))) {
-            return [];
-        }
         return [
-            (new Actions\AddCategory)->canRun(function(){return 1;}),
-            (new Actions\RemoveCategory)->canRun(function(){return 1;}),
-            (new Actions\UpdatePivot(__('Recommend'), 'categories', 'recommend', 1))->canRun(function(){return 1;}),
-            (new Actions\UpdatePivot(__('Derecommend'), 'categories', 'recommend', 0))->canRun(function(){return 1;}),
-            (new Actions\ImportImage)->canRun(function(){return 1;}),
+            new Actions\Recommend,
+            new Actions\OnShelf,
+            new Actions\OffShelf,
+            // new Actions\Derecommend,
         ];
-    }
-    
-    public static function indexQuery(NovaRequest $request, $query)
-    {
-        // $cids = $request->user()->store->categories()->pluck('id')->all();
-        // $query->whereIn('id', $cids);
-        return $query;
     }
 }

@@ -19,7 +19,7 @@ class CartSeeder extends Seeder
         //
         // $user = App\User::find(4);
         $store = Store::first();
-        $ids = $store->goods()->pluck('id')->all();
+        $ids = Goods::pluck('id')->all();
         $ids_total = count($ids);
         foreach (User::whereNotNull('store_id')->get() as $user) {
             if (!$cart = $user->cart) {

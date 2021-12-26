@@ -8,15 +8,13 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
-use App\Store;
 
-class RemoveCategory extends Action
+class OffShelf extends Action
 {
     use InteractsWithQueue, Queueable;
-
     public function name()
     {
-        return __('Remove Category');
+        return __('Off Shelf');
     }
     /**
      * Perform the action on the given models.
@@ -28,11 +26,9 @@ class RemoveCategory extends Action
     public function handle(ActionFields $fields, Collection $models)
     {
         //
-        $s = Store::find(1);
-        $s->categories()->detach($models);
-        $s->save();
-        
-        $s->flush();
+        foreach ($models as $model) {
+            $model->update(['status' => $model->off_shelf]);
+        }
     }
 
     /**

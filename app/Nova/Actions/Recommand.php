@@ -8,15 +8,13 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
-use App\Store;
 
-class AddCategory extends Action
+class Recommend extends Action
 {
     use InteractsWithQueue, Queueable;
-
     public function name()
     {
-        return __('Add Category');
+        return __('Recommend');
     }
     /**
      * Perform the action on the given models.
@@ -28,11 +26,9 @@ class AddCategory extends Action
     public function handle(ActionFields $fields, Collection $models)
     {
         //
-        $s = Store::find(1);
-        $s->categories()->syncWithoutDetaching($models);
-        $s->save();
-        
-        $s->flush();
+        foreach ($models as $model) {
+            $model->update(['status' => $model->recommend]);
+        }
     }
 
     /**

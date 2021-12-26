@@ -8,15 +8,13 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
-use App\Store;
 
-class SalesReject extends Action
+class OnShelf extends Action
 {
     use InteractsWithQueue, Queueable;
-
     public function name()
     {
-        return __('Sales Reject');
+        return __('On Shelf');
     }
     /**
      * Perform the action on the given models.
@@ -29,7 +27,7 @@ class SalesReject extends Action
     {
         //
         foreach ($models as $model) {
-            $model->reject();
+            $model->update(['status' => $model->on_shelf]);
         }
     }
 

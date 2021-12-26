@@ -24,9 +24,9 @@ trait BMedia
     public function registerMediaCollections() : void
     {
         $this->addMediaCollection('main')->singleFile();
-        $this->addMediaCollection('my_multi_collection');
         $this->addMediaCollection('contract');
         $this->addMediaCollection('photo');
         $this->addMediaCollection('id');
+        $this->addMediaCollection('license');
     }  
 }

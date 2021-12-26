@@ -17,11 +17,10 @@ class CreateCategoriesTable extends Migration
             $table->id();
             $table->bigInteger('pid')->unsigned()->nullable();
             $table->string('name');
-            $table->string('image')->nullable();
-            $table->integer('commission')->nullable();
+            $table->enum('status', array_keys((new App\Category)->statusOptions()))->nullable();
+            // $table->boolean('recommend')->default(0);
             $table->timestamps();
             $table->softDeletes();
-            // $table->foreign('pid')->references('id')->on('categories');
         });
     }
 

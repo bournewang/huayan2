@@ -45,7 +45,6 @@ class CategoryFilter extends Filter
      */
     public function options(Request $request)
     {
-        // return \App\Category::pluck('id', 'name')->all();
-        return Store::find(1)->categories()->pluck('id', 'name')->all();
+        return \App\Category::pluck('id', 'name')->all();
     }
 }

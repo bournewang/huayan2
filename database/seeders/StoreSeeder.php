@@ -21,12 +21,5 @@ class StoreSeeder extends Seeder
             'telphone' => '13811112222',
             // 'commission' => 30
         ]);
-        
-        $cids = \App\Goods::all()->pluck('category_id')->unique()->all();
-        $store->categories()->sync(array_values($cids));
-        $store->save();
-        
-        $store->goods()->attach(\App\Goods::all());
-        $store->save();
     }
 }

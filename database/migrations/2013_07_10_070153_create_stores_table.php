@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+use App\Store;
 class CreateStoresTable extends Migration
 {
     /**
@@ -21,17 +21,23 @@ class CreateStoresTable extends Migration
             $table->string('account_no')->nullable();
             $table->string('contact_name')->nullable();
             $table->string('telphone')->nullable();
-            $table->string('license_img')->nullable();   
-            $table->string('tier_bonus')->nullable();
-            $table->string('leader_bonus')->nullable();
-            $table->string('width_bonus')->nullable();
-            $table->string('depth_bonus')->nullable();
-            // $table->string('year_bonus')->nullable();
-            // $table->string('once_bonus')->nullable();
-            $table->text('bonus_title')->nullable();
-            // $table->integer('commission')->nullable();         
+            
+            $table->bigInteger('province_id')->unsigned()->nullable();
+            $table->bigInteger('city_id')->unsigned()->nullable();
+            $table->bigInteger('district_id')->unsigned()->nullable();
+            $table->bigInteger('manager_id')->unsigned()->nullable();
+            $table->bigInteger('salesman_id')->unsigned()->nullable();
+            $table->string('street')->nullable();
+            $table->enum('status', array_keys((new Store)->statusOptions()))->nullable();
+            
             $table->timestamps();
             $table->softDeletes();
+            
+            $table->foreign('province_id')->references('id')->on('provinces');
+            $table->foreign('city_id')->references('id')->on('cities');
+            $table->foreign('district_id')->references('id')->on('districts');
+            // $table->foreign('manager_id')->references('id')->on('users');
+            // $table->foreign('salesman_id')->references('id')->on('users');            
         });
     }
 

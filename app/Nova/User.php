@@ -55,7 +55,7 @@ class User extends Resource
     {
         return [
             ID::make()->sortable(),
-            // BelongsTo::make(__('Store'),'store', Store::class)->nullable(),
+            BelongsTo::make(__('Store'),'store', Store::class)->nullable(),
             Image::make(__('Avatar'), 'avatar')->maxWidth(50)->preview(function($val){return $val;})->thumbnail(function($val){return $val;}),
             Text::make(__('Nickname'), 'nickname'),
             Text::make(__('Realname'), 'name')->sortable()->rules('required', 'max:255'),
