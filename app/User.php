@@ -36,6 +36,7 @@ class User extends Authenticatable implements HasMedia
         'id_status',
         // 'superiors',
         'senior_id',
+        'type',
         'email', 
         'password',
         // 'level', 
