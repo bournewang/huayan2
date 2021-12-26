@@ -4,7 +4,7 @@ namespace App\Nova\Metrics;
 
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Trend;
-use App\Order;
+use App\Models\Order;
 class CountTrend extends Trend
 {
     protected $resource;    

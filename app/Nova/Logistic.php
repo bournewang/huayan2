@@ -14,7 +14,7 @@ class Logistic extends Resource
      *
      * @var string
      */
-    public static $model = \App\Logistic::class;
+    public static $model = \App\Models\Logistic::class;
     public static function label()
     {
         return __('Logistic');

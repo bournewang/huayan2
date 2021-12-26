@@ -22,12 +22,10 @@ use Comodolab\Nova\Fields\Help\Help;
 // use Eminiarts\Tabs\TabsOnEdit;
 use NovaAjaxSelect\AjaxSelect;
 use WesselPerik\StatusField\StatusField;
-use App\Province;
-use App\City;
-use App\District;
+use App\Models\Province;
 class Supplier extends Resource
 {
-    public static $model = \App\Supplier::class;
+    public static $model = \App\Models\Supplier::class;
     public static $title = 'name';
     public static $search = [
         'name', 
@@ -81,7 +79,7 @@ class Supplier extends Resource
             // $this->mediaField(__('Contract'), 'contract'),
             // $this->mediaField(__('License'), 'license'),
             // $this->mediaField(__('Photo'), 'photo'),
-            // Select::make(__('Status'), 'status')->options((new \App\Store)->statusOptions())->onlyOnForms(),
+            // Select::make(__('Status'), 'status')->options((new \App\Models\Store)->statusOptions())->onlyOnForms(),
             StatusField::make(__('Status'), 'status')
                     ->values([
                         'inactive'  => $this->inactive == $this->status,

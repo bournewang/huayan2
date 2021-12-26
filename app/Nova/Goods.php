@@ -16,7 +16,7 @@ use Laravel\Nova\Fields\Select;
 use App\Helpers\StoreHelper;
 class Goods extends Resource
 {
-    public static $model = \App\Goods::class;
+    public static $model = \App\Models\Goods::class;
     public static $title = 'name';
     public static $with = ['category'];
     public static $search = [
@@ -58,7 +58,7 @@ class Goods extends Resource
             
             Text::make(__('Price'), 'price')->sortable()->nullable(),
             Text::make(__('Detail'), 'detail')->nullable()->asHtml()->hideFromIndex()->hideFromIndex(),
-            Select::make(__('Status'), 'status')->options((new \App\Category)->statusOptions())->onlyOnForms(),
+            Select::make(__('Status'), 'status')->options((new \App\Models\Category)->statusOptions())->onlyOnForms(),
             Text::make(__('Status'))->displayUsing(function(){return $this->statusRichLabel();})->asHtml()->exceptOnForms(),
             $this->mediaField(__('Image'), 'photo'),
             // BelongsToMany::make(__('Cart'), 'carts', Cart::class)->fields(new Fields\CartItemFields)

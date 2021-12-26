@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
-use App\Goods;
-use App\User;
+use App\Models\Goods;
+use App\Models\User;
 
 class SaleController extends ApiBaseController
 {

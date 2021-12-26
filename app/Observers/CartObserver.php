@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Observers;
-use App\Cart;
+use App\Models\Cart;
 
 class CartObserver
 {

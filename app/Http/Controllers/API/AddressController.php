@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
-use App\Address;
+use App\Models\Address;
 
 class AddressController extends ApiBaseController
 {

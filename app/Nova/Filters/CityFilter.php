@@ -3,7 +3,7 @@
 namespace App\Nova\Filters;
 
 use Illuminate\Http\Request;
-use App\City;
+use App\Models\City;
 use AwesomeNova\Filters\DependentFilter;
 
 class CityFilter extends DependentFilter

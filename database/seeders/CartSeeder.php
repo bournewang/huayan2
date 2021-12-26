@@ -1,10 +1,10 @@
 <?php
 namespace Database\Seeders;
 use Illuminate\Database\Seeder;
-use App\User;
-use App\Cart;
-use App\Store;
-use App\Goods;
+use App\Models\User;
+use App\Models\User;
+use App\Models\User;
+use App\Models\User;
 use Carbon\Carbon;
 
 class CartSeeder extends Seeder

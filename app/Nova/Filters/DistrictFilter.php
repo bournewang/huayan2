@@ -3,7 +3,7 @@
 namespace App\Nova\Filters;
 
 use Illuminate\Http\Request;
-use App\District;
+use App\Models\District;
 use AwesomeNova\Filters\DependentFilter;
 
 class DistrictFilter extends DependentFilter

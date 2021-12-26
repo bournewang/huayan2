@@ -14,7 +14,7 @@ class Salesman extends Resource
      *
      * @var string
      */
-    public static $model = \App\Salesman::class;
+    public static $model = \App\Models\Salesman::class;
     public static function label()
     {
         return __('Salesman');
@@ -102,6 +102,6 @@ class Salesman extends Resource
     
     public static function indexQuery(NovaRequest $request, $query)
     {
-        return $query->where('type', \App\User::SALESMAN);
+        return $query->where('type', \App\Models\Salesman::SALESMAN);
     }
 }

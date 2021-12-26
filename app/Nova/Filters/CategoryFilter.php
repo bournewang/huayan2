@@ -4,8 +4,7 @@ namespace App\Nova\Filters;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Filters\Filter;
-use App\Store;
-use App\Category;
+use App\Models\Store;
 class CategoryFilter extends Filter
 {
     /**
@@ -45,6 +44,6 @@ class CategoryFilter extends Filter
      */
     public function options(Request $request)
     {
-        return \App\Category::pluck('id', 'name')->all();
+        return \App\Models\Category::pluck('id', 'name')->all();
     }
 }

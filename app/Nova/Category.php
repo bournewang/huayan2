@@ -16,7 +16,7 @@ use App\Helpers\StoreHelper;
 
 class Category extends Resource
 {
-    public static $model = \App\Category::class;
+    public static $model = \App\Models\Category::class;
     public static $title = 'name';
     public static $with = ['parent'];
     public static $search = [
@@ -44,7 +44,7 @@ class Category extends Resource
             ID::make(),
             BelongsTo::make(__('Parent').__('Category'), 'parent', Category::class)->nullable(),
             Text::make(__('Name'), 'name')->rules('required', 'max:255'),
-            Select::make(__('Status'), 'status')->options((new \App\Category)->statusOptions())->onlyOnForms(),
+            Select::make(__('Status'), 'status')->options((new \App\Models\Category)->statusOptions())->onlyOnForms(),
             Text::make(__('Status'))->displayUsing(function(){return $this->statusRichLabel();})->asHtml()->exceptOnForms(),
             $this->mediaField(__('Image'), 'photo'),
             HasMany::make(__('Goods'), 'goods', Goods::class),

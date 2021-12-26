@@ -1,7 +1,7 @@
 <?php
 namespace Database\Seeders;
 use Illuminate\Database\Seeder;
-use App\Goods;
+use App\Models\Goods;
 
 class GoodsSeeder extends Seeder
 {

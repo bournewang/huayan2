@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
-use App\Goods;
-use App\Store;
-use App\Category;
+use App\Models\Goods;
+use App\Models\Store;
+use App\Models\Category;
 
 class GoodsController extends ApiBaseController
 {

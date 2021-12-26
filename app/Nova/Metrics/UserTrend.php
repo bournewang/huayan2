@@ -4,7 +4,7 @@ namespace App\Nova\Metrics;
 
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Trend;
-use App\User;
+use App\Models\User;
 class UserTrend extends CountTrend
 {
     protected $resource = User::class;

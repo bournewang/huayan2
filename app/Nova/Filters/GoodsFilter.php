@@ -39,6 +39,6 @@ class GoodsFilter extends Filter
      */
     public function options(Request $request)
     {
-        return \App\Goods::pluck('id', 'name')->all();
+        return \App\Models\Goods::pluck('id', 'name')->all();
     }
 }

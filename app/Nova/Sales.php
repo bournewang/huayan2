@@ -23,7 +23,7 @@ class Sales extends Resource
      *
      * @var string
      */
-    public static $model = \App\User::class;
+    public static $model = \App\Models\User::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -73,7 +73,7 @@ class Sales extends Resource
             // $this->moneyfield(__('Leader Bonus'), 'leader_bonus')->sortable(),
             // $this->moneyfield(__('Total Income'), 'total_income')->sortable(),
             Boolean::make(__('DD'), 'dd')->sortable(),
-            Select::make(__('Apply').__('Status'), 'apply_status')->options(\App\User::applyOptions())->displayUsingLabels(),
+            Select::make(__('Apply').__('Status'), 'apply_status')->options(\App\Models\User::applyOptions())->displayUsingLabels(),
             BelongsTo::make(__('Senior'), 'senior', Sales::class)->nullable(),    
             Text::make(__('Org Chart'), '-')->displayUsing(function(){
                 return "<a class='no-underline font-bold dim text-danger' href='/sales/$this->id/relation' target=_blank>".__('Org Chart')."</a>";

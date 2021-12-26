@@ -14,7 +14,7 @@ class SupplierSeeder extends Seeder
     public function run()
     {
         //
-        \App\Supplier::create([
+        \App\Models\Supplier::create([
             'name' => '大华',
             'company_name' => '辽宁大华健康设备有限公司',
             'license_no'=> 'GHX339382726222',

@@ -3,7 +3,7 @@
 namespace App\Nova\Fields;
 
 use Laravel\Nova\Fields\Text;
-use App\User;
+use App\Models\User;
 class SalesFields
 {
     /**

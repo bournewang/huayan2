@@ -3,7 +3,7 @@
 namespace App\Nova\Filters;
 
 use Illuminate\Http\Request;
-use App\Province;
+use App\Models\Province;
 use AwesomeNova\Filters\DependentFilter;
 
 class ProvinceFilter extends DependentFilter

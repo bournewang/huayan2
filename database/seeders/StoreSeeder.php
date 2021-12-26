@@ -12,7 +12,7 @@ class StoreSeeder extends Seeder
     public function run()
     {
         //
-        $store = \App\Store::create([
+        $store = \App\Models\Store::create([
             'name' => '小菊',
             'company_name' => '上海小菊科技有限公司',
             'account_no' => '11112222333',

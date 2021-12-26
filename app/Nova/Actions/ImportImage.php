@@ -9,8 +9,7 @@ use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Fields\File;
-use App\Store;
-use App\Category;
+use App\Models\Store;
 
 class ImportImage extends Action
 {

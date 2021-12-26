@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
-use App\Goods;
-use App\Store;
+use App\Models\Goods;
+use App\Models\Store;
 
 class BannerController extends ApiBaseController
 {

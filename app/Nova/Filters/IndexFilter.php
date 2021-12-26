@@ -42,7 +42,7 @@ class IndexFilter extends Filter
      */
     public function options(Request $request)
     {
-        // return \App\Goods::pluck('id', 'name')->all();
+        // return \App\Models\Goods::pluck('id', 'name')->all();
         $index = [];
         $i = 0;
         do {

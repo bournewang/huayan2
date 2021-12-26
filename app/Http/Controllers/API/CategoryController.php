@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
-use App\Category;
-use App\Store;
+use App\Models\Category;
+use App\Models\Category;
 
 class CategoryController extends ApiBaseController
 {

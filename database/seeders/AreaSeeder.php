@@ -1,9 +1,9 @@
 <?php
 namespace Database\Seeders;
 use Illuminate\Database\Seeder;
-use App\Province;
-use App\City;
-use App\District;
+use App\Models\Province;
+use App\Models\City;
+use App\Models\District;
 
 class AreaSeeder extends Seeder
 {

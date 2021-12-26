@@ -2,8 +2,8 @@
 
 namespace App\Helpers;
 use Illuminate\Support\Facades\Http;
-use App\Category;
-use App\Goods;
+use App\Models\Category;
+use App\Models\Goods;
 use Carbon\Carbon;
 
 class UserHelper

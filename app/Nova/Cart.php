@@ -11,7 +11,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Cart extends Resource
 {
-    public static $model = \App\Cart::class;
+    public static $model = \App\Models\Cart::class;
     public static $title = 'id';
     public static $with = ['user'];
     public static $search = [

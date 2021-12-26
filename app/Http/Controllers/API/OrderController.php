@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use function EasyWeChat\Kernel\Support\generate_sign;
-use App\Order;
-use App\Address;
+use App\Models\Order;
+use App\Models\Address;
 class OrderController extends ApiBaseController
 {    
     public function index(Request $request)

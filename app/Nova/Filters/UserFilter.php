@@ -39,6 +39,6 @@ class UserFilter extends Filter
      */
     public function options(Request $request)
     {
-        return \App\User::pluck('id', 'name')->all();
+        return \App\Models\User::pluck('id', 'name')->all();
     }
 }

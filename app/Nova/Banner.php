@@ -16,7 +16,7 @@ use App\Helpers\StoreHelper;
 
 class Banner extends Resource
 {
-    public static $model = \App\Banner::class;
+    public static $model = \App\Models\Banner::class;
     public static $title = 'title';
     public static $with = ['store'];
     public static $search = [

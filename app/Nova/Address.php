@@ -12,7 +12,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Address extends Resource
 {
-    public static $model = \App\Address::class;
+    public static $model = \App\Models\Address::class;
     public static $title = 'id';
     public static $with = ['user', 'store'];
     public static $search = [

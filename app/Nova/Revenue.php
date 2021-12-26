@@ -18,7 +18,7 @@ class Revenue extends Resource
      *
      * @var string
      */
-    public static $model = \App\Revenue::class;
+    public static $model = \App\Models\Revenue::class;
     public static $title = 'id';
     public static $with = ['user', 'store'];
     public static $priority = 2;

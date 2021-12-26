@@ -1,9 +1,9 @@
 <?php
 namespace App\Helpers;
-use App\Store;
-use App\Order;
-use App\User;
-use App\Revenue;
+use App\Models\Store;
+use App\Models\Order;
+use App\Models\User;
+use App\Models\Revenue;
 
 class StoreHelper
 {

@@ -1,5 +1,5 @@
 <?php
-namespace App;
+namespace App\Models;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\MediaLibrary\HasMedia; 
 use Spatie\MediaLibrary\InteractsWithMedia;

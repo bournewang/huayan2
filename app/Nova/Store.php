@@ -22,12 +22,10 @@ use WesselPerik\StatusField\StatusField;
 // use Eminiarts\Tabs\Tab;
 // use Eminiarts\Tabs\TabsOnEdit;
 use NovaAjaxSelect\AjaxSelect;
-use App\Province;
-use App\City;
-use App\District;
+use App\Models\Province;
 class Store extends Resource
 {
-    public static $model = \App\Store::class;
+    public static $model = \App\Models\Store::class;
     public static $title = 'name';
     public static $search = [
         'name', 
@@ -77,7 +75,7 @@ class Store extends Resource
             $this->mediaField(__('License'), 'license'),
             $this->mediaField(__('Photo'), 'photo'),
             
-            // Select::make(__('Status'), 'status')->options((new \App\Store)->statusOptions())->onlyOnForms(),
+            // Select::make(__('Status'), 'status')->options((new \App\Models\Store)->statusOptions())->onlyOnForms(),
             StatusField::make(__('Status'), 'status')
                     ->values([
                         'inactive'  => $this->inactive == $this->status,

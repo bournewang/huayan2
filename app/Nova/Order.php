@@ -17,7 +17,7 @@ class Order extends Resource
      *
      * @var string
      */
-    public static $model = \App\Order::class;
+    public static $model = \App\Models\Order::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.

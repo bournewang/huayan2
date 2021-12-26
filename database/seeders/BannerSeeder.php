@@ -1,7 +1,7 @@
 <?php
 namespace Database\Seeders;
 use Illuminate\Database\Seeder;
-use App\Goods;
+use App\Models\Goods;
 
 class BannerSeeder extends Seeder
 {
@@ -16,7 +16,7 @@ class BannerSeeder extends Seeder
         // if ($data = (config('seed')['banner'] ?? null)) {
         //     foreach ($data as $item) {
         foreach(Goods::limit(5)->get() as $goods) {
-                $c = \App\Banner::create(['goods_id' => $goods->id, 'store_id' => 1, 'status' => 1]);
+                $c = \App\Models\Banner::create(['goods_id' => $goods->id, 'store_id' => 1, 'status' => 1]);
                 echo "create banner $c->title \n";
         //     }
         }

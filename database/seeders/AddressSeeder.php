@@ -1,7 +1,7 @@
 <?php
 namespace Database\Seeders;
 use Illuminate\Database\Seeder;
-use App\Address;
+use App\Models\Address;
 class AddressSeeder extends Seeder
 {
     /**
