@@ -10,6 +10,7 @@ class Store extends BaseModel
 {
     use SoftDeletes;
     use StatusTrait;
+    use AddressTrait;
     
     public $table = 'stores';
 
@@ -21,8 +22,8 @@ class Store extends BaseModel
         'company_name',
         'license_no',
         'account_no', 
-        'contact_name',
-        'telphone',
+        'contact',
+        'telephone',
         'province_id',
         'city_id',
         'district_id',
@@ -38,8 +39,8 @@ class Store extends BaseModel
         'company_name' => 'string',
         'license_no' => 'string',
         'account_no' => 'string', 
-        'contact_name' => 'string',
-        'telphone' => 'string',
+        'contact' => 'string',
+        'telephone' => 'string',
         // 'license_img' => 'string',
         // 'commission' => 'integer'
     ];
@@ -95,20 +96,8 @@ class Store extends BaseModel
         return $this->hasMany(Order::class);
     }
 
-    public function province(){return $this->belongsTo(Province::class);}
-    public function city(){return $this->belongsTo(City::class);}
-    public function district(){return $this->belongsTo(District::class);}
     public function manager(){return $this->belongsTo(User::class);}
     public function salesman(){return $this->belongsTo(User::class);}
 
-    public function display_address($with_telephone = false)
-    {
-        return implode(array_filter([
-            $this->province->name ?? null,
-            $this->city->name ?? null,
-            $this->district->name ?? null,
-            $this->street,
-            $with_telephone ? ' '.$this->telephone : '',
-        ]));
-    }
+
 }

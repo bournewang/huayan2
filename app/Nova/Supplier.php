@@ -24,16 +24,21 @@ use NovaAjaxSelect\AjaxSelect;
 use App\Province;
 use App\City;
 use App\District;
-class Store extends Resource
+class Supplier extends Resource
 {
-    public static $model = \App\Store::class;
+    public static $model = \App\Supplier::class;
     public static $title = 'name';
     public static $search = [
         'name', 
     ];
     public static function label()
     {
-        return __('Store');
+        return __('Supplier');
+    }
+    
+    public static function group()
+    {
+        return __("Sale");
     }
     /**
      * Get the fields displayed by the resource.
@@ -48,7 +53,7 @@ class Store extends Resource
             // Tabs::make(__('Store') . __('Detail'), [
                 // Tab::make('Info', [    
             // ID::make(),
-            Text::make(__('Store Name'), 'name')->sortable()->rules('required', 'max:255'),
+            Text::make(__('Name'), 'name')->sortable()->rules('required', 'max:255'),
             Text::make(__('Company Name'), 'company_name')->rules('required', 'max:255'),
             Text::make(__('License No'), 'license_no')->rules('required', 'max:255'),
             Text::make(__('Account No'), 'account_no')->rules('required', 'max:255'),
@@ -72,9 +77,9 @@ class Store extends Resource
             
             Text::make(__('Street'), 'street')->onlyOnForms(),  
             Text::make(__('Address'), 'address')->displayUsing(function(){return $this->display_address();})->exceptOnForms(),
-            $this->mediaField(__('Contract'), 'contract'),
-            $this->mediaField(__('License'), 'license'),
-            $this->mediaField(__('Photo'), 'photo'),
+            // $this->mediaField(__('Contract'), 'contract'),
+            // $this->mediaField(__('License'), 'license'),
+            // $this->mediaField(__('Photo'), 'photo'),
             // BelongsToMany::make(__('Category'), 'categories', Category::class),
             // HasMany::make(__('Sales'), 'users', User::class)//->fields(new Fields\SalesFields),
         ];

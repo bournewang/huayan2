@@ -3,8 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Store;
-class CreateStoresTable extends Migration
+use App\Supplier;
+class CreateSuppliersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class CreateStoresTable extends Migration
      */
     public function up()
     {
-        Schema::create('stores', function (Blueprint $table) {
+        Schema::create('suppliers', function (Blueprint $table) {
             $table->id();
+            
             $table->string('name');
             $table->string('company_name')->nullable();
             $table->string('license_no')->nullable();
@@ -22,22 +23,14 @@ class CreateStoresTable extends Migration
             $table->string('account_no')->nullable();
             $table->string('contact')->nullable();
             $table->string('telephone')->nullable();
-            $table->bigInteger('manager_id')->unsigned()->nullable();
-            $table->bigInteger('salesman_id')->unsigned()->nullable();
+            
             $table->bigInteger('province_id')->unsigned()->nullable();
             $table->bigInteger('city_id')->unsigned()->nullable();
             $table->bigInteger('district_id')->unsigned()->nullable();
             $table->string('street')->nullable();
-            $table->enum('status', array_keys((new Store)->statusOptions()))->nullable();
-            
+            $table->enum('status', array_keys((new Supplier)->statusOptions()));
+
             $table->timestamps();
-            $table->softDeletes();
-            
-            $table->foreign('province_id')->references('id')->on('provinces');
-            $table->foreign('city_id')->references('id')->on('cities');
-            $table->foreign('district_id')->references('id')->on('districts');
-            // $table->foreign('manager_id')->references('id')->on('users');
-            // $table->foreign('salesman_id')->references('id')->on('users');            
         });
     }
 
@@ -48,6 +41,6 @@ class CreateStoresTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stores');
+        Schema::dropIfExists('suppliers');
     }
 }

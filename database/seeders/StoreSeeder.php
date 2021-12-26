@@ -17,8 +17,8 @@ class StoreSeeder extends Seeder
             'company_name' => '上海小菊科技有限公司',
             'account_no' => '11112222333',
             'license_no' => 'GMA33112234433',
-            'contact_name' => '王先生',
-            'telphone' => '13811112222',
+            'contact' => '王先生',
+            'telephone' => '13811112222',
             // 'commission' => 30
         ]);
     }
