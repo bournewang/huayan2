@@ -21,7 +21,7 @@ class Expert extends Resource
     }
     public static function group()
     {
-        return __("Mall");
+        return __("Chain Store");
     }
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -38,6 +38,11 @@ class Expert extends Resource
     public static $search = [
         'id',
     ];
+    
+    public static function icon()
+    {
+        return view("nova::svg.".strtolower(explode('\\', self::class)[2]));
+    }
 
     /**
      * Get the fields displayed by the resource.

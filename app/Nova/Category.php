@@ -32,6 +32,11 @@ class Category extends Resource
     {
         return __("Mall");
     }
+    
+    public static function icon()
+    {
+        return view("nova::svg.".strtolower(explode('\\', self::class)[2]));
+    }
     /**
      * Get the fields displayed by the resource.
      *

@@ -34,6 +34,14 @@ class Store extends Resource
     {
         return __('Store');
     }
+    public static function group()
+    {
+        return __("Chain Store");
+    }
+    public static function icon()
+    {
+        return view("nova::svg.".strtolower(explode('\\', self::class)[2]));
+    }
     /**
      * Get the fields displayed by the resource.
      *

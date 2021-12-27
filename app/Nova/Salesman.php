@@ -21,7 +21,11 @@ class Salesman extends Resource
     }
     public static function group()
     {
-        return __("Mall");
+        return __("Chain Store");
+    }
+    public static function icon()
+    {
+        return view("nova::svg.".strtolower(explode('\\', self::class)[2]));
     }
     /**
      * The single value that should be used to represent the resource when being displayed.

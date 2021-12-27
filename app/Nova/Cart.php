@@ -9,7 +9,7 @@ use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Cart extends Resource
+class Cart
 {
     public static $model = \App\Models\Cart::class;
     public static $title = 'id';
@@ -22,7 +22,14 @@ class Cart extends Resource
     {
         return __("Cart");
     }
-
+    public static function group()
+    {
+        return __("Mall");
+    }
+    public static function icon()
+    {
+        return view("nova::svg.".strtolower(explode('\\', self::class)[2]));
+    }
     /**
      * Get the fields displayed by the resource.
      *

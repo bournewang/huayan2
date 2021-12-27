@@ -31,6 +31,11 @@ class Banner extends Resource
     {
         return __('Banner');
     }
+  
+    public static function icon()
+    {
+        return view("nova::svg.".strtolower(explode('\\', self::class)[2]));
+    }
     /**
      * Get the fields displayed by the resource.
      *

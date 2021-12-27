@@ -30,6 +30,14 @@
     margin-bottom: 0.5rem;
 }
 
+ul.sidemenu ul.dropdown-menu li svg {
+    height: 1rem;
+    margin-top: 0;
+}
+
+.sidebar-dropdown>.dropdown-menu li {
+    margin-left: 1em;
+}
 .nova-detached-filters-card {
     display: flex;
     flex-direction: row;

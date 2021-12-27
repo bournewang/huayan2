@@ -33,7 +33,12 @@ class Order extends Resource
     
     public static function group()
     {
-        return __("Order");
+        return __("Mall");
+    }
+    
+    public static function icon()
+    {
+        return view("nova::svg.".strtolower(explode('\\', self::class)[2]));
     }
     /**
      * The columns that should be searched.

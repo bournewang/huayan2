@@ -33,7 +33,12 @@ class Revenue extends Resource
     
     public static function group()
     {
-        return __("Sale");
+        return __("Finance");
+    }
+    
+    public static function icon()
+    {
+        return view("nova::svg.".strtolower(explode('\\', self::class)[2]));
     }
     /**
      * Get the fields displayed by the resource.
