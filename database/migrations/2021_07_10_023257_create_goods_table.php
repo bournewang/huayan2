@@ -24,7 +24,7 @@ class CreateGoodsTable extends Migration
             $table->decimal('price_ori', 8, 2)->nullable();
             $table->decimal('price', 8, 2)->nullable();
             $table->text('detail')->nullable();
-            $table->enum('status', array_keys((new App\Goods)->statusOptions()))->nullable();
+            $table->enum('status', array_keys((new App\Models\Goods)->statusOptions()))->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('category_id')->references('id')->on('categories');

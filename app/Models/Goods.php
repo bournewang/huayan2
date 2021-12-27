@@ -10,8 +10,6 @@ class Goods extends BaseModel
     use SoftDeletes;
     use ShelfTrait;
     
-    protected $primaryKey = 'id';
-    
     public $table = 'goods';
 
     protected $dates = ['deleted_at'];
@@ -25,6 +23,7 @@ class Goods extends BaseModel
         'name',
         'qty', 
         'category_id',
+        'supplier_id',
         'type',
         'brand',
         'price',
@@ -37,24 +36,21 @@ class Goods extends BaseModel
         'name' => 'string',
         'qty' => 'string', 
         'category_id' => 'integer',
+        'supplier_id' => 'integer',
         'type' => 'string',
         'brand' => 'string',
         'price' => 'float',
         'detail' => 'string',
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'id',
-    ];
-    
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+    
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class);
     }
     
     public function carts()
@@ -67,13 +63,13 @@ class Goods extends BaseModel
         return $this->belongsToMany(Order::class)->withPivot('quantity', 'price', 'subtotal');
     }
     
-    public function info()
-    {
-        $data = parent::info();
-        
-        return $data;
-    }
-    
+    // public function info()
+    // {
+    //     $data = parent::info();
+    // 
+    //     return $data;
+    // }
+    // 
     public function imgUrl($key = 'img')
     {
         return !$this->$key ? null : url(\Storage::url($this->$key));

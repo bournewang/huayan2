@@ -17,7 +17,7 @@ class CreateCategoriesTable extends Migration
             $table->id();
             $table->bigInteger('pid')->unsigned()->nullable();
             $table->string('name');
-            $table->enum('status', array_keys((new App\Category)->statusOptions()))->nullable();
+            $table->enum('status', array_keys((new App\Models\Category)->statusOptions()))->nullable();
             // $table->boolean('recommend')->default(0);
             $table->timestamps();
             $table->softDeletes();

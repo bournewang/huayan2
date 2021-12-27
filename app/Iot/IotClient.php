@@ -32,7 +32,7 @@ class IotClient
             \Log::debug((string)$result->getBody());
             $data = $result->toArray();
             if ($data && $data['Success']){
-                return $data['Data'] ?? [];
+                return $data;//['Data'] ?? [];
             }
             return [];
         } catch (ClientException $e) {

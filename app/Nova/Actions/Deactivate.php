@@ -8,8 +8,9 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
-
-class Inactive extends Action
+use App\Models\Device;
+use App\Helpers\DeviceHelper;
+class Deactivate extends Action
 {
     use InteractsWithQueue, Queueable;
     public function name()
@@ -27,9 +28,24 @@ class Inactive extends Action
     {
         //
         \Log::debug(__CLASS__.'->'.__FUNCTION__. " count: ".$models->count());
-        foreach ($models as $model) {
-            \Log::debug("update status to ".$model->inactive);
-            $model->update(['status' => $model->inactive]);
+        if ($models->first()::class == Store::class) {
+            foreach ($models as $model) {
+                \Log::debug("update status to ".$model->inactive);
+                $model->update(['status' => $model->inactive]);
+            }
+        }elseif ($models->first()::class == Device::class) {
+            foreach ($models as $model) {
+                $model->update(['status' => 0]);
+            }
+            return;
+            $devices = $models->pluck('device_name')->all();
+            $sn = implode(',', $devices);
+            $res = DeviceHelper::statusChange($sn, 0);
+            if ($res->status == 1) {
+                return Action::message($res->success);
+            }else{
+                return Action::danger($res->error_reason);
+            }
         }
     }
 

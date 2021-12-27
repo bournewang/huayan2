@@ -98,6 +98,6 @@ class Store extends BaseModel
 
     public function manager(){return $this->belongsTo(User::class);}
     public function salesman(){return $this->belongsTo(User::class);}
-
+    public function devices(){return $this->hasMany(Device::class);}
 
 }

@@ -129,8 +129,8 @@ class Supplier extends Resource
     public function actions(Request $request)
     {
         return [
-            new Actions\Active,
-            new Actions\Inactive,
+            new Actions\Activate,
+            new Actions\Deactivate,
         ];
     }
     

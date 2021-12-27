@@ -4,7 +4,7 @@ namespace App\Nova\Filters;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Filters\Filter;
-use App\Models\Store;
+use App\Models\Category;
 class CategoryFilter extends Filter
 {
     /**

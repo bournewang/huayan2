@@ -7,6 +7,7 @@ use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
@@ -91,7 +92,38 @@ class Store extends Resource
                         'active'    => $this->active == $this->status
                     ])
                     ->info($this->statusLabel())
-                    ->exceptOnForms()            
+                    ->exceptOnForms(),
+            HasMany::make(__('Device'), 'devices', Device::class)        
+            // Text::make(__('Devices'))->onlyOnDetail()->displayUsing(function(){
+            //     $list = json_decode($this->devices);
+            //     $str = "";
+            //     foreach ($list as $item) {
+            //         $product_key = $item->attributes->type;
+            //         $devices = explode("\n", $item->attributes->device_list);
+            //         if (count($devices) < 1)continue;
+            //         \Log::debug($devices);
+            //         $str .= $product_key .':'."<br/>";//. implode('|', $devices) . "<br/>";
+            //         $c = new \App\Iot\Device($product_key, $devices);
+            //         $res = null;
+            //         $res = $c->batchStatus();
+            //         \Log::debug("===res: ");
+            //         \Log::debug($res);
+            // 
+            //         $status = [];
+            //         if (!$res) continue;
+            //         foreach ($res['DeviceStatusList']['DeviceStatus'] as $d){
+            //             $status[$d['DeviceName']] = $d['Status'];
+            //             $str .= $d['DeviceName'] . " " . $d['Status'];
+            //             if ($d['Status'] == 'ONLINE') {
+            //                 $str .= "<span class='text text-success'>".view('nova::svg.play')."</span>";
+            //             }else{
+            //                 $str .= "<span class='text text-default'>".view('nova::svg.minus-circle') . "</span>";
+            //             }
+            //             $str .= "<br/>";
+            //         }
+            //     }
+            //     return $str;
+            // })->asHtml()
         ];
     }
 
@@ -129,8 +161,8 @@ class Store extends Resource
     public function actions(Request $request)
     {
         return [
-            new Actions\Active,
-            new Actions\Inactive
+            new Actions\Activate,
+            new Actions\Deactivate
         ];
     }
     

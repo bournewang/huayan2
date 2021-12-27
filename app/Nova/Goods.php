@@ -56,7 +56,7 @@ class Goods extends Resource
             // Image::make(__('Image'), 'img')->nullable()->thumbnail(function($v){return \Storage::url($this->img_s);})->preview(function(){return \Storage::url($this->img_m);}),
             Text::make(__('Name'), 'name')->sortable()->rules('required', 'max:255'),
             Text::make(__('Stock'), 'qty')->sortable()->rules('required', 'max:255')->canSee(function()use($rel){return !$rel;}),
-            Text::make(__('Type'), 'type')->sortable()->nullable()->canSee(function()use($rel){return !$rel;})->hideFromIndex(),
+            // Text::make(__('Type'), 'type')->sortable()->nullable()->canSee(function()use($rel){return !$rel;})->hideFromIndex(),
             Text::make(__('Brand'), 'brand')->sortable()->nullable()->canSee(function()use($rel){return !$rel;})->hideFromIndex(),
             // Text::make(__('saleFlag'), 'saleFlag')->sortable()->nullable()->canSee(function()use($rel){return !$rel;})->hideFromIndex(),
             
