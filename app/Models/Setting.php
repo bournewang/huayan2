@@ -12,10 +12,12 @@ class Setting extends Model
     public $table = 'settings';
     
     public $fillable = [
+        'banks',
         'device_types',
     ];
     
     protected $casts = [
+        'banks' => 'json',
         'device_types' => 'json',
     ];
     

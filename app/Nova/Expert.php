@@ -5,10 +5,13 @@ namespace App\Nova;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
-
+use Epartment\NovaDependencyContainer\HasDependencies;
+use Epartment\NovaDependencyContainer\NovaDependencyContainer;
 class Expert extends Resource
 {
+    use HasDependencies;
     /**
      * The model the resource corresponds to.
      *
@@ -57,6 +60,20 @@ class Expert extends Resource
             Text::make(__('Realname'), 'name')->sortable()->rules('required', 'max:255'),
             Text::make(__('Gender'), 'gender'),
             Text::make(__('Mobile'), 'mobile'),
+            Text::make(__('Wechat Account'), 'wechat'),
+            Select::make(__('Bank'), 'bank_key')
+                ->options(\App\Models\Setting::first()->banks)
+                ->displayUsing(function(){
+                    if ($this->bank_key == 'OTHER') {
+                        return $this->bank_name;
+                    }else{
+                        return \App\Models\Setting::first()->banks[$this->bank_key];
+                    }
+                }),
+            NovaDependencyContainer::make([
+                Text::make(__('Bank Name'), 'bank_name'),
+            ])->dependsOn('bank_key', 'OTHER')->onlyOnForms(),
+            Text::make(__('Account No'), 'account_no'),
             
         ];
     }

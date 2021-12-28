@@ -30,6 +30,12 @@ class CreateUsersTable extends Migration
             $table->string('county', 32)->nullable();
             $table->string('qrcode', 64)->nullable();
             $table->string('id_no', 24)->nullable();
+            
+            $table->string('wechat', 24)->nullable();
+            $table->string('bank_key', 24)->nullable();
+            $table->string('bank_name', 32)->nullable();
+            $table->string('account_no', 32)->nullable();
+            
             $table->enum('type', array_keys(User::typeOptions()));
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();

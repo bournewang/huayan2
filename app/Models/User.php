@@ -82,6 +82,17 @@ class User extends Authenticatable implements HasMedia
         'senior_id' => 'integer',
     ];
     
+    public static function boot()
+    {
+        parent::boot();
+        static::creating(function ($instance) {
+            // self::beforesave($instance);
+            if (!$instance->email) {
+                $instance->email = $instance->mobile.'@huayan.com';
+                $instance->password = \bcrypt($instance->email);
+            }
+        });
+    }
     const APPLYING = 'applying';
     const GRANT = 'grant';
     const REJECT = 'reject';

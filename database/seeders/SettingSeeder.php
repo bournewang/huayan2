@@ -14,12 +14,6 @@ class SettingSeeder extends Seeder
     public function run()
     {
         //
-        \App\Models\Setting::create([
-            'device_types' => [
-                'ggz1JU0WNFH' => '强筋机器人',
-                'ggz17zg9nAJ' => '石墨烯能量房',
-                'ggz1Vk6qGPr' => '超长波治疗仪'
-            ]
-        ]);
+        \App\Models\Setting::create(config('seed.setting'));
     }
 }

@@ -112,3 +112,11 @@ div[dusk="stores-detail-component"] a[dusk="attach-button"] {
     display: block;
 }
 
+
+
+.key-value-item textarea {
+    height: 2em !important;
+    padding-top: 0.3em;
+    /* padding-bottom: 0.5em; */
+    min-height: 1.5em;
+}

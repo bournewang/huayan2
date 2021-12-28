@@ -10,4 +10,12 @@ class Salesman extends User
     use HasFactory;
     
     protected $table = 'users';
+    
+    public static function boot()
+    {
+        parent::boot();
+        static::creating(function ($instance) {
+            $instance->type = User::SALESMAN;
+        });
+    }
 }

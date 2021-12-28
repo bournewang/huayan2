@@ -53,9 +53,14 @@ class Setting extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make(__('ID'), 'id')->sortable(),
+            // ID::make(__('ID'), 'id')->sortable(),
+            KeyValue::make(__('Bank'), 'banks')
+                ->keyLabel(__('Bank Code'))
+                ->valueLabel(__('Bank Name'))
+                ->actionText(__('Add').__('Bank'))
+                ,
             KeyValue::make(__('Device Type'), 'device_types')
-                ->keyLabel(__('product key'))
+                ->keyLabel(__('Product Key'))->help("设备代码：阿里云物联网的 product key")
                 ->valueLabel(__('Device Type'))
                 ->actionText(__('Add').__('Device'))
                 ->nullable(),
