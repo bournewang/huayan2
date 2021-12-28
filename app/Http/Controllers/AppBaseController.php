@@ -11,33 +11,27 @@ use Auth;
 use DB;
 use App\Exceptions\ApiException;
 
- /**
+/**
  * @OA\Info(
- *      version="1.0.0",
- *      title="智帘API文档",
- *      description="客户端和门店端API",
+ *      version="0.6.0",
+ *      title="华研API文档",
+ *      description="",
  *      @OA\Contact(
  *          email="xiaopei0206@icloud.com"
  *      ),
  * )
+ * @OA\Server(
+ *     url=L5_SWAGGER_CONST_HOST,
+ *     description=""
+ * )
+ *
+ * @OA\SecurityScheme(
+ *     type="apiKey",
+ *     in="header",
+ *     securityScheme="api_key",
+ *     name="Authorization"
+ * )
  */
-
- /**
-  *  @OA\Server(
-  *      url=L5_SWAGGER_CONST_HOST,
-  *      description="L5 Swagger OpenApi dynamic host server"
-  *  )
-  *
-  */
-
- /**
-  * @OA\SecurityScheme(
-  *     type="apiKey",
-  *     in="header",
-  *     securityScheme="api_key",
-  *     name="Authorization"
-  * )
-  */
 
 class AppBaseController extends Controller
 {

@@ -34,17 +34,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 // Route::group(['middleware' => []], function(){
     Route::get('/config/values',        [ConfigController::class, 'get']); //->name('config.get');
-    Route::get('/province/list',        [RegionController::class, 'provinces']);
+    Route::get('/provinces',             [RegionController::class, 'provinces']);
     Route::get('/provinces/{province_id}/cities',   [RegionController::class, 'cities']);
     Route::get('/cities/{city_id}/districts',       [RegionController::class, 'districts']);
-    Route::get('/goods/list',           [GoodsController::class, 'index']);
+    Route::get('/goods',                [GoodsController::class, 'index']);
     Route::get('/goods/{id}',           [GoodsController::class, 'detail']);
-    Route::get('/category/all',         [CategoryController::class, 'index']);
-    Route::get('/banner/list',          [BannerController::class, 'index']);
-    Route::post('/user/wxapp/authorize',[WechatController::class, 'login']);
-    Route::post('/user/wxapp/register', [WechatController::class, 'register']);
-    Route::post('/user/wxapp/login',    [WechatController::class, 'login']);
-    Route::post('/wechat/notify',       [WechatController::class, 'notify']);
+    Route::get('/categories',           [CategoryController::class, 'index']);
+    Route::get('/banners',              [BannerController::class, 'index']);
+    // Route::post('/user/wxapp/authorize',[WechatController::class, 'login']);
+    // Route::post('/user/wxapp/register', [WechatController::class, 'register']);
+    // Route::post('/user/wxapp/login',    [WechatController::class, 'login']);
+    // Route::post('/wechat/notify',       [WechatController::class, 'notify']);
 // });
 
 Route::group(['middleware' => ['auth:api']], function(){
@@ -62,7 +62,7 @@ Route::group(['middleware' => ['auth:api']], function(){
     Route::get('/order/{id}',   [OrderController::class, 'show']);
     Route::post('/goods/{id}/like',  [GoodsController::class, 'like']);
     Route::delete('/goods/{id}/like', [GoodsController::class, 'dislike']);
-    Route::get      ('/address/list',   [AddressController::class, 'index']);
+    Route::get      ('/address',   [AddressController::class, 'index']);
     Route::get      ('/address/default',[AddressController::class, 'default']);
     Route::post     ('/address',        [AddressController::class, 'create']);
     Route::get      ('/address/current',[AddressController::class, 'current']);

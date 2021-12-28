@@ -8,13 +8,24 @@ use App\Models\Category;
 
 class GoodsController extends ApiBaseController
 {
-    public function index($store_id, Request $request)
+    /**
+     * Goods list api
+     *
+     * @OA\Get(
+     *  path="/api/goods",
+     *  @OA\Parameter(name="category_id",   in="query",required=false,explode=true,@OA\Schema(type="integer"),description="category id"),
+     *  @OA\Parameter(name="perpage",       in="query",required=false,explode=true,@OA\Schema(type="integer"),description="items per page"),
+     *  @OA\Parameter(name="page",          in="query",required=false,explode=true,@OA\Schema(type="integer"),description="page num"),  
+     *  @OA\Parameter(name="k",             in="query",required=false,explode=true,@OA\Schema(type="string"), description="key words"),
+     *  @OA\Parameter(name="recommend",     in="query",required=false,explode=true,@OA\Schema(type="integer"),description="recommend"),
+     *  @OA\Response(response=200,description="successful operation")
+     * )
+     */    
+    public function index(Request $request)
     {
-        if (!$store = Store::find($store_id)) {
-            return $this->sendError("非法商户");
-        }
-        $goods = $store->goods();
-        if ($cat = Category::find($request->input('categoryId'))) {
+        $g = new Goods;
+        $goods = Goods::where('status', '!=', $g->off_shelf);
+        if ($cat = Category::find($request->input('category_id'))) {
             $ids = $cat->children()->pluck('id')->all();
             $ids[] = $cat->id;
             $goods = $goods->whereIn('category_id', $ids);
@@ -22,27 +33,39 @@ class GoodsController extends ApiBaseController
         if ($key = $request->input('k')) {
             $goods = $goods->where('name', 'like', "%$key%");
         }
-        if ($hot = $request->input('hot')) {
-            $goods = $goods->wherePivot('hot', $hot);
-        }
         if ($recommend = $request->input('recommend')) {
-            $goods = $goods->wherePivot('recommend', $recommend);
+            $goods = $goods->where('status', $g->recommend);
         }
-        $goods = $goods->paginate($request->input('perpage', 20));
         
-        $data = [];
+        $total = $goods->count();
+        $perpage = $request->input('perpage', 20);
+        $data = [
+            'total' => $total,
+            'pages' => ceil($total/$perpage),
+            'page' => $request->input('page', 1),
+            'items' => []
+        ];
+        $goods = $goods->paginate($perpage);
         foreach ($goods as $good) {
-            $data[] = $good->show();
+            $data['items'][] = $good->info();
         }
         return $this->sendResponse($data);
     }
     
-    public function detail($store_id, $id, Request $request)
+    /**
+     * Goods detail api
+     *
+     * @OA\Get(
+     *  path="/api/goods/{id}",
+     *  @OA\Parameter(name="id",   in="path",required=false,explode=true,@OA\Schema(type="integer"),description="goods id"),
+     *  @OA\Response(response=200,description="successful operation"),
+     * )
+     */
+    public function detail($id, Request $request)
     {
         $data = [];
-        // $id = $request->input('id');
         if ($goods = Goods::find($id)) {
-            $data = $goods->detail();
+            $data = $goods->info();
         }
         if ($this->user) {
             $data['faved'] = !!$this->user->likes()->find($id);
@@ -50,7 +73,17 @@ class GoodsController extends ApiBaseController
         return $this->sendResponse($data);
     }
     
-    public function like($store, $id)
+    /**
+     * Goods like api
+     *
+     * @OA\Post(
+     *  path="/api/goods/{id}/like",
+     *  @OA\Parameter(name="id",   in="path",required=false,explode=true,@OA\Schema(type="integer"),description="goods id"),
+     *  @OA\Response(response=200,description="successful operation"),
+     *  security={{ "api_key":{} }}
+     * )
+     */
+    public function like($id)
     {
         if (!$goods = Goods::find($id)) {
             // $data = $goods->
@@ -62,10 +95,19 @@ class GoodsController extends ApiBaseController
         return $this->sendResponse(null);
     }
     
-    public function dislike($store, $id)
+    /**
+     * Goods dislike api
+     *
+     * @OA\Delete(
+     *  path="/api/goods/{id}/like",
+     *  @OA\Parameter(name="id",   in="path",required=false,explode=true,@OA\Schema(type="integer"),description="goods id"),
+     *  @OA\Response(response=200,description="successful operation"),
+     *  security={{ "api_key":{} }}
+     * )
+     */
+    public function dislike($id)
     {
         if (!$goods = Goods::find($id)) {
-            // $data = $goods->
         }
         
         $this->user->likes()->detach($id);
