@@ -43,7 +43,7 @@ class User extends Resource
 
     public static function label()
     {
-        return __('Customer');
+        return __('User');
     }
     public static function group()
     {
