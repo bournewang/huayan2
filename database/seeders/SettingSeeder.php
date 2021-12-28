@@ -15,11 +15,11 @@ class SettingSeeder extends Seeder
     {
         //
         \App\Models\Setting::create([
-            'device_types' => json_encode([
+            'device_types' => [
                 'ggz1JU0WNFH' => '强筋机器人',
                 'ggz17zg9nAJ' => '石墨烯能量房',
                 'ggz1Vk6qGPr' => '超长波治疗仪'
-            ])
+            ]
         ]);
     }
 }
