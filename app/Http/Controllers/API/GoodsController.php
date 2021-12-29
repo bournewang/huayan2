@@ -67,7 +67,7 @@ class GoodsController extends ApiBaseController
     {
         $data = [];
         if ($goods = Goods::find($id)) {
-            $data = $goods->info();
+            $data = $goods->detail();
         }
         if ($this->user) {
             $data['faved'] = !!$this->user->likes()->find($id);

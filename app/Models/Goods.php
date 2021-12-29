@@ -63,33 +63,23 @@ class Goods extends BaseModel
         return $this->belongsToMany(Order::class)->withPivot('quantity', 'price', 'subtotal');
     }
     
-    // public function info()
-    // {
-    //     $data = parent::info();
-    // 
-    //     return $data;
-    // }
-    // 
-    public function imgUrl($key = 'img')
+    public function info()
     {
-        return !$this->$key ? null : url(\Storage::url($this->$key));
+        $main_img = $this->media->first();
+        return array_merge(parent::info(),[
+            'thumb' => $main_img ? $main_img->getUrl('thumb') : null,
+        ]);
     }
     
-    
-    // FIXME
-    public function show()
-    {
-        return [
-            "id" => $this->id,
-            "name" => $this->name,
-            "views" => $this->pv,
-            ];      
-    }
-    
-    // FIXME
     public function detail()
     {
-        return [
-        ];
+        $imgs = [];
+        $main_img = $this->media->first();
+        foreach ($this->media as $item) {
+            $imgs[] = $item->getUrl('large');
+        }
+        return array_merge($this->info(),[
+            'imgs' => $imgs
+        ]);
     }
 }
