@@ -7,6 +7,19 @@ use App\Models\Order;
 use App\Models\Address;
 class OrderController extends ApiBaseController
 {    
+    /**
+     * Get order list 获取订单列表
+     *
+     * @OA\Get(
+     *  path="/api/orders",
+     *  tags={"Order"},
+     *  @OA\Parameter(name="status",  in="query",required=false,explode=true,@OA\Schema(type="string"),description="order status"),
+     *  @OA\Parameter(name="perpage", in="query",required=false,explode=true,@OA\Schema(type="integer"),description="order number per page"),
+     *  @OA\Parameter(name="page",    in="query",required=false,explode=true,@OA\Schema(type="integer"),description="page no"),
+     *  @OA\Response(response=200,description="successful operation"),
+     *  security={{ "api_key":{} }}
+     * )
+     */    
     public function index(Request $request)
     {
         $orders = $this->user->orders();
@@ -22,6 +35,30 @@ class OrderController extends ApiBaseController
         return $this->sendResponse($data);
     }
 
+    /**
+     * Place an order 提交订单
+     *
+     * @OA\Post(
+     *   path="/api/orders",
+     *   tags={"Order"},
+     *   @OA\RequestBody(
+     *       required=false,
+     *       @OA\MediaType(
+     *           mediaType="application/x-www-form-urlencoded",
+     *           @OA\Schema(
+     *               type="object",
+     *               @OA\Property(
+     *                   property="address_id",
+     *                   description="Address id",
+     *                   type="integer"
+     *               )
+     *           )
+     *       )
+     *   ),
+     *  @OA\Response(response=200,description="successful operation"),
+     *  security={{ "api_key":{} }}
+     * )
+     */
     public function create($store_id, Request $request)
     {
         if ($cart = $this->user->cart) {
@@ -33,7 +70,18 @@ class OrderController extends ApiBaseController
         }
     }
     
-    public function show($store_id, $id)
+    /**
+     * Get order detail 获取订单详情
+     *
+     * @OA\Get(
+     *  path="/api/orders/{id}",
+     *  tags={"Order"},
+     *  @OA\Parameter(name="id",in="path",required=true,explode=true,@OA\Schema(type="integer"),description="order id"),
+     *  @OA\Response(response=200,description="successful operation"),
+     *  security={{ "api_key":{} }}
+     * )
+     */
+    public function show($id)
     {
         \Log::debug(__CLASS__.'->'.__FUNCTION__." $id");
         if ($order = Order::find($id)) {
@@ -42,7 +90,18 @@ class OrderController extends ApiBaseController
         return $this->sendResponse([]);
     }
     
-    public function place($store_id, $id, Request $request) 
+    /**
+     * submit to wechat payment order 创建微信支付订单
+     *
+     * @OA\Patch(
+     *  path="/api/orders/{id}/place",
+     *  tags={"Order"},
+     *  @OA\Parameter(name="id",in="path",required=true,explode=true,@OA\Schema(type="integer"),description="order id"),
+     *  @OA\Response(response=200,description="successful operation"),
+     *  security={{ "api_key":{} }}
+     * )
+     */
+    public function place($id, Request $request) 
     {
         \Log::debug(__CLASS__.'->'.__FUNCTION__." order $id");
         if (!$order = Order::find($id)) {

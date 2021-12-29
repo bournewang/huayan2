@@ -162,12 +162,9 @@ class Cart extends BaseModel
             $data[] = [
                 'goods_id' => $good->id,
                 'name' => $good->name,
-                'pic' => $good->imgUrl(),
-                'selected' => true,
-                'sku' => $good->id,
-                'additions' => [],
+                'img' => $good->imgUrl(),
                 'price' => $good->pivot->price,
-                'number' => $good->pivot->quantity
+                'quantity' => $good->pivot->quantity
             ];
         }
         $info = parent::info();

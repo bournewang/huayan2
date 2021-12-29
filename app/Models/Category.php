@@ -51,12 +51,11 @@ class Category extends BaseModel
         return $this->hasMany(Goods::class);
     }
     
-    public function show()
+    public function info()
     {
-        return [
-            "id" =>  $this->id,
-            "name" =>  $this->name,
-            "pid" => $this->pid,
-        ];
+        $img = $this->media->first();
+        return array_merge(parent::info(), [
+            'img' => $img ? $img->getUrl('thumb') : null
+        ]);
     }
 }

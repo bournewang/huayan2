@@ -35,8 +35,7 @@ use App\Exceptions\ApiException;
 
 class AppBaseController extends Controller
 {
-    protected $shop;
-
+    protected $store;
     public function sendResponse($result, $message = 'success')
     {
         if (in_array(Request::instance()->getMethod(), ['POST', 'PATCH', 'DELETE'])) {
@@ -95,17 +94,5 @@ class AppBaseController extends Controller
         }else{
             throw new ApiException("invalid api_token", 999);
         }
-    }
-
-    protected function shop()
-    {
-        if ($user = $this->user()) {
-            if ($user->shop){
-                return $user->shop;
-            }elseif ($user->client) {
-                return $user->client->shop;
-            }
-        }
-        return null;
     }
 }

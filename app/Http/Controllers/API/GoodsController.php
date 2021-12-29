@@ -13,6 +13,7 @@ class GoodsController extends ApiBaseController
      *
      * @OA\Get(
      *  path="/api/goods",
+     *  tags={"Category and Goods"},
      *  @OA\Parameter(name="category_id",   in="query",required=false,explode=true,@OA\Schema(type="integer"),description="category id"),
      *  @OA\Parameter(name="perpage",       in="query",required=false,explode=true,@OA\Schema(type="integer"),description="items per page"),
      *  @OA\Parameter(name="page",          in="query",required=false,explode=true,@OA\Schema(type="integer"),description="page num"),  
@@ -57,6 +58,7 @@ class GoodsController extends ApiBaseController
      *
      * @OA\Get(
      *  path="/api/goods/{id}",
+     *  tags={"Category and Goods"},
      *  @OA\Parameter(name="id",   in="path",required=false,explode=true,@OA\Schema(type="integer"),description="goods id"),
      *  @OA\Response(response=200,description="successful operation"),
      * )
@@ -78,6 +80,7 @@ class GoodsController extends ApiBaseController
      *
      * @OA\Post(
      *  path="/api/goods/{id}/like",
+     *  tags={"Category and Goods"},
      *  @OA\Parameter(name="id",   in="path",required=false,explode=true,@OA\Schema(type="integer"),description="goods id"),
      *  @OA\Response(response=200,description="successful operation"),
      *  security={{ "api_key":{} }}
@@ -100,6 +103,7 @@ class GoodsController extends ApiBaseController
      *
      * @OA\Delete(
      *  path="/api/goods/{id}/like",
+     *  tags={"Category and Goods"},
      *  @OA\Parameter(name="id",   in="path",required=false,explode=true,@OA\Schema(type="integer"),description="goods id"),
      *  @OA\Response(response=200,description="successful operation"),
      *  security={{ "api_key":{} }}
