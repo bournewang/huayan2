@@ -5,10 +5,14 @@ namespace App\Nova;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Resource as NovaResource;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Panel;
+use NovaAjaxSelect\AjaxSelect;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;
 use OptimistDigital\NovaDetachedFilters\NovaDetachedFilters;
 use OptimistDigital\NovaDetachedFilters\HasDetachedFilters;
+use App\Models\Province;
 abstract class Resource extends NovaResource
 {
     use HasDetachedFilters;
@@ -100,5 +104,30 @@ abstract class Resource extends NovaResource
         return [
             (new NovaDetachedFilters($this->detachedFilters($request)))->withReset()->width('full')
         ];
-    }    
+    }  
+    
+    public function addressFields()
+    {
+        return new Panel(__('Address'), [
+            Select::make(__('Province'), 'province_id')
+                ->options(Province::pluck('name', 'id')->all())
+                ->displayUsingLabels()
+                ->onlyOnForms(),
+            
+            AjaxSelect::make(__('City'), 'city_id')
+                ->get('/api/provinces/{province_id}/cities')
+                ->parent('province_id')
+                ->onlyOnForms(),
+
+            AjaxSelect::make(__('District'), 'district_id')
+                ->get('/api/cities/{city_id}/districts')
+                ->parent('city_id')
+                ->onlyOnForms(),
+            
+            Text::make(__('Street'), 'street')->onlyOnForms(),  
+            Text::make(__('Contact'), 'contact')->onlyOnForms()->nullable(),
+            Text::make(__('Telephone'), 'telephone')->onlyOnForms()->nullable(),
+            Text::make(__('Address'), 'address')->displayUsing(function(){return $this->display_address();})->exceptOnForms(),
+        ]);
+    }  
 }

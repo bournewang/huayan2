@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
-// use App\Models\Goods;
-use App\Models\Goods;
-use App\Models\Goods;
-use App\Models\Goods;
+use App\Models\Province;
+use App\Models\City;
 
 class RegionController extends ApiBaseController
 {

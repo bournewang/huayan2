@@ -7,6 +7,15 @@ use App\Models\Address;
 
 class AddressController extends ApiBaseController
 {
+    /**
+     * Get address list
+     * @OA\Get(
+     *  path="/api/address",
+     *  tags={"Address"},     
+     *  @OA\Response(response=200,description="successful operation"),
+     *  security={{ "api_key":{} }}
+     * )
+     */    
     public function index()
     {
         $data = [];
@@ -16,6 +25,31 @@ class AddressController extends ApiBaseController
         return $this->sendResponse($data);
     }
     
+    /**
+     * Create address
+     * @OA\Post(
+     *  path="/api/address",
+     *  tags={"Address"},     
+     *   @OA\RequestBody(
+     *       required=false,
+     *       @OA\MediaType(
+     *           mediaType="application/x-www-form-urlencoded",
+     *           @OA\Schema(
+     *               type="object",
+     *               @OA\Property(property="province_id",   type="integer"),
+     *               @OA\Property(property="city_id",       type="integer"),
+     *               @OA\Property(property="district_id",   type="integer"),
+     *               @OA\Property(property="street",        type="string"),
+     *               @OA\Property(property="default",       type="integer"),
+     *               @OA\Property(property="telephone",     type="string"),
+     *               @OA\Property(property="contact",       type="string"),
+     *           )
+     *       )
+     *   ),     
+     *  @OA\Response(response=200,description="successful operation"),
+     *  security={{ "api_key":{} }}
+     * )
+     */
     public function create(Request $request)
     {
         \Log::debug($request->all());
@@ -30,6 +64,17 @@ class AddressController extends ApiBaseController
         }
     }
     
+    /**
+     * Address detail api
+     *
+     * @OA\Get(
+     *  path="/api/address/{id}",
+     *  tags={"Address"},
+     *  @OA\Parameter(name="id",   in="path",required=false,explode=true,@OA\Schema(type="integer"),description="address id"),
+     *  @OA\Response(response=200,description="successful operation"),
+     *  security={{ "api_key":{} }}
+     * )
+     */
     public function show($id, Request $request)
     {
         \Log::debug(__CLASS__.'->'.__FUNCTION__);
@@ -40,6 +85,16 @@ class AddressController extends ApiBaseController
         return $this->sendResponse([]);
     }
     
+    /**
+     * get default address api
+     *
+     * @OA\Get(
+     *  path="/api/address/default",
+     *  tags={"Address"},
+     *  @OA\Response(response=200,description="successful operation"),
+     *  security={{ "api_key":{} }}
+     * )
+     */
     public function default(Request $request)
     {
         \Log::debug($request->all());
@@ -50,7 +105,18 @@ class AddressController extends ApiBaseController
         return $this->sendResponse([]);
     }
     
-    public function select($store_id, $id) 
+    /**
+     * select address api
+     *
+     * @OA\Post(
+     *  path="/api/address/{id}/select",
+     *  tags={"Address"},
+     *  @OA\Parameter(name="id",   in="path",required=false,explode=true,@OA\Schema(type="integer"),description="address id"),
+     *  @OA\Response(response=200,description="successful operation"),
+     *  security={{ "api_key":{} }}
+     * )
+     */
+    public function select($id) 
     {
         $key = $this->user->id . "current-address";
         \Cache::put($key, $id);
@@ -58,6 +124,16 @@ class AddressController extends ApiBaseController
         return $this->sendResponse($id);
     }
     
+    /**
+     * get current select address api
+     *
+     * @OA\Get(
+     *  path="/api/address/current",
+     *  tags={"Address"},
+     *  @OA\Response(response=200,description="successful operation"),
+     *  security={{ "api_key":{} }}
+     * )
+     */    
     public function current($store_id) 
     {
         $key = $this->user->id . "current-address";

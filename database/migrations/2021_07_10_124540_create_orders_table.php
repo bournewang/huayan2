@@ -17,29 +17,23 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->bigInteger('store_id')->unsigned();
             $table->bigInteger('user_id')->unsigned();
-            $table->string('orderNo')->nullable();
-            $table->string('payNo')->nullable();
-            $table->decimal('orderAmount', 8,2)->nullable();
-            $table->datetime('orderTime')->nullable();
-            $table->datetime('payTime')->nullable();
-            $table->string('buyerRegNo')->nullable();
-            $table->string('buyerName')->nullable();
-            $table->string('buyerTelephone')->nullable();
-            $table->string('buyerIdNumber')->nullable();
-            $table->string('consignee')->nullable();
-            $table->string('consigneeTelephone')->nullable();
-            $table->string('consigneeAddress')->nullable();
-            $table->string('receiverProvince')->nullable();
-            $table->string('receiverCity')->nullable();
-            $table->string('receiverCounty')->nullable();
-            $table->string('payRequest')->nullable();
-            $table->string('payResponse')->nullable();
-            $table->string('orderInfoList')->nullable();
+            $table->string('order_no')->nullable();
+            $table->decimal('amount', 8,2)->nullable();
+            $table->bigInteger('province_id')->unsigned()->nullable();
+            $table->bigInteger('city_id')->unsigned()->nullable();
+            $table->bigInteger('district_id')->unsigned()->nullable();
+            $table->string('street')->nullable();
+            $table->string('contact')->nullable();
+            $table->string('telephone')->nullable();
+            $table->enum('status', array_keys(\App\Models\Order::statusOptions()))->nullable();
             $table->timestamps();
             $table->softDeletes();
             
             $table->foreign('store_id')->references('id')->on('stores');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('province_id')->references('id')->on('provinces');
+            $table->foreign('city_id')->references('id')->on('cities');
+            $table->foreign('district_id')->references('id')->on('districts');
         });
     }
 

@@ -23,7 +23,9 @@ trait AddressTrait{
             $this->province->name ?? null,
             $this->city->name ?? null,
             $this->district->name ?? null,
-            $this->street
+            $this->street,
+            " ".$this->contact,
+            $this->telephone
         ]));
     }
     

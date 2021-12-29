@@ -24,7 +24,7 @@ class BonusPercent extends Value
         $range = $request->input('range');//Carbon::today()->subDay($request->input('range'));
         $start = date('Y-m-d', strtotime("first day of $range"));
         $end = date('Y-m-d', strtotime("last day of $range")) . ' 23:59:59';
-        $order_amount = $store->orders()->whereBetween('created_at', [$start, $end])->sum('orderAmount');
+        $order_amount = $store->orders()->whereBetween('created_at', [$start, $end])->sum('amount');
         $revenue_amount =$store->revenues()->where('start', '>=', $start)->where('end', '<=', $end)->sum('total_income');
         \Log::debug("order: $order_amount, revenue: $revenue_amount");
         if ($order_amount == 0) {

@@ -62,16 +62,17 @@ Route::group(['middleware' => ['auth:api']], function(){
     Route::get ('/orders',              [OrderController::class, 'index']);
     Route::get ('/orders/{id}',         [OrderController::class, 'show']);    
     Route::post('/orders',              [OrderController::class, 'create']);
-    Route::post('/orders/{id}/place',   [OrderController::class, 'place']);
+    Route::patch('/orders/{id}/place',  [OrderController::class, 'place']);
     
     Route::post  ('/goods/{id}/like',   [GoodsController::class, 'like']);
     Route::delete('/goods/{id}/like',   [GoodsController::class, 'dislike']);
     
     Route::get      ('/address',        [AddressController::class, 'index']);
     Route::get      ('/address/default',[AddressController::class, 'default']);
-    Route::post     ('/address',        [AddressController::class, 'create']);
     Route::get      ('/address/current',[AddressController::class, 'current']);
     Route::get      ('/address/{id}',   [AddressController::class, 'show']);
+    
+    Route::post     ('/address',        [AddressController::class, 'create']);
     Route::patch    ('/address/{id}',   [AddressController::class, 'update']);
     Route::delete   ('/address/{id}',   [AddressController::class, 'delete']);
     Route::post('/address/{id}/select', [AddressController::class, 'select']);

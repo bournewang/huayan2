@@ -74,7 +74,7 @@ return [
     'address' => [
         [
             'user_id' => 2,
-            'consignee' => '小张',
+            'contact' => '小张',
             'telephone' => '13322223333',
             'province_id' => 2,
             'city_id' => 16,
@@ -84,7 +84,7 @@ return [
         ],
         [
             'user_id' => 3,
-            'consignee' => '小张',
+            'contact' => '小张',
             'telephone' => '13322223333',
             'province_id' => 2,
             'city_id' => 16,
@@ -94,7 +94,7 @@ return [
         ],
         [
             'user_id' => 4,
-            'consignee' => '小张',
+            'contact' => '小张',
             'telephone' => '13322223333',
             'province_id' => 2,
             'city_id' => 16,

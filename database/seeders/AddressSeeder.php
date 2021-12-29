@@ -15,7 +15,7 @@ class AddressSeeder extends Seeder
         if ($data = (config('seed')['address'] ?? null)) {
             foreach ($data as $item) {
                 $c = Address::create($item);
-                echo "create address $c->consignee \n";
+                echo "create address $c->contact \n";
             }
         }
     }

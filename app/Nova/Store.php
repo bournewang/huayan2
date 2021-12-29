@@ -60,26 +60,8 @@ class Store extends Resource
             Text::make(__('Company Name'), 'company_name')->rules('required', 'max:255'),
             Text::make(__('License No'), 'license_no')->rules('required', 'max:255'),
             Text::make(__('Account No'), 'account_no')->rules('required', 'max:255'),
-            Text::make(__('Contact'), 'contact')->nullable(),
-            Text::make(__('Telephone'), 'telephone')->nullable(),
             // Text::make(__('License Img'), 'license_img')->nullable(),
-            Select::make(__('Province'), 'province_id')
-                ->options(Province::pluck('name', 'id')->all())
-                ->displayUsingLabels()
-                ->onlyOnForms(),
-            
-            AjaxSelect::make(__('City'), 'city_id')
-                ->get('/api/provinces/{province_id}/cities')
-                ->parent('province_id')
-                ->onlyOnForms(),
-
-            AjaxSelect::make(__('District'), 'district_id')
-                ->get('/api/cities/{city_id}/districts')
-                ->parent('city_id')
-                ->onlyOnForms(),
-            
-            Text::make(__('Street'), 'street')->onlyOnForms(),  
-            Text::make(__('Address'), 'address')->displayUsing(function(){return $this->display_address();})->exceptOnForms(),
+            $this->addressFields(),
             $this->mediaField(__('Contract'), 'contract'),
             $this->mediaField(__('License'), 'license'),
             $this->mediaField(__('Photo'), 'photo'),

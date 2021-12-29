@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Order extends BaseModel
 {
     use SoftDeletes;
+    use AddressTrait;
     
     protected $primaryKey = 'id';
     
@@ -22,57 +23,51 @@ class Order extends BaseModel
     protected $fillable = [
         'store_id',
         'user_id',
-        'orderNo',
-        'payNo',
-        'orderAmount',
-        'orderTime',
-        'payTime',
-        'buyerRegNo',
-        'buyerName',
-        'buyerTelephone',
-        'buyerIdNumber',
-        'consignee',
-        'consigneeTelephone',
-        'consigneeAddress',
-        'receiverProvince',
-        'receiverCity',
-        'receiverCounty',
-        'payRequest',
-        'payResponse',
-        'orderInfoList',
+        'order_no',
+        'amount',
+        'province_id',
+        'city_id',
+        'district_id',
+        'street',
+        'contact',
+        'telephone',
+        'status'
     ];
     
     protected $casts = [
         'store_id' => 'integer',
         'user_id' => 'integer',
-        'orderNo' => 'string',
-        'payNo' => 'string',
-        'orderAmount' => 'float',
-        'orderTime' => 'datetime',
-        'payTime' => 'datetime',
-        'buyerRegNo' => 'string',
-        'buyerName' => 'string',
-        'buyerTelephone' => 'string',
-        'buyerIdNumber' => 'string',
-        'consignee' => 'string',
-        'consigneeTelephone' => 'string',
-        'consigneeAddress' => 'string',
-        'receiverProvince' => 'string',
-        'receiverCity' => 'string',
-        'receiverCounty' => 'string',
-        'payRequest' => 'string',
-        'payResponse' => 'string',
-        'orderInfoList' => 'string',        
+        'order_no' => 'string',
+        'amount' => 'float',
+        'telephone' => 'string',
+        'contact' => 'string',
+        'province_id' => 'integer',
+        'city_id'  => 'integer',
+        'district_id'=> 'integer',
+        'street' => 'string',    
     ];
-
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        // 'shopId',
-    ];
+    
+    const CREATED = 'created';
+    const PAID = 'paid';
+    const SHIPPED = 'shipped';
+    const COMPLETE = 'complete';
+    const CANCELED = 'canceled';
+    
+    static public function statusOptions()
+    {
+        return [
+            self::CREATED   => __(ucfirst(self::CREATED)),
+            self::PAID      => __(ucfirst(self::PAID)),
+            self::SHIPPED   => __(ucfirst(self::SHIPPED)),
+            self::COMPLETE  => __(ucfirst(self::COMPLETE)),
+            self::CANCELED  => __(ucfirst(self::CANCELED)),
+        ];
+    }
+    
+    public function statusLabel()
+    {
+        return self::statusOptions()[$this->status];
+    }
     
     public function user()
     {
@@ -92,14 +87,7 @@ class Order extends BaseModel
     public function info()
     {
         $info = parent::info();
-        $info['address'] = implode("", 
-            array_filter([$this->receiverProvince, 
-                $this->receiverCity, 
-                $this->receiverCounty, 
-                $this->consigneeAddress, 
-                // $this->consignee, 
-                // $this->consigneeTelephone
-            ]));
+        $info['address'] = $this->display_address();
         return $info;    
     }
     

@@ -16,7 +16,7 @@ class Address extends Resource
     public static $title = 'id';
     public static $with = ['user', 'store'];
     public static $search = [
-        'id', 'consignee', 'telephone'
+        'id', 'contact', 'telephone'
     ];
     
     public static function label()
@@ -40,18 +40,10 @@ class Address extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make(__('ID'), 'id')->sortable(),
+            // ID::make(__('ID'), 'id')->sortable(),
             BelongsTo::make(__('User'), 'user', User::class),
-            Text::make(__('Consignee'), 'consignee'),
-            Text::make(__('Telephone'), 'telephone'),
-            Text::make(__('Province'), 'province_id')->displayUsing(function(){return $this->province->name;}),
-            Text::make(__('City'), 'city_id')->displayUsing(function(){return $this->city->name;}),
-            Text::make(__('County'), 'district')->displayUsing(function(){return $this->district->name;}),
-            // Text::make(__('Province'), 'province'),
-            // Text::make(__('City'), 'city'),
-            // Text::make(__('County'), 'county'),
-            Text::make(__('Street'), 'street'),
-            Boolean::make(__('Default'), 'default')
+            Boolean::make(__('Default'), 'default'),
+            $this->addressFields(),
         ];
     }
 

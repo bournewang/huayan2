@@ -115,27 +115,16 @@ class Cart extends BaseModel
         DB::beginTransaction();
         
         $order = Order::create([
-            'store_id' => $this->store_id,
-            'user_id' => $this->user_id,
-            'orderNo' => rand(100000,999999),
-            'payNo' => null,
-            'orderAmount' => $this->total_price,
-            'orderTime' => null,
-            'payTime' => null,
-            'buyerRegNo' => $this->user->id,
-            'buyerName' => $this->user->name,
-            'buyerTelephone' => $this->user->telephone,
-            'buyerIdNumber' => $this->user->id_no,
-            'created_at' => $date,
-            'consignee' => $address->consignee ?? null,
-            'consigneeTelephone' => $address->telephone ?? null,
-            'consigneeAddress' => $address->street ?? null,
-            'receiverProvince' => $address->province->name ?? null,
-            'receiverCity' => $address->city->name ?? null,
-            'receiverCounty' => $address->district->name ?? null,
-            // 'payRequest' => null,
-            // 'payResponse',
-            // 'orderInfoList',
+            'store_id'  => $this->store_id,
+            'user_id'   => $this->user_id,
+            'order_no'  => rand(100000,999999),
+            'amount'    => $this->total_price,
+            'contact'       => $address->contact,
+            'telephone'     => $address->telephone,
+            'province_id'   => $address->province_id,
+            'city_id'       => $address->city_id,
+            'district_id'   => $address->district_id,
+            'street'        => $address->street,
         ]);
         
         // if ($order) {
