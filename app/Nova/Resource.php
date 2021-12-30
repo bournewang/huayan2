@@ -99,6 +99,7 @@ abstract class Resource extends NovaResource
         return [];
     }
     
+    // subclass must not have an empty cards()
     public function cards(Request $request)
     {
         return [

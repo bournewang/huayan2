@@ -4,6 +4,10 @@ return [
         // ['title' => 'iphone12美版64G', 'goods_id' => 2, 'image' => 'iphone.jpeg', 'store_id' => 1],
         // ['title' => 'ipad mini3 64G', 'goods_id' => 5, 'image' => 'ipad.jpeg', 'store_id' => 1],
     ],
+    'devices' => [
+        'ggz17zg9nAJ' => ['Graphene_G0001', 'Graphene_G0002', 'Graphene_G0003'],
+        'ggz1JU0WNFH' => ['JQR_0003', 'JQR_0004', 'JQR_0005']
+    ],
     'setting' => [
         'banks' => [
             "ICBC" 	=> "中国工商银行",
