@@ -6,8 +6,6 @@ use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Cards\Help;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
-use Anaseqal\NovaSidebarIcons\NovaSidebarIcons;
-
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
     /**
@@ -84,7 +82,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function tools()
     {
         return [
-            new NovaSidebarIcons,
+            new \Anaseqal\NovaSidebarIcons\NovaSidebarIcons,
+            new \Anaseqal\NovaImport\NovaImport,
             \Vyuldashev\NovaPermission\NovaPermissionTool::make()
                 ->rolePolicy(\App\Policies\RootPolicy::class)
                 ->permissionPolicy(\App\Policies\RootPolicy::class),

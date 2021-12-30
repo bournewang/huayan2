@@ -98,6 +98,7 @@ class Goods extends Resource
             new Actions\Recommend,
             new Actions\OnShelf,
             new Actions\OffShelf,
+            new Actions\ImportGoods
             // new Actions\Derecommend,
         ];
     }
