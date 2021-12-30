@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             AreaSeeder::class,
             AddressSeeder::class,
             CartSeeder::class,
+            DeviceSeeder::class,
             PermissionSeeder::class,
             RoleSeeder::class,
         ]);

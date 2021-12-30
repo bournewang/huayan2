@@ -14,11 +14,7 @@ class DeviceSeeder extends Seeder
     public function run()
     {
         //
-        $data = [
-            'ggz17zg9nAJ' => ['Graphene_G0001', 'Graphene_G0002', 'Graphene_G0003'],
-            'ggz1JU0WNFH' => ['JQR_0003', 'JQR_0004', 'JQR_0005']
-        ];
-        foreach ($data as $key => $names) {
+        foreach (config('seed.devices') as $key => $names) {
             foreach ($names as $name) {
                 \App\Models\Device::create([
                     'store_id' => \App\Models\Store::first()->id,
