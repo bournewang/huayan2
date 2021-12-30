@@ -8,7 +8,7 @@ use App\Models\Order;
 class OrderPriceTrend extends SumTrend
 {
     protected $resource = Order::class;
-    protected $sum_field = 'orderAmount';
+    protected $sum_field = 'amount';
 
     public function uriKey()
     {
