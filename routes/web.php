@@ -17,4 +17,8 @@ Route::get('/', function () {
     return	redirect('/nova');
 });
 
+Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+    \UniSharp\LaravelFilemanager\Lfm::routes();
+});
+
 Route::get('sales/{id}/relation', [SalesController::class, 'relation']);

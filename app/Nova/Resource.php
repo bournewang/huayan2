@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use OptimistDigital\NovaDetachedFilters\NovaDetachedFilters;
 use OptimistDigital\NovaDetachedFilters\HasDetachedFilters;
 use App\Models\Province;
+use Emilianotisato\NovaTinyMCE\NovaTinyMCE;
 abstract class Resource extends NovaResource
 {
     use HasDetachedFilters;
@@ -131,4 +132,13 @@ abstract class Resource extends NovaResource
             Text::make(__('Address'), 'address')->displayUsing(function(){return $this->display_address();})->exceptOnForms(),
         ]);
     }  
+    
+    public function editorField($label, $field)
+    {
+        return NovaTinyMCE::make($label, $field)->options([
+            'height' => '600',
+            'language' => 'zh_CN',
+            'language_url' => '/tinymce/langs/zh_CN.js'
+        ]);
+    }
 }
