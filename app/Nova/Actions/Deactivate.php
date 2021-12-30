@@ -34,14 +34,13 @@ class Deactivate extends Action
                 $model->update(['status' => $model->inactive]);
             }
         }elseif ($models->first()::class == Device::class) {
-            foreach ($models as $model) {
-                $model->update(['status' => 0]);
-            }
-            return;
             $devices = $models->pluck('device_name')->all();
             $sn = implode(',', $devices);
             $res = DeviceHelper::statusChange($sn, 0);
             if ($res->status == 1) {
+                foreach ($res->device_status as $item) {
+                    $models->where('device_name', $item->devicename)->first()->update(['status' => $item->status]);
+                }
                 return Action::message($res->success);
             }else{
                 return Action::danger($res->error_reason);

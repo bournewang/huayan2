@@ -35,15 +35,13 @@ class Activate extends Action
                 $model->update(['status' => $model->active]);
             }
         }elseif ($models->first()::class == Device::class) {
-            // FIXME
-            foreach ($models as $model) {
-                $model->update(['status' => 1]);
-            }
-            return;
             $devices = $models->pluck('device_name')->all();
             $sn = implode(',', $devices);
             $res = DeviceHelper::statusChange($sn, 1);
             if ($res->status == 1) {
+                foreach ($res->device_status as $item) {
+                    $models->where('device_name', $item->devicename)->first()->update(['status' => $item->status]);
+                }
                 return Action::message($res->success);
             }else{
                 return Action::danger($res->error_reason);

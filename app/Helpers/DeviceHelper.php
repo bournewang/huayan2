@@ -17,6 +17,7 @@ class DeviceHelper
         $t = new Carbon('2020-01-01');
         $sign .= '+'.$t->diffInSeconds(Carbon::now());
         $data = [
+            'gh' => \Auth::user()->id,
             'sn' => $device_name,
             'device_status' => $status,
             'en' => $sign
@@ -24,7 +25,7 @@ class DeviceHelper
         $url .= '?' . http_build_query($data);
         \Log::debug("$url");
         $client = new \GuzzleHttp\Client();
-        $res = $client->request('GET', $url);
+        $res = $client->request('GET', $url, ['timeout' => 10]);
         \Log::debug($res->getBody());
         return json_decode($res->getBody());
     }    
