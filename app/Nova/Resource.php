@@ -28,13 +28,8 @@ abstract class Resource extends NovaResource
      */
     public static function indexQuery(NovaRequest $request, $query)
     {
-        return $query;
-    }
-    
-    public static function storeQuery(NovaRequest $request, $query, $field = 'store_id')
-    {
         if ($store_id = $request->user()->store_id) {
-            $query->where($field, $store_id);
+            $query->where('store_id', $store_id);
         }
         return $query;
     }

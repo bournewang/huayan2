@@ -124,9 +124,4 @@ class Revenue extends Resource
             (new Actions\Disclearing)->canRun(function(){return 1;}),
         ];
     }
-    
-    public static function indexQuery(NovaRequest $request, $query)
-    {
-        return self::storeQuery($request, $query);
-    }
 }

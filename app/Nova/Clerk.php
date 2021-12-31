@@ -105,6 +105,6 @@ class Clerk extends Resource
     
     public static function indexQuery(NovaRequest $request, $query)
     {
-        return $query->where('type', \App\Models\User::CLERK);
+        return parent::indexQuery($request, $query)->where('type', \App\Models\User::CLERK);
     }
 }

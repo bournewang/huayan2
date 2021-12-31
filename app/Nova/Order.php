@@ -111,9 +111,4 @@ class Order extends Resource
     {
         return [];
     }
-    
-    public static function indexQuery(NovaRequest $request, $query)
-    {
-        return self::storeQuery($request, $query);
-    }
 }

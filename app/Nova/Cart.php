@@ -90,9 +90,4 @@ class Cart
     {
         return [];
     }
-    
-    public static function indexQuery(NovaRequest $request, $query)
-    {
-        return self::storeQuery($request, $query);
-    }
 }

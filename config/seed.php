@@ -1,4 +1,5 @@
 <?php
+use App\Models\User;
 return [
     'banner' => [
         // ['title' => 'iphone12美版64G', 'goods_id' => 2, 'image' => 'iphone.jpeg', 'store_id' => 1],
@@ -7,6 +8,22 @@ return [
     'devices' => [
         'ggz17zg9nAJ' => ['Graphene_G0001', 'Graphene_G0002', 'Graphene_G0003'],
         'ggz1JU0WNFH' => ['JQR_0003', 'JQR_0004', 'JQR_0005']
+    ],
+    'resources' => [
+        "Address","Banner","BaseModel","Cart","Category","City","Clerk",
+        "Customer","Device","District","Example","Expert","Goods","Logistic","Order",
+        "Province","Revenue","Salesman","Setting","Store","Supplier","User",        
+    ],
+    'roles' => [
+        User::SALESMAN => [
+            "View Store", "View Device", "View Order"
+        ],
+        User::MANAGER => [
+            "View Customer", "View Clerk", "View Order"
+        ],
+        User::CLERK => [
+            "View Customer", "View Order"
+        ],
     ],
     'setting' => [
         'banks' => [

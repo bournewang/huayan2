@@ -147,9 +147,4 @@ class Store extends Resource
             new Actions\Deactivate
         ];
     }
-    
-    public static function indexQuery(NovaRequest $request, $query)
-    {
-        return self::storeQuery($request, $query, 'id');
-    }
 }

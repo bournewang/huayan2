@@ -12,34 +12,29 @@ class RoleSeeder extends Seeder
      * @return void
      */
     public function run()
-    {
-        //
-        $name = __('Store').__('Admin');
-        // foreach ($names as $name) {
-        Role::whereNotNull('id')->forceDelete();
-        $role = Role::create(['name' => $name, 'guard_name' => 'web']);
-        echo "!!!!! create role $name \n";
-        // }
-        
-        // $actions = ['View', 'Create', 'Update', 'Delete', 'Restore', 'ForceDelete'];
-        // $resources = ['Banner', 'Goods', 'Order', 'Revenue', 'Store', 'User'];
-        $data = [
-            __('View').__('Banner'), __('Create').__('Banner'), 
-            __('Update').__('Banner'), __('Delete').__('Banner'), 
-            __('Restore').__('Banner'), __('ForceDelete').__('Banner'), 
-            
-            __('View').__('Category'), __('Action').__('Category'),
-            __('View').__('Goods'), __('Action').__('Goods'),
-            __('View').__('Order'), __('Action').__('Order'),
-            __('View').__('Revenue'), __('Action').__('Revenue'),
-            __('View').__('Store'), __('Update').__('Store'),
-            __('View').__('User'), __('Action').__('User'), 
-        ];
-        // foreach ($data as $item) {}
-        $permissions = Permission::whereIn('name', $data)->get();
-        echo "  set permissions: " . implode(',', $permissions->pluck('name')->all()) . "\n";
-        $role->syncPermissions($permissions);
-        
-        User::find(2)->assignRole($role);
+    {    
+        $role_name = __('System Admin');
+        if (!$role = Role::where('name', $role_name)->first()){
+            echo "create role $role_name\n";
+            $role = Role::create(['name' => $role_name]);
+        }
+
+        foreach (config('seed.roles') as $role_name => $array) {
+            $role_name = __(ucfirst($role_name));
+            if (!$role = Role::where('name', $role_name)->first()){
+                echo "create role $role_name\n";
+                $role = Role::create(['name' => $role_name]);
+            }
+            $perms = [];
+            foreach ($array as $item) {
+                $b = explode(' ', $item);
+                $perms[] = __($b[0]) . __($b[1]);
+            }
+            echo "-----------------------------------------\n";
+            echo "set perms to role $role_name \n";
+            echo implode(',',$perms) . "\n";
+            $permissions = Permission::whereIn('name', $perms)->get();
+            $role->permissions()->sync($permissions);
+        }        
     }
 }

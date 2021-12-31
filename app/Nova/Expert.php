@@ -124,6 +124,6 @@ class Expert extends Resource
     
     public static function indexQuery(NovaRequest $request, $query)
     {
-        return $query->where('type', \App\Models\Salesman::EXPERT);
+        return parent::indexQuery($request, $query)->where('type', \App\Models\Salesman::EXPERT);
     }
 }
