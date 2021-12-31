@@ -4,9 +4,12 @@
         <meta charset="utf-8">
         <title></title>
         <link rel="stylesheet" href="/vendor/nova/app.css">
+        <style media="screen">
+            table{margin: auto; }
+        </style>
     </head>
     <body>
-        <table class="table">
+        <table class="table mt-3">
             <thead>
                 <th>数据</th>
                 <th>结果</th>
