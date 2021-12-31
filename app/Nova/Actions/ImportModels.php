@@ -10,14 +10,13 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Laravel\Nova\Fields\File;
-
-use App\Imports\GoodsImport;
 use Maatwebsite\Excel\Facades\Excel;
 
-class ImportGoods extends Action
+trait ImportModels 
 {
     use InteractsWithQueue, Queueable, SerializesModels;
-
+    // public $model = '';
+    // public $import_class = '';
     public function shownOnIndex()
     {
         return true;
@@ -33,7 +32,7 @@ class ImportGoods extends Action
      * @return string
      */
     public function name() {
-        return __('Import Goods');
+        return __('Import');//.explode('\\', $this->model)[2]);
     }
 
     /**
@@ -41,7 +40,7 @@ class ImportGoods extends Action
      */
     public function uriKey() :string
     {
-        return 'import-goods';
+        return 'import-'.strtolower(explode('\\', $this->model)[2]);
     }
 
     /**
@@ -52,7 +51,7 @@ class ImportGoods extends Action
      */
     public function handle(ActionFields $fields)
     {
-        Excel::import(new GoodsImport, $fields->file);
+        Excel::import(new $this->import_class, $fields->file);
 
         return Action::message('It worked!');
     }
@@ -66,11 +65,7 @@ class ImportGoods extends Action
     {
         return [
             File::make(__('File'), 'file')
-                ->rules('required')
-                ->help(
-                    "<a class='text text-primary' href='/templates/goods.xlsx' download='商品.xlsx'>".__('Template Download') . "</a><br/>".
-                    "<a class='text text-default' href='/log.php?p=goods' target=_blank>".__('Import Log') .'</a>'
-                )
+                ->rules('required'),
         ];
     }
 }

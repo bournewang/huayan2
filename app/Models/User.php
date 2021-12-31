@@ -61,6 +61,12 @@ class User extends Authenticatable implements HasMedia
         'api_token'
     ];
 
+    public static $rules = [
+        'name' => 'required|string',
+        'gender' => 'integer',
+        'mobile' => 'required',
+    ];
+    
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -103,6 +109,20 @@ class User extends Authenticatable implements HasMedia
             self::GRANT => __(ucfirst(self::GRANT)),
             self::REJECT => __(ucfirst(self::REJECT)),
         ];
+    }
+    
+    const MALE = 1;
+    const FEMALE = 2;
+    public static function genderOptions()
+    {
+        return [
+            self::MALE => __('Male'),
+            self::FEMALE => __('Female')
+        ];
+    }
+    public function genderLabel()
+    {
+        return self::genderOptions()[$this->gender] ?? '-';
     }
     
     const CUSTOMER = 'customer';

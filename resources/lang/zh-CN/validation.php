@@ -95,7 +95,7 @@ return [
     'password'             => '密码错误',
     'present'              => ':attribute 必须存在。',
     'regex'                => ':attribute 格式不正确。',
-    'required'             => ':attribute 不能为空。',
+    'required'             => ':attribute 不能为空或没有有效取值。',
     'required_if'          => '当 :other 为 :value 时 :attribute 不能为空。',
     'required_unless'      => '当 :other 不为 :values 时 :attribute 不能为空。',
     'required_with'        => '当 :values 存在时 :attribute 不能为空。',
@@ -131,6 +131,7 @@ return [
     'custom' => [
         'attribute-name' => [
             'rule-name' => 'custom-message',
+            'product_key' => '设备类型'
         ],
     ],
 
@@ -269,7 +270,7 @@ return [
         'product_code'          => "货号",
         'product'   			=> '货号',
         'product_id'    		=> "货号",
-        'product_type' 			=> '货号类型',
+        'product_key' 			=> '设备类型',
         'province'  			=> '省',
         'purpose' 				=> '目的',
         'quantity' 				=> '数量',

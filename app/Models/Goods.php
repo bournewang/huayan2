@@ -42,7 +42,11 @@ class Goods extends BaseModel
         'price' => 'float',
         'detail' => 'string',
     ];
-
+    public static $rules = [
+        'name' => 'required|string',
+        'category_id' => 'required',
+        'price' => 'required'
+    ];
     public function category()
     {
         return $this->belongsTo(Category::class);

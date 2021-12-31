@@ -96,6 +96,7 @@ class Device extends Resource
     public function actions(Request $request)
     {
         return [
+            new Actions\ImportDevices,
             new Actions\Activate,
             new Actions\Deactivate
         ];

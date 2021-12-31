@@ -50,7 +50,10 @@ class Goods extends Resource
             ID::make()->sortable(),
             BelongsTo::make(__('Category'), 'category', Category::class)->sortable()->rules('required'),
             BelongsTo::make(__('Supplier'), 'supplier', Supplier::class)->sortable(),
-            Text::make(__('Name'), 'name')->sortable()->rules('required', 'max:255'),
+            Text::make(__('Name'), 'name')->sortable()->rules('required', 'max:255')
+                    ->creationRules("unique:goods,name,NULL,id")
+                    ->updateRules("unique:goods,name,{{resourceId}},id")
+                    ,
             Text::make(__('Stock'), 'qty')->sortable()->rules('required', 'max:255')->canSee(function()use($rel){return !$rel;}),
             Text::make(__('Brand'), 'brand')->sortable()->nullable()->canSee(function()use($rel){return !$rel;})->hideFromIndex(),
             Text::make(__('Price'), 'price')->sortable()->nullable(),

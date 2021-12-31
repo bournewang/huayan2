@@ -5,8 +5,9 @@ namespace App\Nova;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
-
+use App\Models\User;
 class Salesman extends Resource
 {
     /**
@@ -54,7 +55,7 @@ class Salesman extends Resource
         return [
             ID::make(__('ID'), 'id')->sortable(),
             Text::make(__('Realname'), 'name')->sortable()->rules('required', 'max:255'),
-            Text::make(__('Gender'), 'gender'),
+            Select::make(__('Gender'), 'gender')->options(User::genderOptions())->displayUsingLabels(),
             Text::make(__('Mobile'), 'mobile'),
             
         ];
@@ -101,7 +102,9 @@ class Salesman extends Resource
      */
     public function actions(Request $request)
     {
-        return [];
+        return [
+            new Actions\ImportSalesmen
+        ];
     }
     
     public static function indexQuery(NovaRequest $request, $query)

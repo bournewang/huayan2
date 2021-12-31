@@ -16,6 +16,12 @@ class Device extends BaseModel
         'status'
     ];
     
+    public static $rules = [
+        'store_id' => 'required',
+        'product_key' => 'required',
+        'device_name' => 'required',
+    ];
+    
     public function store()
     {
         return $this->belongsTo(Store::class);
