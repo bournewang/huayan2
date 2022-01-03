@@ -55,7 +55,7 @@ class AddressController extends ApiBaseController
         \Log::debug($request->all());
         $input = $request->all();
         $input['user_id'] = $this->user->id;
-        $input['default'] = 0;
+        // $input['default'] = 0;
         if ($addr = Address::create($input)) {
             $key = $this->user->id . "current-address";
             \Cache::put($key, $addr->id);
@@ -134,7 +134,7 @@ class AddressController extends ApiBaseController
      *  security={{ "api_key":{} }}
      * )
      */    
-    public function current($store_id) 
+    public function current() 
     {
         $key = $this->user->id . "current-address";
         if ($id = \Cache::get($key)) {
@@ -143,5 +143,25 @@ class AddressController extends ApiBaseController
         }
         
         return $this->sendError("没有选择地址");
+    }
+    
+    /**
+     * Delete address api
+     *
+     * @OA\Delete(
+     *  path="/api/address/{id}",
+     *  tags={"Address"},
+     *  @OA\Parameter(name="id",   in="path",required=false,explode=true,@OA\Schema(type="integer"),description="address id"),
+     *  @OA\Response(response=200,description="successful operation"),
+     *  security={{ "api_key":{} }}
+     * )
+     */
+    public function delete($id) 
+    {
+        if ($addr = Address::find($id)) {    
+            $addr->delete();
+        }
+
+        return $this->sendResponse(null);
     }
 }
