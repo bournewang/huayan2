@@ -148,13 +148,10 @@ class Cart extends BaseModel
     {
         $data = [];
         foreach ($this->goods as $good) {
-            $data[] = [
+            $data[] = array_merge($good->info(), [
                 'goods_id' => $good->id,
-                'name' => $good->name,
-                'img' => $good->imgUrl(),
-                'price' => $good->pivot->price,
                 'quantity' => $good->pivot->quantity
-            ];
+            ]);
         }
         $info = parent::info();
         $info['items'] = $data;
