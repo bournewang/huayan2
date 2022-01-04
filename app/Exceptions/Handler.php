@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Auth\AuthenticationException;
 use Throwable;
 use Response;
 use Error;
@@ -42,6 +43,15 @@ class Handler extends ExceptionHandler
     {
         parent::report($exception);
     }
+    
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        if ($request->expectsJson()) {
+            return response()->json(['success' => false, 'msg' => 'Unauthenticated.'], 403);
+        }
+
+        return redirect()->guest(route('login'));
+    }    
 
     /**
      * Render an exception into an HTTP response.
