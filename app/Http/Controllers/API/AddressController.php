@@ -139,17 +139,6 @@ class AddressController extends ApiBaseController
         return $this->sendResponse([]);
     }
     
-    /**
-     * select address api
-     *
-     * @OA\Post(
-     *  path="/api/address/{id}/select",
-     *  tags={"Address"},
-     *  @OA\Parameter(name="id",   in="path",required=false,explode=true,@OA\Schema(type="integer"),description="address id"),
-     *  @OA\Response(response=200,description="successful operation"),
-     *  security={{ "api_key":{} }}
-     * )
-     */
     public function select($id) 
     {
         $key = $this->user->id . "current-address";
@@ -158,16 +147,6 @@ class AddressController extends ApiBaseController
         return $this->sendResponse($id);
     }
     
-    /**
-     * get current select address api
-     *
-     * @OA\Get(
-     *  path="/api/address/current",
-     *  tags={"Address"},
-     *  @OA\Response(response=200,description="successful operation"),
-     *  security={{ "api_key":{} }}
-     * )
-     */    
     public function current() 
     {
         $key = $this->user->id . "current-address";
