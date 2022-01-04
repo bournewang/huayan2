@@ -93,7 +93,7 @@ class OrderController extends ApiBaseController
     /**
      * submit to wechat payment order 创建微信支付订单
      *
-     * @OA\Patch(
+     * @OA\Put(
      *  path="/api/orders/{id}/place",
      *  tags={"Order"},
      *  @OA\Parameter(name="id",in="path",required=true,explode=true,@OA\Schema(type="integer"),description="order id"),

@@ -74,7 +74,7 @@ class CartController extends ApiBaseController
     /**
      * Update cart item api
      *
-     * @OA\Patch(
+     * @OA\Put(
      *  path="/api/cart/{goods_id}",
      *  tags={"Cart"},     
      *  @OA\Parameter(name="goods_id",in="path",required=true,explode=true,@OA\Schema(type="integer"),description="goods id"),

@@ -56,13 +56,13 @@ Route::group(['middleware' => ['auth:api']], function(){
     
     Route::get   ('/cart',                       [CartController::class, 'show']);
     Route::post  ('/cart/{goods_id}', [CartController::class, 'add']);
-    Route::patch ('/cart/{goods_id}', [CartController::class, 'update']);
+    Route::put   ('/cart/{goods_id}', [CartController::class, 'update']);
     Route::delete('/cart/{goods_id}', [CartController::class, 'delete']);
     
     Route::get ('/orders',              [OrderController::class, 'index']);
     Route::get ('/orders/{id}',         [OrderController::class, 'show']);    
     Route::post('/orders',              [OrderController::class, 'create']);
-    Route::patch('/orders/{id}/place',  [OrderController::class, 'place']);
+    Route::put('/orders/{id}/place',  [OrderController::class, 'place']);
     
     Route::post  ('/goods/{id}/like',   [GoodsController::class, 'like']);
     Route::delete('/goods/{id}/like',   [GoodsController::class, 'dislike']);
@@ -73,7 +73,7 @@ Route::group(['middleware' => ['auth:api']], function(){
     Route::get      ('/address/{id}',   [AddressController::class, 'show']);
     
     Route::post     ('/address',        [AddressController::class, 'create']);
-    Route::patch    ('/address/{id}',   [AddressController::class, 'update']);
+    Route::put      ('/address/{id}',   [AddressController::class, 'update']);
     Route::delete   ('/address/{id}',   [AddressController::class, 'delete']);
     Route::post('/address/{id}/select', [AddressController::class, 'select']);
     

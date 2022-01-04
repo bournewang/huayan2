@@ -66,7 +66,7 @@ class AddressController extends ApiBaseController
     
     /**
      * Update address
-     * @OA\Patch(
+     * @OA\Put(
      *  path="/api/address/{id}",
      *  tags={"Address"},     
      *  @OA\Parameter(name="id",   in="path",required=false,explode=true,@OA\Schema(type="integer"),description="address id"),
