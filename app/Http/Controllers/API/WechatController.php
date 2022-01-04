@@ -38,7 +38,7 @@ class WechatController extends ApiBaseController
         $mpp = \EasyWeChat::miniProgram();
         $data = $mpp->auth->session($code);
         \Log::debug($data);
-        \Cache::put("wx.session.".$data['session_key'], $data['openid'], 60*5);
+        \Cache::put("wx.session.openid.".$data['session_key'], $data['openid'], 60*5);
         if (isset($data['openid'])) {
             if ($user = User::where('openid', $data['openid'])->first()) {
                 $user->refreshToken();
@@ -89,7 +89,7 @@ class WechatController extends ApiBaseController
         \Log::debug("decrypt data: ");
         \Log::debug($data);    
         
-        if ($openid = ($data['openId'] ?? null)) {
+        if ($openid = \Cache::get("wx.session.openid.".$session_key)) {
             if (!$user = User::where('openid', $openid)->first()) {
                 \Log::debug("try to create user: ");
                 $user = User::create([
