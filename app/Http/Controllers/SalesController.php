@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Store;
-use App\Models\Store;
+use App\Models\User;
 use Log;
 
 class SalesController extends AppBaseController

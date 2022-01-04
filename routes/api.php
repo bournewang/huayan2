@@ -13,7 +13,7 @@ use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\API\RegionController;
 use App\Http\Controllers\API\SaleController;
 use App\Http\Controllers\API\UserController;
-use App\Http\Controllers\WechatController;
+use App\Http\Controllers\API\WechatController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -42,8 +42,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::get('/categories',           [CategoryController::class, 'index']);
     Route::get('/banners',              [BannerController::class, 'index']);
     // Route::post('/user/wxapp/authorize',[WechatController::class, 'login']);
-    // Route::post('/user/wxapp/register', [WechatController::class, 'register']);
-    // Route::post('/user/wxapp/login',    [WechatController::class, 'login']);
+    Route::post('/wxapp/register', [WechatController::class, 'register']);
+    Route::post('/wxapp/login',    [WechatController::class, 'login']);
     // Route::post('/wechat/notify',       [WechatController::class, 'notify']);
 // });
 

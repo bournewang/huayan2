@@ -1,32 +1,34 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Models\Store;
 use App\Models\User;
 use Log;
 
-class WechatController extends AppBaseController
+class WechatController extends ApiBaseController
 {
-
     /**
-     * 处理微信的请求消息
+     * Login api
      *
-     * @return string
+     * @OA\Post(
+     *  path="/api/wxapp/login",
+     *  tags={"Auth"},
+     *   @OA\RequestBody(
+     *       required=true,
+     *       @OA\MediaType(
+     *           mediaType="application/x-www-form-urlencoded",
+     *           @OA\Schema(
+     *               type="object",
+     *               @OA\Property(property="code",description="code",type="string")
+     *           )
+     *       )
+     *   ),  
+     *  @OA\Response(response=200,description="successful operation"),
+     *  security={{ "api_key":{} }}
+     * )
      */
-    public function serve()
-    {
-        Log::info('request arrived.'); # 注意：Log 为 Laravel 组件，所以它记的日志去 Laravel 日志看，而不是 EasyWeChat 日志
-
-        $app = app('wechat.official_account');
-        $app->server->push(function($message){
-            return "欢迎光临本店！！";
-        });
-
-        return $app->server->serve();
-    }
-    
-    public function login($store_id, Request $request)
+    public function login(Request $request)
     {
         \Log::debug(__CLASS__.'->'.__FUNCTION__);
         \Log::debug($request->all());
@@ -49,7 +51,31 @@ class WechatController extends AppBaseController
         ]);
     }
     
-    public function register($store_id, Request $request)
+    /**
+     * Register api
+     *
+     * @OA\Post(
+     *  path="/api/wxapp/register",
+     *  tags={"Auth"},
+     *   @OA\RequestBody(
+     *       required=true,
+     *       @OA\MediaType(
+     *           mediaType="application/x-www-form-urlencoded",
+     *           @OA\Schema(
+     *               type="object",
+     *               @OA\Property(property="session_key",description="session key from login api response",type="string"),
+     *               @OA\Property(property="iv",description="iv from wx.login",type="string"),
+     *               @OA\Property(property="encryptedData",description="encryptedData from wx.login",type="string"),
+     *               @OA\Property(property="store_id",description="store id from init",type="integer"),
+     *               @OA\Property(property="referer_id",description="referer id from init",type="integer"),
+     *           )
+     *       )
+     *   ),  
+     *  @OA\Response(response=200,description="successful operation"),
+     *  security={{ "api_key":{} }}
+     * )
+     */
+    public function register(Request $request)
     {
         \Log::debug(__CLASS__.'->'.__FUNCTION__);
         \Log::debug($request->all());
@@ -67,7 +93,8 @@ class WechatController extends AppBaseController
             if (!$user = User::where('openid', $openid)->first()) {
                 \Log::debug("try to create user: ");
                 $user = User::create([
-                    'store_id'  => $store_id,
+                    'store_id'  => $request->input('store_id', null),
+                    'senior_id' => $request->input('referer_id', null),
                     'openid'    => $openid, 
                     'email'     => $openid."@test.com",
                     'name'      => $data['nickName'] ?? null, 
@@ -83,7 +110,7 @@ class WechatController extends AppBaseController
                 return $this->sendResponse($user->info());
             }
         }
-        return $this->sendError("==");
+        return $this->sendError("no openId in decrypt data");
     }
     
     public function notify(Request $request)

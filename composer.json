@@ -27,6 +27,7 @@
         "laravel/tinker": "^2.5",
         "maatwebsite/excel": "^3.1",
         "optimistdigital/nova-detached-filters": "^1.1",
+        "overtrue/laravel-wechat": "^6.0",
         "predis/predis": "^1.1",
         "spatie/laravel-medialibrary": "^9.11",
         "unisharp/laravel-filemanager": "^2.3",
@@ -80,7 +81,10 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "easywechat-composer/easywechat-composer": true
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
