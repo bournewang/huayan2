@@ -110,9 +110,9 @@ class OrderController extends ApiBaseController
         $app = \EasyWeChat::payment();
         $result = $app->order->unify([
             'body' => 'xxx-test-order',
-            'out_trade_no' => $order->orderNo,
-            'total_fee' => $order->orderAmount * 100,
-            'trade_type' => 'JSAPI', 
+            'out_trade_no' => $order->order_no,
+            'total_fee' => $order->amount * 100,
+            'trade_type' => 'JSAPI',
             'sign_type' => 'MD5',
             'openid' => $this->user->openid
         ]);               
