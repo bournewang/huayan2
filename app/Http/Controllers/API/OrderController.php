@@ -62,7 +62,7 @@ class OrderController extends ApiBaseController
     public function create(Request $request)
     {
         if ($cart = $this->user->cart) {
-            if (!$addr = Address::find($request->input('id'))){
+            if (!$addr = Address::find($request->input('address_id'))){
                 return $this->sendError("没有选择地址");
             }
             $order = $cart->submit($addr);
