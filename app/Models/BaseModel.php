@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia; 
 class BaseModel extends Model implements HasMedia
 {
-    use BMedia;
+    use MediaTrait;
     public function info()
     {
         $info = $this->getOriginal();

@@ -4,7 +4,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\MediaLibrary\HasMedia; 
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-trait BMedia  
+trait MediaTrait  
 {
     // use HasMedia;
     use InteractsWithMedia;
@@ -23,10 +23,18 @@ trait BMedia
 
     public function registerMediaCollections() : void
     {
-        $this->addMediaCollection('main')->singleFile();
-        $this->addMediaCollection('contract');
-        $this->addMediaCollection('photo');
-        $this->addMediaCollection('id');
-        $this->addMediaCollection('license');
-    }  
+        foreach ($this->mediaCollections() as $n => $label) {
+            $this->addMediaCollection($n);
+        }
+    } 
+    
+    public function mediaCollections()
+    {
+        $array = ['main', 'detail', 'contract', 'photo', 'license', 'id card'];
+        $c = [];
+        foreach ($array as $n) {
+            $c[$n] = __(ucwords($n));
+        }
+        return $c;
+    } 
 }

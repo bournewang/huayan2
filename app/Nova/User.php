@@ -82,7 +82,7 @@ class User extends Resource
                 ->onlyOnForms()
                 ->creationRules('required', 'string', 'min:8')
                 ->updateRules('nullable', 'string', 'min:8'),
-            $this->mediaField(__('ID'), 'id_img'),
+            $this->mediaField(__('ID'), 'id card'),
             RoleBooleanGroup::make(__('Roles'), 'roles'),
             // PermissionBooleanGroup::make('Permissions'),
             HasMany::make(__("Address"), 'addresses', Address::class),
