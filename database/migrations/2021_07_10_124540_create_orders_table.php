@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+use App\Models\Order;
 class CreateOrdersTable extends Migration
 {
     /**
@@ -25,7 +25,10 @@ class CreateOrdersTable extends Migration
             $table->string('street')->nullable();
             $table->string('contact', 12)->nullable();
             $table->string('telephone', 16)->nullable()->index();
-            $table->enum('status', array_keys(\App\Models\Order::statusOptions()))->nullable();
+            $table->bigInteger('logistic_id')->unsigned()->nullable();
+            $table->string('waybill_number', 32)->nullable();
+            $table->enum('status', array_keys(Order::statusOptions()))->nullable();
+            $table->integer('ship_status')->nullable();
             $table->timestamps();
             $table->softDeletes();
             
@@ -34,6 +37,7 @@ class CreateOrdersTable extends Migration
             $table->foreign('province_id')->references('id')->on('provinces');
             $table->foreign('city_id')->references('id')->on('cities');
             $table->foreign('district_id')->references('id')->on('districts');
+            $table->foreign('logistic_id')->references('id')->on('logistics');
         });
     }
 

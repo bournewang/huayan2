@@ -4,35 +4,35 @@ namespace App\Nova;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Logistic extends Resource
+class LogisticProgress extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Logistic::class;
-    public static $orderBy = [
-        'sort' => 'asc'
-    ];    
+    public static $model = \App\Models\LogisticProgress::class;
     public static function label()
     {
-        return __('Logistic Company');
+        return __('Logistic Progress');
     }
     public static function group()
     {
-        return __("Settings");
+        return __("Mall");
     }
+
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'name';
+    public static $title = 'id';
 
     /**
      * The columns that should be searched.
@@ -40,13 +40,9 @@ class Logistic extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name', 'code'
+        'id',
     ];
 
-    public static function icon()
-    {
-        return view("nova::svg.".strtolower(explode('\\', self::class)[2]));
-    }
     /**
      * Get the fields displayed by the resource.
      *
@@ -57,15 +53,18 @@ class Logistic extends Resource
     {
         return [
             ID::make(__('ID'), 'id')->sortable(),
-            Text::make(__('Image'), 'img')->displayUsing(function(){
-                return "<img src='".$this->img."' style='height: 2em;'/>";
+            BelongsTo::make(__('Order'), 'order', Order::class),
+            Select::make(__('Status'), 'status')->options(\App\Models\LogisticProgress::statusOptions())->displayUsingLabels(),
+            Text::make(__('Query Times'), 'queryTimes'),
+            Text::make(__('Fee Num'), 'fee_num'),
+            Text::make(__('Logistic'), 'expTextName'),
+            Text::make(__('Message'), 'msg'),
+            Text::make(__('Tel'), 'tel'),
+            Boolean::make(__('Flag'), 'flag'),
+            Text::make(__('Logo'), 'logo')->displayUsing(function(){
+                return "<img src='".$this->logo."' style='height: 2em;'/>";
             })->asHtml(),
-            Text::make(__('Name'), 'name')->sortable(),
-            Text::make(__('Code'), 'code')->sortable(),
-            Text::make(__('Telephone'), 'phone')->nullable(),
-            Text::make(__('Website'), 'url')->nullable(),
-            Text::make(__('Note'), 'note')->nullable(),
-            Number::make(__('Sort'), 'sort')->sortable(),
+            Text::make(__('Data'), 'data')->onlyOnDetail()->displayUsing(function(){return $this->detail();})->asHtml()
         ];
     }
 

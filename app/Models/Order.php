@@ -31,7 +31,10 @@ class Order extends BaseModel
         'street',
         'contact',
         'telephone',
-        'status'
+        'status',
+        'logistic_id',
+        'waybill_number',
+        'ship_status'
     ];
     
     protected $casts = [
@@ -89,6 +92,26 @@ class Order extends BaseModel
     public function goods()
     {
         return $this->belongsToMany(Goods::class)->withPivot('quantity', 'price', 'subtotal');
+    }
+    
+    public function logistic()
+    {
+        return $this->belongsTo(Logistic::class);
+    }
+    
+    public function logisticProgress()
+    {
+        return $this->hasOne(LogisticProgress::class);
+    }
+    
+    public function deliver($log_id, $num)
+    {
+        $this->update([
+            'status' => self::SHIPPED,
+            'ship_status' => 1, // no record
+            'logistic_id' => $log_id,
+            'waybill_number' => $num
+        ]);
     }
     
     public function info()

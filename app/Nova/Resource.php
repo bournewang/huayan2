@@ -19,6 +19,9 @@ abstract class Resource extends NovaResource
     use HasDetachedFilters;
     public static $tableStyle = 'tight';
     public static $showColumnBorders = true;
+    public static $orderBy = [
+        'id' => 'desc'
+    ];
     /**
      * Build an "index" query for the given resource.
      *
@@ -30,6 +33,11 @@ abstract class Resource extends NovaResource
     {
         if ($store_id = $request->user()->store_id) {
             $query->where('store_id', $store_id);
+        }
+        
+        if (empty($request->get('orderBy'))) {
+            $query->getQuery()->orders = [];
+            $query->orderBy(key(static::$orderBy), reset(static::$orderBy));
         }
         return $query;
     }

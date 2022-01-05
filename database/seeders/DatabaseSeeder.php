@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             DeviceSeeder::class,
             PermissionSeeder::class,
             RoleSeeder::class,
+            LogisticSeeder::class
         ]);
     }
 }

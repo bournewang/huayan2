@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
+use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Order extends Resource
@@ -24,7 +26,7 @@ class Order extends Resource
      *
      * @var string
      */
-    public static $title = 'orderNo';
+    public static $title = 'order_no';
 
     public static function label()
     {
@@ -63,7 +65,15 @@ class Order extends Resource
             BelongsTo::make(__('User'), 'user', User::class),
             Text::make(__('Order No'), 'order_no'),
             Text::make(__('Amount'), 'amount'),
+            BelongsTo::make(__('Logistic'), 'logistic', Logistic::class),
+            Text::make(__('Waybill Number'), 'waybill_number'),
+            Text::make(__('Status'))->displayUsing(function(){return $this->statusLabel();}),
+            Select::make(__('Ship Status'), 'ship_status')->options(\App\Models\LogisticProgress::statusOptions())->displayUsingLabels(),
             $this->addressFields(),
+            // HasOne::make(__('Logistic Progress'), 'logisticProgress', LogisticProgress::class),
+            Text::make(__('Logistic Progress'))->displayUsing(function(){
+                return !$this->logisticProgress ? null : $this->logisticProgress->detail();
+            })->asHtml()->onlyOnDetail(),
             BelongsToMany::make(__('Goods'), 'goods', Goods::class)->fields(new Fields\CartItemFields)
         ];
     }
@@ -109,6 +119,9 @@ class Order extends Resource
      */
     public function actions(Request $request)
     {
-        return [];
+        return [
+            new Actions\Deliver,
+            new Actions\LogisticQuery
+        ];
     }
 }

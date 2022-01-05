@@ -15,11 +15,13 @@ class CreateLogisticsTable extends Migration
     {
         Schema::create('logistics', function (Blueprint $table) {
             $table->id();
-            
             $table->string('name');
-            $table->string('contact')->nullable();
-            $table->string('telephone')->nullable();
-            $table->string('address')->nullable();
+            $table->string('code')->unique();
+            $table->string('img')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('url')->nullable();
+            $table->string('note')->nullable();
+            $table->integer('sort')->nullable();
             
             $table->timestamps();
         });
