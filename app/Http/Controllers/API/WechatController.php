@@ -116,6 +116,39 @@ class WechatController extends ApiBaseController
     public function notify(Request $request)
     {
         \Log::debug(__CLASS__.'->'.__FUNCTION__);
-        \Log::debug($request->all());
+        $app = \EasyWeChat::payment();
+        //  data: 
+        //  array (
+        //   'appid' => 'wx561877352e872072',
+        //   'bank_type' => 'OTHERS',
+        //   'cash_fee' => '1',
+        //   'fee_type' => 'CNY',
+        //   'is_subscribe' => 'N',
+        //   'mch_id' => '1484920352',
+        //   'nonce_str' => '61d592e64368c',
+        //   'openid' => 'oZO6h5ft4olVbJcLfU4OEkBqYdxc',
+        //   'out_trade_no' => '891840',
+        //   'result_code' => 'SUCCESS',
+        //   'return_code' => 'SUCCESS',
+        //   'sign' => '573C1A93A6AE80BA2B743A5BBA0D7639',
+        //   'time_end' => '20220105204530',
+        //   'total_fee' => '1',
+        //   'trade_type' => 'JSAPI',
+        //   'transaction_id' => '4200001310202201054219704874',
+        // )        
+        $response = $app->handlePaidNotify(function ($data, $fail) {
+            \Log::debug($data);
+            if ($data['result_code'] == 'SUCCESS' && 
+                $data['return_code'] == 'SUCCESS' && 
+                ($order_no = $data['out_trade_no'])) {
+                if ($order = Order::where('order_no', $order_no)->first()) {
+                    $order->update(['status' => Order::PAID]);
+                    return true;
+                }
+            }
+            // 或者错误消息
+            $fail('Something going wrong.');
+        });
+        $response->send(); 
     }
 }

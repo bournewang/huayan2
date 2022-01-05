@@ -130,6 +130,7 @@ class Cart extends BaseModel
             'city_id'       => $address->city_id,
             'district_id'   => $address->district_id,
             'street'        => $address->street,
+            'status'        => Order::CREATED
         ];
         if ($msg = ValidatorHelper::validate(Order::$rules, $data)){
             throw new ApiException($msg, 400);
