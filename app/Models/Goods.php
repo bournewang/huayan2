@@ -78,12 +78,17 @@ class Goods extends BaseModel
     public function detail()
     {
         $imgs = [];
-        $main_img = $this->media->first();
-        foreach ($this->media as $item) {
+        $details = [];
+        foreach ($this->getMedia('main') as $item) {
             $imgs[] = $item->getUrl('large');
         }
+        
+        foreach ($this->getMedia('detail') as $item) {
+            $details[] = $item->getUrl('large');
+        }
         return array_merge($this->info(),[
-            'imgs' => $imgs
+            'imgs' => $imgs,
+            'details' => $details
         ]);
     }
 }
