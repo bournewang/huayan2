@@ -47,6 +47,13 @@ class Order extends BaseModel
         'street' => 'string',    
     ];
     
+    public static $rules = [
+        'contact' => 'required|string|max:12',
+        'telephone' => 'required|string|max:16',
+        'order_no' => 'required|string|max:24',
+        'amount' => 'required|numeric|min:0.01'
+    ];
+    
     const CREATED = 'created';
     const PAID = 'paid';
     const SHIPPED = 'shipped';

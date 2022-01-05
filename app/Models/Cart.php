@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Helpers\ValidatorHelper;
+use App\Exceptions\ApiException;
 use Carbon\Carbon;
 use DB;
 
@@ -112,12 +114,15 @@ class Cart extends BaseModel
 
     public function submit(Address $address=null, $date = null)
     {
+        if (!$this->goods->first()){
+            throw new ApiException(__('There is nothing in cart'), 400);
+        }
         DB::beginTransaction();
         
-        $order = Order::create([
+        $data = [
             'store_id'  => $this->store_id,
             'user_id'   => $this->user_id,
-            'order_no'  => rand(100000,999999),
+            'order_no'  => Carbon::now()->format('YmdGis').rand(100000,999999),
             'amount'    => $this->total_price,
             'contact'       => $address->contact,
             'telephone'     => $address->telephone,
@@ -125,7 +130,11 @@ class Cart extends BaseModel
             'city_id'       => $address->city_id,
             'district_id'   => $address->district_id,
             'street'        => $address->street,
-        ]);
+        ];
+        if ($msg = ValidatorHelper::validate(Order::$rules, $data)){
+            throw new ApiException($msg, 400);
+        }
+        $order = Order::create($data);
         
         // if ($order) {
         foreach ($this->goods as $good) {
@@ -148,10 +157,15 @@ class Cart extends BaseModel
     {
         $data = [];
         foreach ($this->goods as $good) {
-            $data[] = array_merge($good->info(), [
+            $info = $good->info();
+            $data[] = [
                 'goods_id' => $good->id,
-                'quantity' => $good->pivot->quantity
-            ]);
+                'name' => $info['name'],
+                'thumb' => $info['thumb'] ?? null,
+                'price' => $good->pivot->price,
+                'quantity' => $good->pivot->quantity,
+                'subtotal' => $good->pivot->subtotal
+            ];
         }
         $info = parent::info();
         $info['items'] = $data;

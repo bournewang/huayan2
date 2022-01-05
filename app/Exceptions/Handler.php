@@ -75,14 +75,14 @@ class Handler extends ExceptionHandler
         if ($exception instanceof Error) {
             return Response::json([
                 'success' => false,
-                'message' => $exception->getMessage(),
+                'msg' => $exception->getMessage(),
                 'code' => $exception->getCode()
             ], 500);
         }
         if ($exception instanceof ApiException){
             return Response::json([
                 'success' => false,
-                'message' => $exception->getMessage(),
+                'msg' => $exception->getMessage(),
                 'code' => $exception->getCode()
             ], 200);
         }

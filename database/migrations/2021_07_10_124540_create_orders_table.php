@@ -17,14 +17,14 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->bigInteger('store_id')->unsigned();
             $table->bigInteger('user_id')->unsigned();
-            $table->string('order_no')->nullable();
+            $table->string('order_no', 24)->unique();
             $table->decimal('amount', 8,2)->nullable();
             $table->bigInteger('province_id')->unsigned()->nullable();
             $table->bigInteger('city_id')->unsigned()->nullable();
             $table->bigInteger('district_id')->unsigned()->nullable();
             $table->string('street')->nullable();
-            $table->string('contact')->nullable();
-            $table->string('telephone')->nullable();
+            $table->string('contact', 12)->nullable();
+            $table->string('telephone', 16)->nullable()->index();
             $table->enum('status', array_keys(\App\Models\Order::statusOptions()))->nullable();
             $table->timestamps();
             $table->softDeletes();
