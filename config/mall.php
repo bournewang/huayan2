@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'upload' => [
+        'image_limit' => 1024 * 1024
+    ],
     'base_url' => env('ZIMAOGO_URL'),
     'user_id' => env('ZIMAOGO_USERID'),
     'shop_id' => env('ZIMAOGO_SHOPID'),

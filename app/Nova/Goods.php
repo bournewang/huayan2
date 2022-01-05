@@ -59,8 +59,9 @@ class Goods extends Resource
             Text::make(__('Price'), 'price')->sortable()->nullable(),
             Select::make(__('Status'), 'status')->options((new \App\Models\Category)->statusOptions())->onlyOnForms(),
             Text::make(__('Status'))->displayUsing(function(){return $this->statusRichLabel();})->asHtml()->exceptOnForms(),
-            $this->mediaField(__('Image'), 'photo'),
-            $this->editorField(__('Detail'), 'detail')->nullable(),//->asHtml()->hideFromIndex()->hideFromIndex(),
+            $this->mediaField(__('Main'), 'main'),
+            $this->mediaField(__('Detail'), 'detail'),
+            // $this->editorField(__('Detail'), 'detail')->nullable(),//->asHtml()->hideFromIndex()->hideFromIndex(),
         ];
     }
 
