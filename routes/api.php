@@ -48,21 +48,21 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // });
 
 Route::group(['middleware' => ['auth:api']], function(){
-    Route::get('/user/info',   [UserController::class, 'info']);
+    Route::get ('/user/info',   [UserController::class, 'info']);
     Route::post('/user/modify',[UserController::class, 'modify']);
     Route::post('/user/mobile',[UserController::class, 'mobile']);
     Route::get ('/user/revenue',[UserController::class, 'revenue']);
     Route::get ('/user/qrcode',[UserController::class, 'qrcode']);
     
-    Route::get   ('/cart',                       [CartController::class, 'show']);
-    Route::post  ('/cart/{goods_id}', [CartController::class, 'add']);
-    Route::put   ('/cart/{goods_id}', [CartController::class, 'update']);
-    Route::delete('/cart/{goods_id}', [CartController::class, 'delete']);
+    Route::get   ('/cart',              [CartController::class, 'show']);
+    Route::post  ('/cart/{goods_id}',   [CartController::class, 'add']);
+    Route::put   ('/cart/{goods_id}',   [CartController::class, 'update']);
+    Route::delete('/cart/{goods_id}',   [CartController::class, 'delete']);
     
     Route::get ('/orders',              [OrderController::class, 'index']);
     Route::get ('/orders/{id}',         [OrderController::class, 'show']);    
     Route::post('/orders',              [OrderController::class, 'create']);
-    Route::put('/orders/{id}/place',  [OrderController::class, 'place']);
+    Route::put ('/orders/{id}/place',   [OrderController::class, 'place']);
     
     Route::post  ('/goods/{id}/like',   [GoodsController::class, 'like']);
     Route::delete('/goods/{id}/like',   [GoodsController::class, 'dislike']);

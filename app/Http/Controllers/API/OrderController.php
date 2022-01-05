@@ -59,7 +59,7 @@ class OrderController extends ApiBaseController
      *  security={{ "api_key":{} }}
      * )
      */
-    public function create($store_id, Request $request)
+    public function create(Request $request)
     {
         if ($cart = $this->user->cart) {
             if (!$addr = Address::find($request->input('id'))){
