@@ -18,7 +18,7 @@ class CategoryController extends ApiBaseController
     public function index(Request $request)
     {
         $data = [];
-        foreach (Category::all() as $category) {
+        foreach (Category::where('status', '!=', (new Category)->off_shelf)->get() as $category) {
             $data[] = $category->info();
         }
         return $this->sendResponse($data);
