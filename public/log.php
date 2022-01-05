@@ -5,7 +5,7 @@
         <title></title>
         <link rel="stylesheet" href="/vendor/nova/app.css">
         <style media="screen">
-            table{margin: auto; }
+            table{margin: auto; text-align: left;}
         </style>
     </head>
     <body class="text-center mt-3">

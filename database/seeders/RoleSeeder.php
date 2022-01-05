@@ -18,7 +18,8 @@ class RoleSeeder extends Seeder
             echo "create role $role_name\n";
             $role = Role::create(['name' => $role_name]);
         }
-
+        $i=1;
+        User::find($i++)->assignRole($role);
         foreach (config('seed.roles') as $role_name => $array) {
             $role_name = __(ucfirst($role_name));
             if (!$role = Role::where('name', $role_name)->first()){
@@ -35,6 +36,8 @@ class RoleSeeder extends Seeder
             echo implode(',',$perms) . "\n";
             $permissions = Permission::whereIn('name', $perms)->get();
             $role->permissions()->sync($permissions);
+            
+            User::find($i++)->assignRole($role);
         }        
     }
 }

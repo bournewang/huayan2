@@ -72,6 +72,14 @@ div[dusk$="index-component"] h1{
     margin-bottom: 0;
     padding-right: 0.5em;
 }
+div[dusk$="index-component"] .table.table-grid td {
+    max-width: 20vw !important;
+    overflow-x: hidden;
+}
+div[dusk$="index-component"] .table.table-grid td .whitespace-no-wrap{
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
 div[dusk$="index-component"] .card > .flex.items-center {padding-top: 1px; padding-bottom: 1px;}
 div[dusk$="detail-component"] a[dusk="attach-button"], 
 div[dusk$="detail-component"] a[dusk$="attached-button"], 

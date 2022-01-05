@@ -15,8 +15,8 @@ class SupplierSeeder extends Seeder
     {
         //
         \App\Models\Supplier::create([
-            'name' => '大华',
-            'company_name' => '辽宁大华健康设备有限公司',
+            'name' => '新新健康',
+            'company_name' => '辽宁新新健康设备有限公司',
             'license_no'=> 'GHX339382726222',
             'account_no' => '2222333334444',
             'contact' => '李先生', 

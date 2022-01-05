@@ -63,7 +63,7 @@ class ModelImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFai
         }else {
             \Log::debug('-  create '.$data[$this->pk]);
             $model = new $this->model($data);
-            $this->logWarning(__("Create"). __('Success'));
+            $this->logSuccess(__("Create"). __('Success'));
             return $model;
         }
     }
