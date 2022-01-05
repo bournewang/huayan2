@@ -20,25 +20,22 @@ use App\Helpers\ValidatorHelper;
 
 class ModelImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFailure
 {
-    private $log;
+    use LogTrait;
+    // public $model_name;
+    public $pk = 'name';
+    public $model = 'model';
     public function __construct()
     {
         HeadingRowFormatter::default('none'); 
-        $model = strtolower(explode('\\', $this->model)[2]);
-        $log = public_path("storage/import/${model}.html");
-        if (!file_exists(public_path("storage/import"))) {
-            mkdir(public_path("storage/import"), 0755);
-        }
-        $this->log = fopen($log, 'w');
+        $model_name = strtolower(explode('\\', $this->model)[2]);
+        $log = public_path(config('mall.import_log_location').$model_name.".html");
+        $this->initLog($log);
     }
     
     public function __destruct()
     {
         fclose($this->log);
     }
-    public $pk = 'name';
-    public $model = 'model';//Goods::class;
-    private $break = "<br/>";
     protected function prepareData(array $row)
     {
         return [
@@ -51,7 +48,7 @@ class ModelImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFai
     public function prepareForValidation(array $row)
     {
         \Log::debug(__CLASS__.'->'.__FUNCTION__);
-        fputs($this->log, "<tr><td>".implode(',', array_values($row))."</td>");
+        $this->logData(implode(',', array_values($row)));
         return $this->prepareData($row);
     }
     
@@ -60,14 +57,13 @@ class ModelImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFai
         \Log::debug(__CLASS__.'->'.__FUNCTION__);
         if($model = $this->model::where($this->pk, $data[$this->pk])->first()){
             \Log::debug("-  update $model->id ".$data[$this->pk]);
-            // fputs($this->log, " ".__("Update"));
             $model->update($data);
-            fputs($this->log, "<td>".$this->label(__("Update"). __('Success'), 'bg-warning')."</td></tr>");
+            $this->logWarning(__("Update"). __('Success'));
             return $model;
         }else {
             \Log::debug('-  create '.$data[$this->pk]);
             $model = new $this->model($data);
-            fputs($this->log, "<td>".$this->label(__("Create"). __('Success'))."</td></tr>");
+            $this->logWarning(__("Create"). __('Success'));
             return $model;
         }
     }
@@ -96,11 +92,6 @@ class ModelImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFai
         foreach ($failures as $failure) {
             $errors = array_merge($errors, $failure->errors());
         }
-        fputs($this->log, "<td>".$this->label(implode(", ", $errors), 'text-danger')."</td></tr>");
+        $this->logDanger(implode(", ", $errors));
     }    
-    
-    private function label($label, $class='text-success')
-    {
-        return "<span class='text $class'>$label</span>";
-    }
 }

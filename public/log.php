@@ -8,16 +8,23 @@
             table{margin: auto; }
         </style>
     </head>
-    <body>
+    <body class="text-center mt-3">
+        <?php 
+            $config=include('../config/mall.php');
+            $log = $config['import_log_location'].$_GET['p'].".html";
+            if (!file_exists($log)) { 
+        ?>
+        <span class="text text-danger ">没有找到日志文件</span>
+        <?php }else{ ?>
         <table class="table mt-3">
             <thead>
                 <th>数据</th>
                 <th>结果</th>
             </thead>
             <tbody>
-                <?php include("./storage/import/".$_GET['p'].".html");?>
+            <?php include($log); ?>
             </tbody>
         </table>
-        
+        <?php } ?>
     </body>
 </html>

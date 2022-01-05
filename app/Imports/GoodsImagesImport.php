@@ -10,8 +10,16 @@ use Storage;
 class GoodsImagesImport
 {
     use ZipImport;
+    use LogTrait;
     const acccept_image_format = ['png', 'jpg', 'jpeg', 'git'];
+    public $dir;
 
+    public function __construct($zip_file)
+    {
+        $log = public_path(config('mall.import_log_location')."goods-images.html");
+        $this->initLog($log);
+        $this->dir = $this->extractZip($zip_file);
+    }
     public function import($dir = null)
     {
         \Log::debug(__FUNCTION__." $dir");
@@ -36,12 +44,15 @@ class GoodsImagesImport
     
     protected function importGoodsImage($model, $dir)
     {
+        $str = [];
+        $this->logData(pathinfo($dir, PATHINFO_FILENAME));
         foreach ($this->sortFiles($dir) as $collect) {
             if (!is_dir($collect)) {
                 continue;
             }
             // get collection name
             $dir_name = pathinfo($collect, PATHINFO_FILENAME);
+            $str[] = $dir_name;
             $collect_name = array_flip((new Goods)->mediaCollections())[$dir_name] ?? null;
             \Log::debug("collection name $dir_name => $collect_name");
             if (!$collect_name) {
@@ -51,6 +62,7 @@ class GoodsImagesImport
             // walk through all images and add to media library
             foreach ($this->sortFiles($collect) as $image) {
                 $ext = pathinfo($image, PATHINFO_EXTENSION);
+                $img_name = pathinfo($image, PATHINFO_FILENAME);
                 if (in_array(strtolower($ext), self::acccept_image_format)) {
                     if (filesize($image) > config('mall.upload.image_limit')) {
                         \Log::error("请选择1M以内的图片 $image");
@@ -58,11 +70,14 @@ class GoodsImagesImport
                     }
                     \Log::debug("add $image");
                     $model->addMedia($image)->toMediaCollection($collect_name);
+                    $str[] = $img_name.$this->label_success("v");
                 }else{
                     \Log::error("format not acccept: $ext, only accept: ".implode(',',self::acccept_image_format));
+                    $str[] = $img_name.$this->label_error('x');
                 }
             }  
         } 
+        $this->logResult(implode("&nbsp;", $str));
     }
     protected function sortFiles($dir)
     {

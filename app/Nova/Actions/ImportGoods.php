@@ -83,7 +83,8 @@ class ImportGoods extends Action
                     "商品信息导入<a class='text text-primary' href='/templates/goods.xlsx' download='商品.xlsx'>".__('Template Download') . "</a>；<br/>".
                     "图片格式：建立以商品名称同名的文件夹，里面建'主图'和'详情'文件夹，分别放主图和详情图；图片以字母顺序排列；".
                     "最后将商品文件夹压缩成<span class='text text-danger'>zip</span>格式上传。<br/>".
-                    "<a class='text text-default' href='/log.php?p=goods' target=_blank>".__('Import Log') .'</a>'
+                    "<a class='text text-default' href='/log.php?p=goods' target=_blank>".__("Goods").__('Import Log') .'</a><br/>' .
+                    "<a class='text text-default' href='/log.php?p=goods-images' target=_blank>".__('Image').__('Import Log') .'</a>',
                 )   
         ];
     }

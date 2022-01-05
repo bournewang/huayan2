@@ -5,25 +5,23 @@ namespace App\Imports;
 use Carbon\Carbon;
 trait ZipImport
 {
-    protected $dir;
-    public function __construct($zip_file)
+    public function extractZip($zip_file)
     {
         // 1, uncompress zip
         $zip = new \ZipArchive;
         if (!is_dir(storage_path("import"))) {
             mkdir(storage_path("import"), 0755);
         }
-        $this->dir = storage_path("import/".Carbon::now()->format('Y-m-d-G:i:s'));
+        $dir = str_replace('.', '-', $zip_file);
+        \Log::debug("extract to: ".$dir);
 
         if ($zip->open($zip_file) === TRUE) {
-            $zip->extractTo($this->dir);
+            $zip->extractTo($dir);
             $zip->close();
-            // $this->log("解压文件");
-            // $this->break();
-            // echo 'ok';
+            
+            return $dir;
         } else {
-            // $this->error("解压失败");
-            // echo 'failed';
+            return null;
         }
     }
 }
