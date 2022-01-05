@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Models\Store;
 use App\Models\User;
+use App\Models\Order;
 use Log;
 
 class WechatController extends ApiBaseController
