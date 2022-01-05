@@ -24,7 +24,7 @@ class OrderController extends ApiBaseController
     {
         $orders = $this->user->orders();
         if ($s = $request->input('status')) {
-            
+            $orders->where('status', $s);
         }
         $orders = $orders->orderBy('id', 'desc')->paginate(config('mall.per_page', 10));
         $data = [];
