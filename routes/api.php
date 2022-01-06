@@ -16,6 +16,7 @@ use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\WechatController;
 use App\Http\Controllers\API\LogisticController;
 use App\Http\Controllers\API\FileController;
+use App\Http\Controllers\API\MappController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -47,7 +48,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::post('/wxapp/register',      [WechatController::class, 'register']);
     Route::post('/wxapp/login',         [WechatController::class, 'login']);
     Route::any ('/wechat/notify',       [WechatController::class, 'notify']);
-// });
+    Route::post('/mapp/notify',         [MappController::class, 'notify']);
 
 Route::group(['middleware' => ['auth:api']], function(){
     Route::get ('/user/info',   [UserController::class, 'info']);
