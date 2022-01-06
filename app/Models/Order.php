@@ -128,6 +128,7 @@ class Order extends BaseModel
         foreach ($this->goods as $good) {
             $goods[] = $good->info();
         }
+        $info['status_label'] = $this->statusLabel();
         $info['goods'] = $goods;
         $info['total_quantity'] = count($goods);
         
