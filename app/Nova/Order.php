@@ -78,6 +78,7 @@ class Order extends Resource
                 })->onlyOnDetail()
             ]),
             
+            HasOne::make(__('Review'), 'review', Review::class),
             BelongsToMany::make(__('Goods'), 'goods', Goods::class)->fields(new Fields\CartItemFields)
         ];
     }

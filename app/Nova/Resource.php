@@ -14,6 +14,7 @@ use OptimistDigital\NovaDetachedFilters\NovaDetachedFilters;
 use OptimistDigital\NovaDetachedFilters\HasDetachedFilters;
 use App\Models\Province;
 use Emilianotisato\NovaTinyMCE\NovaTinyMCE;
+use Nikaia\Rating\Rating;
 abstract class Resource extends NovaResource
 {
     use HasDetachedFilters;
@@ -143,5 +144,27 @@ abstract class Resource extends NovaResource
             'language' => 'zh_CN',
             'language_url' => '/tinymce/langs/zh_CN.js'
         ]);
+    }
+    
+    public function ratingField()
+    {
+        return Rating::make(__('Rating'), 'rating')//->displayUsing(5)
+            ->min(0)
+            ->max(5)
+            ->increment(0.5)
+            ->sortable()
+            ->withStyles([
+                'star-size' => 20,
+                'active-color' => 'var(--danger)', // Primary nova theme color.
+                'inactive-color' => '#d8d8d8',
+                'border-color' => 'var(--60)',
+                'border-width' => 0,
+                'padding' => 10,
+                'rounded-corners' => false,
+                'inline' => false,
+                'glow' => 0,
+                'glow-color' => '#fff',
+                'text-class' => 'inline-block text-80 h-9 pt-2',
+            ]);
     }
 }

@@ -23,7 +23,7 @@ class Review extends BaseModel
         'store_id' => 'integer',
         'user_id' => 'integer',
         'order_id' => 'integer',
-        'rating' => 'string',
+        'rating' => 'integer',
         'comment' => 'string',   
     ];
     
