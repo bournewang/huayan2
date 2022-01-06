@@ -15,6 +15,7 @@ use App\Http\Controllers\API\SaleController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\WechatController;
 use App\Http\Controllers\API\LogisticController;
+use App\Http\Controllers\API\FileController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -66,6 +67,8 @@ Route::group(['middleware' => ['auth:api']], function(){
     Route::get ('/orders/{id}',         [OrderController::class, 'show']);    
     Route::post('/orders',              [OrderController::class, 'create']);
     Route::put ('/orders/{id}/place',   [OrderController::class, 'place']);
+    Route::put ('/orders/{id}/receive', [OrderController::class, 'receive']);
+    Route::post('/orders/{id}/review',  [OrderController::class, 'review']);
     
     Route::post  ('/goods/{id}/like',   [GoodsController::class, 'like']);
     Route::delete('/goods/{id}/like',   [GoodsController::class, 'dislike']);

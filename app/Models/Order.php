@@ -11,8 +11,6 @@ class Order extends BaseModel
     use SoftDeletes;
     use AddressTrait;
     
-    protected $primaryKey = 'id';
-    
     public $table = 'orders';
 
     protected $dates = ['deleted_at'];
@@ -62,6 +60,7 @@ class Order extends BaseModel
     const PAID = 'paid';
     const SHIPPED = 'shipped';
     const COMPLETE = 'complete';
+    const REVIEWED = 'reviewed';
     const CANCELED = 'canceled';
     
     static public function statusOptions()
@@ -71,6 +70,7 @@ class Order extends BaseModel
             self::PAID      => __(ucfirst(self::PAID)),
             self::SHIPPED   => __(ucfirst(self::SHIPPED)),
             self::COMPLETE  => __(ucfirst(self::COMPLETE)),
+            self::REVIEWED  => __(ucfirst(self::REVIEWED)),
             self::CANCELED  => __(ucfirst(self::CANCELED)),
         ];
     }
@@ -105,6 +105,11 @@ class Order extends BaseModel
         return $this->hasOne(LogisticProgress::class);
     }
     
+    public function review()
+    {
+        return $this->hasOne(Review::class);
+    }
+    
     public function deliver($logistic, $num)
     {
         $this->update([
@@ -114,6 +119,11 @@ class Order extends BaseModel
             'waybill_number' => $num
         ]);
         ExpressHelper::query($logistic->code, $num, $logistic->code == 'shunfeng' ? substr($this->telephone, -4) : null);
+    }
+    
+    public function receive()
+    {
+        $this->update(['status' => self::COMPLETE]);
     }
     
     public function info()

@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use function EasyWeChat\Kernel\Support\generate_sign;
 use App\Models\Order;
 use App\Models\Address;
+use App\Models\Review;
 class OrderController extends ApiBaseController
 {    
     /**
@@ -84,10 +85,8 @@ class OrderController extends ApiBaseController
     public function show($id)
     {
         \Log::debug(__CLASS__.'->'.__FUNCTION__." $id");
-        if ($order = Order::find($id)) {
-            return $this->sendResponse($order->detail());
-        }
-        return $this->sendResponse([]);
+        $order = $this->getOrder($id);
+        return $this->sendResponse($order->detail());
     }
     
     /**
@@ -104,9 +103,7 @@ class OrderController extends ApiBaseController
     public function place($id, Request $request) 
     {
         \Log::debug(__CLASS__.'->'.__FUNCTION__." order $id");
-        if (!$order = Order::find($id)) {
-            
-        }
+        $order = $this->getOrder($id);
         $app = \EasyWeChat::payment();
         $result = $app->order->unify([
             'body' => 'xxx-test-order',
@@ -135,5 +132,81 @@ class OrderController extends ApiBaseController
         } else {
             return $this->sendError($result['err_code_des'] ?? '下单失败');
         }
+    }
+    
+    /**
+     * receive order 确认收货
+     *
+     * @OA\Put(
+     *  path="/api/orders/{id}/receive",
+     *  tags={"Order"},
+     *  @OA\Parameter(name="id",in="path",required=true,explode=true,@OA\Schema(type="integer"),description="order id"),
+     *  @OA\Response(response=200,description="successful operation"),
+     *  security={{ "api_key":{} }}
+     * )
+     */
+    public function receive($id, Request $request) 
+    {
+        $order = $this->getOrder($id);
+        $order->receive();
+        
+        return $this->sendResponse($order->detail());
+    }
+    
+    
+    /**
+     * review order 评价
+     *
+     * @OA\Post(
+     *  path="/api/orders/{id}/review",
+     *  tags={"Order"},     
+     *  @OA\Parameter(name="id",in="path",required=true,explode=true,@OA\Schema(type="integer"),description="order id"),
+     *   @OA\RequestBody(
+     *       required=false,
+     *       @OA\MediaType(
+     *           mediaType="application/x-www-form-urlencoded",
+     *           @OA\Schema(
+     *               type="object",
+     *               @OA\Property(property="rating", type="integer", description="1-5"),
+     *               @OA\Property(property="comment", type="string", description="comment"),
+     *               @OA\Property(property="imgs", type="string", description="img urls split by ','"),
+     *           )
+     *       )
+     *   ),     
+     *  @OA\Response(response=200,description="successful operation"),
+     *  security={{ "api_key":{} }}
+     * )
+     */
+    public function review($id, Request $request) 
+    {
+        $order = $this->getOrder($id);
+        if ($order->review) {
+            return $this->sendError("order has already reviewed!");
+        }
+        $review = Review::create([
+            'user_id' => $this->user->id,
+            'store_id' => $this->user->store_id,
+            'order_id' => $id,
+            'rating' => $request->input('rating'),
+            'comment' => $request->input('comment'),
+        ]);
+        $order->update(['status' => Order::REVIEWED]);
+        foreach ($request->input('imgs') as $img){
+            $path = public_path(str_replace(config('app.url'), '', $img));
+            $review->addMedia($path)->toMediaCollection('photo');
+        }
+        
+        return $this->sendResponse(null);
+    }
+    
+    private function getOrder($id)
+    {
+        if (!$order = Order::find($id)) {
+            throw new ApiException("order $id not found!");
+        }
+        if ($order->user_id != $this->user->id) {
+            throw new ApiException("you can only get your own order!");
+        }
+        return $order;
     }
 }
