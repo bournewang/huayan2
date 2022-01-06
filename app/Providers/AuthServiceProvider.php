@@ -28,6 +28,7 @@ class AuthServiceProvider extends ServiceProvider
         'App\Models\Order'  	=> 'App\Policies\OrderPolicy',
         'App\Models\Province' 	=> 'App\Policies\ProvincePolicy',
         'App\Models\Revenue' 	=> 'App\Policies\RevenuePolicy',
+        'App\Models\Review' 	=> 'App\Policies\ReviewPolicy',
         'App\Models\Salesman' 	=> 'App\Policies\SalesmanPolicy',
         'App\Models\Setting' 	=> 'App\Policies\SettingPolicy',
         'App\Models\Store'  	=> 'App\Policies\StorePolicy',

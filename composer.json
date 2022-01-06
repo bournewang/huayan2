@@ -26,6 +26,7 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "maatwebsite/excel": "^3.1",
+        "nikaia/nova-rating-field": "^1.0",
         "optimistdigital/nova-detached-filters": "^1.1",
         "overtrue/laravel-wechat": "^6.0",
         "predis/predis": "^1.1",

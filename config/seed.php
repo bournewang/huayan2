@@ -19,7 +19,7 @@ return [
             "View Store", "View Device", "View Order"
         ],
         User::MANAGER => [
-            "View Customer", "View Clerk", "View Order"
+            "View Customer", "View Clerk", "View Order", "View Review"
         ],
         User::CLERK => [
             "View Customer", "View Order"
