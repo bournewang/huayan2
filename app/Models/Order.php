@@ -130,6 +130,7 @@ class Order extends BaseModel
     {
         $info = parent::info();
         $info['address'] = $this->display_address();
+        $info['store_name'] = $this->store->name ?? null;
         return $info;    
     }
     
