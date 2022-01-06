@@ -169,7 +169,7 @@ class OrderController extends ApiBaseController
      *               type="object",
      *               @OA\Property(property="rating", type="integer", description="1-5"),
      *               @OA\Property(property="comment", type="string", description="comment"),
-     *               @OA\Property(property="imgs", type="string", description="img urls split by ','"),
+     *               @OA\Property(property="imgs[]", type="array", description="img urls", collectionFormat="multi", @OA\Items(type="string")),
      *           )
      *       )
      *   ),     
