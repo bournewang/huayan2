@@ -121,7 +121,7 @@ class Order extends Resource
     {
         return [
             new Actions\Deliver,
-            new Actions\LogisticQuery
+            // new Actions\LogisticQuery
         ];
     }
 }

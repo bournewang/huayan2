@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Helpers\ExpressHelper;
 
 class Order extends BaseModel
 {
@@ -104,14 +105,15 @@ class Order extends BaseModel
         return $this->hasOne(LogisticProgress::class);
     }
     
-    public function deliver($log_id, $num)
+    public function deliver($logistic, $num)
     {
         $this->update([
             'status' => self::SHIPPED,
             'ship_status' => 1, // no record
-            'logistic_id' => $log_id,
+            'logistic_id' => $logistic->id,
             'waybill_number' => $num
         ]);
+        ExpressHelper::query($logistic->code, $num, $logistic->code == 'shunfeng' ? substr($this->telephone, -4) : null);
     }
     
     public function info()

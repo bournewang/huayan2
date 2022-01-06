@@ -30,8 +30,11 @@ class Deliver extends Action
     public function handle(ActionFields $fields, Collection $models)
     {
         //
+        if (!$logistic = Logistic::find($fields->logistic_id)) {
+            return Action::danger("没有找到该物流");
+        }
         foreach ($models as $model) {
-            $model->deliver($fields->logistic_id, $fields->waybill_number);
+            $model->deliver($logistic, $fields->waybill_number);
         }
     }
 
@@ -49,6 +52,7 @@ class Deliver extends Action
                     // FIXME, cache options;
                     return Logistic::options();
                 })
+                ->required()
                 ->displayUsingLabels()
                 ->searchable(),
             Text::make(__('Waybill Number'), 'waybill_number')->required()
