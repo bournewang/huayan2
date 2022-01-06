@@ -55,6 +55,8 @@ Route::group(['middleware' => ['auth:api']], function(){
     Route::get ('/user/revenue',[UserController::class, 'revenue']);
     Route::get ('/user/qrcode',[UserController::class, 'qrcode']);
     
+    Route::post ('/file',               [FileController::class, 'upload']);
+    
     Route::get   ('/cart',              [CartController::class, 'show']);
     Route::post  ('/cart/{goods_id}',   [CartController::class, 'add']);
     Route::put   ('/cart/{goods_id}',   [CartController::class, 'update']);
