@@ -10,6 +10,7 @@ use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Panel;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Order extends Resource
@@ -60,33 +61,34 @@ class Order extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make(__('ID'), 'id')->sortable(),
+            // ID::make(__('ID'), 'id')->sortable(),
             BelongsTo::make(__('Store'), 'store', Store::class),
             BelongsTo::make(__('User'), 'user', User::class),
             Text::make(__('Order No'), 'order_no'),
             Text::make(__('Amount'), 'amount'),
-            BelongsTo::make(__('Logistic'), 'logistic', Logistic::class)->nullable(),
-            Text::make(__('Waybill Number'), 'waybill_number'),
-            Select::make(__('Status'), 'status')->options(\App\Models\Order::statusOptions())->displayUsingLabels(),
-            Select::make(__('Ship Status'), 'ship_status')->options(\App\Models\LogisticProgress::statusOptions())->displayUsingLabels(),
             $this->addressFields(),
-            // HasOne::make(__('Logistic Progress'), 'logisticProgress', LogisticProgress::class),
-            Text::make(__('Logistic Progress'))->displayUsing(function(){
-                return !$this->logisticProgress ? null : $this->logisticProgress->detail();
-            })->asHtml()->onlyOnDetail(),
+            Select::make(__('Status'), 'status')->options(\App\Models\Order::statusOptions())->displayUsingLabels(),
+            
+            Panel::make(__('Logistic'), [
+                BelongsTo::make(__('Logistic'), 'logistic', Logistic::class)->nullable(),
+                Text::make(__('Waybill Number'), 'waybill_number')->onlyOnDetail(),
+                Select::make(__('Ship Status'), 'ship_status')->options(\App\Models\LogisticProgress::statusOptions())->displayUsingLabels(),
+                $this->editorField(__('Logistic Progress'), 'logisticProgress')->displayUsing(function(){
+                    return !$this->logisticProgress ? null : $this->logisticProgress->detail();
+                })->onlyOnDetail()
+            ]),
+            
             BelongsToMany::make(__('Goods'), 'goods', Goods::class)->fields(new Fields\CartItemFields)
         ];
     }
 
-    /**
-     * Get the cards available for the request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
-    public function cards(Request $request)
+    public function detachedFilters(Request $request)
     {
-        return [];
+        return [
+            new Filters\ProvinceFilter,
+            new Filters\CityFilter,
+            new Filters\DistrictFilter,
+        ];
     }
 
     /**
