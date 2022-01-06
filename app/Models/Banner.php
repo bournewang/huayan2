@@ -18,20 +18,20 @@ class Banner extends BaseModel
 
 
     public $fillable = [
-        'store_id',
+        // 'store_id',
         'goods_id',
         'title',
         'link',
-        'image',
+        // 'image',
         'status'
     ];    
     
     protected $casts = [
-        'store_id' => 'integer',
+        // 'store_id' => 'integer',
         'goods_id' => 'integer',
         'title' => 'string',
         'link' => 'string',
-        'image' => 'string',
+        // 'image' => 'string',
         'status' => 'string',
     ];
     
@@ -50,7 +50,7 @@ class Banner extends BaseModel
             $instance->image = $instance->image ?? $instance->goods->img;
             $instance->title = $instance->title ?? $instance->goods->name;
         }
-        $instance->store_id = $instance->store_id ?? \Auth::user()->store_id;
+        // $instance->store_id = $instance->store_id ?? \Auth::user()->store_id;
     }
     
     public static function boot()
@@ -72,22 +72,15 @@ class Banner extends BaseModel
         return $this->belongsTo(Goods::class);
     }
     
-    public function show()
+    public function detail()
     {
-        return [
-            "businessId" => "",
-            "dateAdd" => "",
-            "dateUpdate" => "",
-            "id" => $this->id,
-            "linkUrl" => $this->link,
-            "paixu" => "",
-            "picUrl" => !$this->image ? null : url(\Storage::url($this->image)),
-            "status" => $this->status,
-            "statusStr" => $this->title,
-            "title" => $this->title,
-            "type" => "",
-            "userId" => "",
-        ];
+        $info = parent::info();
+        if ($m = $this->getMedia('main')->first()) {
+            $info['image'] = $m->getUrl('large');
+        }elseif ($m = $this->goods->getMedia('main')->first()){
+            $info['image'] = $m->getUrl('large');
+        }
+        return $info;
     }
     
 }

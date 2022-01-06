@@ -15,7 +15,7 @@ class CreateBannersTable extends Migration
     {
         Schema::create('banners', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('store_id')->unsigned();
+            // $table->bigInteger('store_id')->unsigned();
             $table->bigInteger('goods_id')->unsigned()->nullable();
             $table->string('title');
             $table->string('image')->nullable();
@@ -24,7 +24,7 @@ class CreateBannersTable extends Migration
             $table->timestamps();
             $table->softDeletes();    
             
-            $table->foreign('store_id')->references('id')->on('stores');  
+            // $table->foreign('store_id')->references('id')->on('stores');  
             $table->foreign('goods_id')->references('id')->on('goods');  
         });
     }

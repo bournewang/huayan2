@@ -50,7 +50,8 @@ class Banner extends Resource
             BelongsTo::make(__('Goods'), 'goods', Goods::class)->nullable(),
             Text::make(__('Title'), 'title')->nullable(),//->rules('required', 'max:255'),
             Text::make(__('Link'), 'link')->nullable(),
-            Image::make(__('Image'), 'image')->nullable(),//->preview(function($val){return $val;}),
+            // Image::make(__('Image'), 'image')->nullable(),//->preview(function($val){return $val;}),
+            $this->mediaField(__('Image'), 'main'),
             Boolean::make(__('Status'), 'status')
         ];
     }

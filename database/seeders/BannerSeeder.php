@@ -16,7 +16,7 @@ class BannerSeeder extends Seeder
         // if ($data = (config('seed')['banner'] ?? null)) {
         //     foreach ($data as $item) {
         foreach(Goods::limit(5)->get() as $goods) {
-                $c = \App\Models\Banner::create(['goods_id' => $goods->id, 'store_id' => 1, 'status' => 1]);
+                $c = \App\Models\Banner::create(['goods_id' => $goods->id, 'status' => 1]);
                 echo "create banner $c->title \n";
         //     }
         }
