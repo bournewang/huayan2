@@ -9,7 +9,7 @@ use App\Helpers\ValidatorHelper;
 class StoreController extends ApiBaseController
 {    
     /**
-     * create an store 创建新门店
+     * create an store 业务员开发/创建新门店
      *
      * @OA\Post(
      *   path="/api/stores",
