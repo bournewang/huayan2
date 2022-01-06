@@ -76,4 +76,9 @@ class LogisticProgress extends Model
             10 => __('Return')
         ];
     }
+    
+    public function statusLabel()
+    {
+        return self::statusOptions()[$this->status] ?? '-';
+    }
 }

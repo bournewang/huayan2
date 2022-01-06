@@ -133,6 +133,10 @@ class Order extends BaseModel
         $info['status_label'] = $this->statusLabel();
         $info['goods'] = $goods;
         $info['total_quantity'] = count($goods);
+        if ($p = $this->logisticProgress) {
+            $info['express'] = $p->data;
+            $info['ship_status_label'] = $p->statusLabel();
+        }
         
         return $info;
     }
