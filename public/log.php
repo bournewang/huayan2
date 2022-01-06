@@ -10,8 +10,7 @@
     </head>
     <body class="text-center mt-3">
         <?php 
-            $config=include('../config/mall.php');
-            $log = $config['import_log_location'].$_GET['p'].".html";
+            $log = './storage/import-log/'.$_GET['p'].".html";
             if (!file_exists($log)) { 
         ?>
         <span class="text text-danger ">没有找到日志文件</span>
