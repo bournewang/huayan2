@@ -29,7 +29,7 @@ class Order extends BaseModel
         'district_id',
         'street',
         'contact',
-        'telephone',
+        'mobile',
         'status',
         'logistic_id',
         'waybill_number',
@@ -41,7 +41,7 @@ class Order extends BaseModel
         'user_id' => 'integer',
         'order_no' => 'string',
         'amount' => 'float',
-        'telephone' => 'string',
+        'mobile' => 'string',
         'contact' => 'string',
         'province_id' => 'integer',
         'city_id'  => 'integer',
@@ -51,7 +51,7 @@ class Order extends BaseModel
     
     public static $rules = [
         'contact' => 'required|string|max:12',
-        'telephone' => 'required|string|max:16',
+        'mobile' => 'required|string|max:16',
         'order_no' => 'required|string|max:24',
         'amount' => 'required|numeric|min:0.01'
     ];
@@ -118,7 +118,7 @@ class Order extends BaseModel
             'logistic_id' => $logistic->id,
             'waybill_number' => $num
         ]);
-        ExpressHelper::query($logistic->code, $num, $logistic->code == 'shunfeng' ? substr($this->telephone, -4) : null);
+        ExpressHelper::query($logistic->code, $num, $logistic->code == 'shunfeng' ? substr($this->mobile, -4) : null);
     }
     
     public function receive()

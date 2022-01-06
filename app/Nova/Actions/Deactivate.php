@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
 use App\Models\Device;
+use App\Models\Store;
 use App\Helpers\DeviceHelper;
 class Deactivate extends Action
 {

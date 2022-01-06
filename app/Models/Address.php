@@ -24,14 +24,14 @@ class Address extends BaseModel
         'district_id',
         'street',
         'contact',
-        'telephone',
+        'mobile',
         'default'
     ];    
     
     protected $casts = [
         'user_id' => 'integer',
         'contact' => 'string',
-        'telephone' => 'string',
+        'mobile' => 'string',
         'province_id' => 'integer',
         'city_id' => 'integer',
         'district_id' => 'integer',
@@ -43,7 +43,7 @@ class Address extends BaseModel
         'store_id' => 'integer|required',
         'user_id' => 'integer|required',
         'contact' => 'string|required|max:12',
-        'telephone' => 'string|required|max:24',
+        'mobile' => 'string|required|max:24',
         'province' => 'string|required|max:32',
         'city' => 'string|required|max:32',
         'county' => 'string|required|max:32',
@@ -76,7 +76,7 @@ class Address extends BaseModel
     public function toString()
     {
         return  implode('', array_filter([$this->province->name??null, $this->city->name??null, $this->district->name??null, $this->street])); 
-                // ' '.implode(' ', [$this->contact, $this->telephone]);
+                // ' '.implode(' ', [$this->contact, $this->mobile]);
     }
     
     public function detail()

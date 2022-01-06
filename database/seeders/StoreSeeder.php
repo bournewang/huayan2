@@ -18,7 +18,7 @@ class StoreSeeder extends Seeder
             'account_no' => '11112222333',
             'license_no' => 'GMA33112234433',
             'contact' => '王先生',
-            'telephone' => '13811112222',
+            'mobile' => '13811112222',
             // 'commission' => 30
         ]);
     }

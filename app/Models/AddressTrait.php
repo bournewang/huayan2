@@ -25,7 +25,7 @@ trait AddressTrait{
             $this->district->name ?? null,
             $this->street,
             " ".$this->contact,
-            $this->telephone
+            $this->mobile
         ]));
     }
     

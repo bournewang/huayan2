@@ -24,7 +24,7 @@ class CreateOrdersTable extends Migration
             $table->bigInteger('district_id')->unsigned()->nullable();
             $table->string('street')->nullable();
             $table->string('contact', 12)->nullable();
-            $table->string('telephone', 16)->nullable()->index();
+            $table->string('mobile', 16)->nullable()->index();
             $table->bigInteger('logistic_id')->unsigned()->nullable();
             $table->string('waybill_number', 32)->nullable();
             $table->enum('status', array_keys(Order::statusOptions()))->nullable();

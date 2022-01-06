@@ -17,6 +17,7 @@ use App\Http\Controllers\API\WechatController;
 use App\Http\Controllers\API\LogisticController;
 use App\Http\Controllers\API\FileController;
 use App\Http\Controllers\API\MappController;
+use App\Http\Controllers\API\StoreController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -51,6 +52,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::post('/mapp/notify',         [MappController::class, 'notify']);
 
 Route::group(['middleware' => ['auth:api']], function(){
+    Route::put ('/user/type/{type}',   [UserController::class, 'type']);
+    
     Route::get ('/user/info',   [UserController::class, 'info']);
     Route::post('/user/modify',[UserController::class, 'modify']);
     Route::post('/user/mobile',[UserController::class, 'mobile']);
@@ -84,6 +87,9 @@ Route::group(['middleware' => ['auth:api']], function(){
     Route::delete   ('/address/{id}',   [AddressController::class, 'delete']);
     Route::post('/address/{id}/select', [AddressController::class, 'select']);
     
+    Route::post     ('/stores',         [StoreController::class, 'create']);
+    Route::get      ('/stores',         [StoreController::class, 'index']);
+
     // direct selling
     Route::post('/sale/apply', [SaleController::class, 'apply']);
     Route::get('/sale/members',[SaleController::class, 'members']);

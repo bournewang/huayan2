@@ -24,7 +24,7 @@ class Supplier extends Model
         'license_no',
         'account_no', 
         'contact',
-        'telephone',
+        'mobile',
         'province_id',
         'city_id',
         'district_id',
@@ -39,7 +39,7 @@ class Supplier extends Model
         'license_no' => 'string',
         'account_no' => 'string', 
         'contact' => 'string',
-        'telephone' => 'string',
+        'mobile' => 'string',
         // 'commission' => 'integer'
     ];
 

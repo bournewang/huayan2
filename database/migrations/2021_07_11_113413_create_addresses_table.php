@@ -21,7 +21,7 @@ class CreateAddressesTable extends Migration
             $table->bigInteger('district_id')->unsigned();
             $table->string('street');
             $table->string('contact', 12);
-            $table->string('telephone', 24);
+            $table->string('mobile', 24);
             $table->boolean('default');
             $table->timestamps();
             $table->softDeletes();

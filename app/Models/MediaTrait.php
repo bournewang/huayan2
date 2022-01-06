@@ -30,7 +30,7 @@ trait MediaTrait
     
     public function mediaCollections()
     {
-        $array = ['main', 'detail', 'contract', 'photo', 'license', 'id card'];
+        $array = ['main', 'detail', 'contract', 'photo', 'license', 'id_card'];
         $c = [];
         foreach ($array as $n) {
             $c[$n] = __(ucwords($n));

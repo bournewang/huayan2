@@ -23,7 +23,7 @@ class Store extends BaseModel
         'license_no',
         'account_no', 
         'contact',
-        'telephone',
+        'mobile',
         'province_id',
         'city_id',
         'district_id',
@@ -40,15 +40,16 @@ class Store extends BaseModel
         'license_no' => 'string',
         'account_no' => 'string', 
         'contact' => 'string',
-        'telephone' => 'string',
+        'mobile' => 'string',
         // 'license_img' => 'string',
         // 'commission' => 'integer'
     ];
 
     public static $rules = [
-        'name' => 'required|string',
+        'name' => 'required|string|unique:stores',
         'company_name' => 'requried|string',
-        'license_no' => 'required|string',
+        'contact' => 'required|string',
+        'mobile' => 'required|string|max:11|min:11',
     ];
     /**
      * The attributes that should be hidden for arrays.
@@ -100,4 +101,11 @@ class Store extends BaseModel
     public function salesman(){return $this->belongsTo(User::class);}
     public function devices(){return $this->hasMany(Device::class);}
 
+    public function detail()
+    {
+        return array_merge(parent::info(), [
+            'address' => $this->display_address(),
+            'status_label' => $this->statusLabel()
+        ]);
+    }
 }

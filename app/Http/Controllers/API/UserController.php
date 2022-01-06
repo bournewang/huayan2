@@ -3,12 +3,43 @@
 namespace App\Http\Controllers\API;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class UserController extends ApiBaseController
 {
-    public function info($store_id)
+    /**
+     * 获取用户信息
+     *
+     * @OA\Get(
+     *  path="/api/user/info",
+     *  tags={"User"},
+     *  @OA\Response(response=200,description="successful operation"),
+     *  security={{ "api_key":{} }}
+     * )
+     */   
+    public function info()
     {
         return $this->sendResponse($this->user->info());
+    }
+    
+    /**
+     * 修改用户类型
+     *
+     * @OA\Put(
+     *  path="/api/user/type/{type}",
+     *  tags={"User"},
+     *  @OA\Parameter(name="type",  in="path",required=true,explode=true,@OA\Schema(type="string"),description="user type"),
+     *  @OA\Response(response=200,description="successful operation"),
+     *  security={{ "api_key":{} }}
+     * )
+     */      
+    public function type($type, Request $request)
+    {
+        if (!array_key_exists($type, User::typeOptions())) {
+            return $this->sendError("invalid type $type");
+        }
+        $this->user->update(['type' => $type]);
+        return $this->sendResponse(null);
     }
     
     // nickname: 誉锟
@@ -48,15 +79,15 @@ class UserController extends ApiBaseController
         return $this->sendResponse($this->user->info());
     }
     
-    public function revenue(Request $request)
-    {
-        $last_revenue = $this->user->revenues()->where('year', date('Y'))->where('index', date('m'))->first();
-        return $this->sendResponse([
-            'clearing_revenus'   => $this->user->revenues()->where('clearing_status', 1)->sum('total_income'),
-            'unclearing_revenus' => $this->user->revenues()->where('clearing_status', 0)->sum('total_income'),
-            'last_revenue' => $last_revenue ? $last_revenue->info() : null,
-        ]);
-    }
+    // public function revenue(Request $request)
+    // {
+    //     $last_revenue = $this->user->revenues()->where('year', date('Y'))->where('index', date('m'))->first();
+    //     return $this->sendResponse([
+    //         'clearing_revenus'   => $this->user->revenues()->where('clearing_status', 1)->sum('total_income'),
+    //         'unclearing_revenus' => $this->user->revenues()->where('clearing_status', 0)->sum('total_income'),
+    //         'last_revenue' => $last_revenue ? $last_revenue->info() : null,
+    //     ]);
+    // }
     
     public function qrcode()
     {

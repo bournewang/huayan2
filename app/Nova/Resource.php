@@ -132,7 +132,7 @@ abstract class Resource extends NovaResource
             
             Text::make(__('Street'), 'street')->onlyOnForms(),  
             Text::make(__('Contact'), 'contact')->onlyOnForms()->nullable(),
-            Text::make(__('Telephone'), 'telephone')->onlyOnForms()->nullable(),
+            Text::make(__('Mobile'), 'mobile')->onlyOnForms()->nullable(),
             Text::make(__('Address'), 'address')->displayUsing(function(){return $this->display_address();})->exceptOnForms(),
         ]);
     }  

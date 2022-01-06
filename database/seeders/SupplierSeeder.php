@@ -20,7 +20,7 @@ class SupplierSeeder extends Seeder
             'license_no'=> 'GHX339382726222',
             'account_no' => '2222333334444',
             'contact' => '李先生', 
-            'telephone' => '12344445555'
+            'mobile' => '12344445555'
         ]);
     }
 }

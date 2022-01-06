@@ -22,7 +22,7 @@ class CreateSuppliersTable extends Migration
             $table->string('account_bank')->nullable();
             $table->string('account_no')->nullable();
             $table->string('contact')->nullable();
-            $table->string('telephone')->nullable();
+            $table->string('mobile')->nullable();
             
             $table->bigInteger('province_id')->unsigned()->nullable();
             $table->bigInteger('city_id')->unsigned()->nullable();

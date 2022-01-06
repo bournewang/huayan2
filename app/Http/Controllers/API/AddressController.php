@@ -41,7 +41,7 @@ class AddressController extends ApiBaseController
      *               @OA\Property(property="district_id",   type="integer"),
      *               @OA\Property(property="street",        type="string"),
      *               @OA\Property(property="default",       type="integer"),
-     *               @OA\Property(property="telephone",     type="string"),
+     *               @OA\Property(property="mobile",     type="string"),
      *               @OA\Property(property="contact",       type="string"),
      *           )
      *       )
@@ -81,7 +81,7 @@ class AddressController extends ApiBaseController
      *               @OA\Property(property="district_id",   type="integer"),
      *               @OA\Property(property="street",        type="string"),
      *               @OA\Property(property="default",       type="integer"),
-     *               @OA\Property(property="telephone",     type="string"),
+     *               @OA\Property(property="mobile",     type="string"),
      *               @OA\Property(property="contact",       type="string"),
      *           )
      *       )

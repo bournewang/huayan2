@@ -125,7 +125,7 @@ class Cart extends BaseModel
             'order_no'  => Carbon::now()->format('YmdGis').rand(100000,999999),
             'amount'    => $this->total_price,
             'contact'       => $address->contact,
-            'telephone'     => $address->telephone,
+            'mobile'     => $address->mobile,
             'province_id'   => $address->province_id,
             'city_id'       => $address->city_id,
             'district_id'   => $address->district_id,

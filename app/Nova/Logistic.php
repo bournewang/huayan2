@@ -62,7 +62,7 @@ class Logistic extends Resource
             })->asHtml(),
             Text::make(__('Name'), 'name')->sortable(),
             Text::make(__('Code'), 'code')->sortable(),
-            Text::make(__('Telephone'), 'phone')->nullable(),
+            Text::make(__('Mobile'), 'phone')->nullable(),
             Text::make(__('Website'), 'url')->nullable(),
             Text::make(__('Note'), 'note')->nullable(),
             Number::make(__('Sort'), 'sort')->sortable(),

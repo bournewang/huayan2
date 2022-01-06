@@ -71,7 +71,7 @@ return [
         [
             'user_id' => 2,
             'contact' => '小张',
-            'telephone' => '13322223333',
+            'mobile' => '13322223333',
             'province_id' => 2,
             'city_id' => 16,
             'district_id' => 228,
@@ -81,7 +81,7 @@ return [
         [
             'user_id' => 3,
             'contact' => '小张',
-            'telephone' => '13322223333',
+            'mobile' => '13322223333',
             'province_id' => 2,
             'city_id' => 16,
             'district_id' => 228,
@@ -91,7 +91,7 @@ return [
         [
             'user_id' => 4,
             'contact' => '小张',
-            'telephone' => '13322223333',
+            'mobile' => '13322223333',
             'province_id' => 2,
             'city_id' => 16,
             'district_id' => 228,
