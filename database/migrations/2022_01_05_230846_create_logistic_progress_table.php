@@ -23,6 +23,7 @@ class CreateLogisticProgressTable extends Migration
             $table->string('upgrade_info')->nullable();
             $table->string('expSpellName')->nullable();
             $table->string('expTextName')->nullable();
+            $table->string('mailNo');
             $table->string('msg')->nullable();
             $table->datetime('updateStr')->nullable();
             $table->string('possibleExpList')->nullable();

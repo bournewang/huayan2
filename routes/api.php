@@ -14,6 +14,7 @@ use App\Http\Controllers\API\RegionController;
 use App\Http\Controllers\API\SaleController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\WechatController;
+use App\Http\Controllers\API\LogisticController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -31,7 +32,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 // Route::any('/wechat', 'WechatController@serve');
-
+    Route::post('/logistic/notify',     [LogisticController::class, 'notify']);
 // Route::group(['middleware' => []], function(){
     Route::get('/config/values',        [ConfigController::class, 'get']); //->name('config.get');
     Route::get('/provinces',             [RegionController::class, 'provinces']);

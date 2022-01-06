@@ -41,14 +41,15 @@ class ExpressHelper
     // +"ret_code": 0,
     // +"logo": "http://static.showapi.com/app2/img/expImg/zto.jpg",
     // +"expTextName": "中通快递",
-      
-    static public function query($com, $nu)
+    static public function query($com, $nu, $phone = null)
     {
         $url = "https://ali-deliver.showapi.com/showapi_expInfo";
         $app_code = config('mall.express_app_code');
         $data = [
             'com' => $com,
             'nu' => $nu,
+            'phone' => $phone,
+            'callback_url' => config('app.url') . '/api/logistic/notify'
         ];
         $url .= '?' . http_build_query($data);
         \Log::debug("$url");
