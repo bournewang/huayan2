@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Models\Store;
 use App\Models\User;
+use App\Models\Manager;
 use App\Helpers\ValidatorHelper;
 
 class StoreController extends ApiBaseController
@@ -47,7 +48,7 @@ class StoreController extends ApiBaseController
          if (!$phone = ($data['mobile']??null)) {
             return $this->sendError("请填写店长手机") ;
          }
-         if (!$manager = User::where('mobile', $phone)->first()) {
+         if (!$manager = Manager::where('mobile', $phone)->first()) {
              return $this->sendError("该用户没有注册 $phone");
          }
          $data['manager_id'] = $manager->id;
