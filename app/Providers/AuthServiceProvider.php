@@ -20,6 +20,7 @@ class AuthServiceProvider extends ServiceProvider
         'App\Models\City'   	=> 'App\Policies\CityPolicy',
         'App\Models\Clerk'  	=> 'App\Policies\ClerkPolicy',
         'App\Models\Customer' 	=> 'App\Policies\CustomerPolicy',
+        'App\Models\Manager'    => 'App\Policies\ManagerPolicy',
         'App\Models\Device' 	=> 'App\Policies\DevicePolicy',
         'App\Models\District' 	=> 'App\Policies\DistrictPolicy',
         'App\Models\Expert' 	=> 'App\Policies\ExpertPolicy',
