@@ -46,8 +46,8 @@ class Banner extends BaseModel
     protected static function beforesave(&$instance)
     {
         if ($instance->goods_id) {
-            $instance->link = $instance->link ?? "/pages/goods-details/index?id=$instance->goods_id";
-            $instance->image = $instance->image ?? $instance->goods->img;
+            $instance->link = $instance->link ?? "/pages/goods/index?id=$instance->goods_id";
+            // $instance->image = $instance->image ?? $instance->goods->img;
             $instance->title = $instance->title ?? $instance->goods->name;
         }
         // $instance->store_id = $instance->store_id ?? \Auth::user()->store_id;
