@@ -168,6 +168,11 @@ class User extends Authenticatable implements HasMedia
         return $this->hasMany(Order::class);
     }
     
+    public function serviceOrders()
+    {
+        return $this->hasMany(ServiceOrder::class);
+    }
+    
     public function likes()
     {
         return $this->belongsToMany(Goods::class);

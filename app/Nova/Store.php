@@ -75,7 +75,8 @@ class Store extends Resource
                     ])
                     ->info($this->statusLabel())
                     ->exceptOnForms(),
-            HasMany::make(__('Device'), 'devices', Device::class)        
+            HasMany::make(__('Device'), 'devices', Device::class),
+            HasMany::make(__('Service Order'), 'serviceOrders', ServiceOrder::class)     
             // Text::make(__('Devices'))->onlyOnDetail()->displayUsing(function(){
             //     $list = json_decode($this->devices);
             //     $str = "";

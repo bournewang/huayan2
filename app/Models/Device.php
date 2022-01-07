@@ -31,4 +31,9 @@ class Device extends BaseModel
     {
         return $this->status ? __('Active') : __('Inactive');
     }
+    
+    public function serviceOrders()
+    {
+        return $this->hasMany(ServiceOrder::class);
+    }
 }

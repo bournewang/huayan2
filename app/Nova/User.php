@@ -86,6 +86,7 @@ class User extends Resource
             RoleBooleanGroup::make(__('Roles'), 'roles'),
             // PermissionBooleanGroup::make('Permissions'),
             HasMany::make(__("Address"), 'addresses', Address::class),
+            HasMany::make(__('Service Order'), 'serviceOrders', ServiceOrder::class)
         ];
     }
 

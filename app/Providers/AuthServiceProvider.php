@@ -31,6 +31,7 @@ class AuthServiceProvider extends ServiceProvider
         'App\Models\Revenue' 	=> 'App\Policies\RevenuePolicy',
         'App\Models\Review' 	=> 'App\Policies\ReviewPolicy',
         'App\Models\Salesman' 	=> 'App\Policies\SalesmanPolicy',
+        'App\Models\ServiceOrder'  	=> 'App\Policies\ServiceOrderPolicy',
         'App\Models\Setting' 	=> 'App\Policies\SettingPolicy',
         'App\Models\Store'  	=> 'App\Policies\StorePolicy',
         'App\Models\Supplier' 	=> 'App\Policies\SupplierPolicy',
