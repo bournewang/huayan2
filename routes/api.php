@@ -52,6 +52,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::any ('/wechat/notify',       [WechatController::class, 'notify']);
     Route::post('/mapp/notify',         [MappController::class, 'notify']);
 
+    Route::get ('/reviews',              [ReviewController::class, 'index']);
+    Route::get ('/reviews/{id}',         [ReviewController::class, 'detail']);    
+
 Route::group(['middleware' => ['auth:api']], function(){
     Route::put ('/user/type/{type}',   [UserController::class, 'type']);
     
@@ -74,9 +77,6 @@ Route::group(['middleware' => ['auth:api']], function(){
     Route::put ('/orders/{id}/place',   [OrderController::class, 'place']);
     Route::put ('/orders/{id}/receive', [OrderController::class, 'receive']);
     Route::post('/orders/{id}/review',  [OrderController::class, 'review']);
-
-    Route::get ('/reviews',              [ReviewController::class, 'index']);
-    Route::get ('/reviews/{id}',         [ReviewController::class, 'detail']);    
     
     Route::post  ('/goods/{id}/like',   [GoodsController::class, 'like']);
     Route::delete('/goods/{id}/like',   [GoodsController::class, 'dislike']);

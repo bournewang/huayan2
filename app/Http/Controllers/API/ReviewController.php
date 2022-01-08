@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Models\Review;
 use App\Models\Store;
-use App\Models\Category;
+use App\Models\Goods;
 
 class ReviewController extends ApiBaseController
 {
@@ -22,11 +22,10 @@ class ReviewController extends ApiBaseController
      */    
     public function index(Request $request)
     {
-        $g = new Review;
         $reviews = Review::where('id', '>', 0);
-        if ($goods_id = Category::find($request->input('goods_id'))) {
+        if ($goods = Goods::find($request->input('goods_id'))) {
             // find orders with goods
-            $ids = [];
+            $ids = $goods->orders->pluck('id')->all();
             $reviews = $reviews->whereIn('order_id', $ids);
         }
         
