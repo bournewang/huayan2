@@ -14,7 +14,7 @@ class ReviewController extends ApiBaseController
      * @OA\Get(
      *  path="/api/reviews",
      *  tags={"Review"},
-     *  @OA\Parameter(name="goods_id",   in="query",required=false,explode=true,@OA\Schema(type="integer"),description="category id"),
+     *  @OA\Parameter(name="goods_id",   in="query",required=false,explode=true,@OA\Schema(type="integer"),description="goods id"),
      *  @OA\Parameter(name="perpage",       in="query",required=false,explode=true,@OA\Schema(type="integer"),description="items per page"),
      *  @OA\Parameter(name="page",          in="query",required=false,explode=true,@OA\Schema(type="integer"),description="page num"),  
      *  @OA\Response(response=200,description="successful operation")
