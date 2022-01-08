@@ -27,6 +27,18 @@ class Review extends BaseModel
         'comment' => 'string',   
     ];
     
+    public static function boot()
+    {
+        parent::boot();
+        static::creating(function ($instance) {
+            $instance->store_id = $instance->order->store_id;
+            $instance->user_id = $instance->order->user_id;
+        });
+        static::updating(function ($instance) {
+            // self::beforesave($instance);
+        });
+    }
+    
     public function order()
     {
         return $this->belongsTo(Order::class);
@@ -40,5 +52,26 @@ class Review extends BaseModel
     public function store()
     {
         return $this->belongsTo(Store::class);
+    }
+    
+    public function info()
+    {
+        return array_merge(parent::info(), [
+            'user_img' => $this->user->avatar,
+            'nickname' => $this->user->nickname,
+        ]);
+    }
+    
+    public function detail()
+    {
+        $imgs = [];
+        $details = [];
+        foreach ($this->getMedia('photo') as $item) {
+            $imgs[] = $item->getUrl('large');
+        }
+        return array_merge($this->info(),[
+            'imgs' => $imgs,
+            'order' => $this->order->detail()
+        ]);
     }
 }

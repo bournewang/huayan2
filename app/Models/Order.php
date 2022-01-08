@@ -149,6 +149,7 @@ class Order extends BaseModel
             $info['express'] = $p->data;
             $info['ship_status_label'] = $p->statusLabel();
         }
+        $info['review_id'] = $this->review->id ?? null;
         
         return $info;
     }
