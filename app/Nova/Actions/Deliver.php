@@ -34,7 +34,11 @@ class Deliver extends Action
             return Action::danger("没有找到该物流");
         }
         foreach ($models as $model) {
-            $model->deliver($logistic, $fields->waybill_number);
+            try{
+                $model->deliver($logistic, $fields->waybill_number);
+            }catch(\Exception $e) {
+                \Log::error($e->getMessage());
+            }
         }
     }
 
