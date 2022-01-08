@@ -39,7 +39,7 @@ class WechatController extends ApiBaseController
         $mpp = \EasyWeChat::miniProgram();
         $data = $mpp->auth->session($code);
         \Log::debug($data);
-        \Cache::put("wx.session.openid.".$data['session_key'], $data['openid'], 60*5);
+        \Cache::put("wx.session.".$data['session_key'], json_encode($data), 60*5);
         if (isset($data['openid'])) {
             if ($user = User::where('openid', $data['openid'])->first()) {
                 $user->refreshToken();
@@ -90,14 +90,18 @@ class WechatController extends ApiBaseController
         \Log::debug("decrypt data: ");
         \Log::debug($data);    
         
-        if ($openid = \Cache::get("wx.session.openid.".$session_key)) {
+        if ($sess = \Cache::get("wx.session.".$session_key)) {
+            $session = json_decode($sess, 1);
+            $openid = $session['openid'] ?? null;
+            $unionid = $session['unionid'] ?? null;
             if (!$user = User::where('openid', $openid)->first()) {
                 \Log::debug("try to create user: ");
                 $user = User::create([
                     'store_id'  => $request->input('store_id', null),
                     'senior_id' => $request->input('referer_id', null),
                     'openid'    => $openid, 
-                    'email'     => $openid."@test.com",
+                    'unionid'   => $unionid,
+                    'email'     => $openid."@wechat.com",
                     'name'      => $data['nickName'] ?? null, 
                     'nickname'  => $data['nickName'] ?? null, 
                     'avatar'    => $data['avatarUrl'] ?? null, 

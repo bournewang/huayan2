@@ -62,10 +62,10 @@ return [
         ['id' => 2, 'category_id' => 2, 'name' => '拉力器', 'price' => 88, 'status' => 'on_shelf'],
     ],
     'user' => [
-        ['id' => 1, 'name' => 'Admin', 'email' =>'admin@test.com', 'password' => '111111'],
-        ['id' => 2, 'name' => '小张', 'email' => 'zhang@test.com',  'password' => '111111', 'store_id' => 1, 'senior_id' => null, ],
-        ['id' => 3, 'name' => '小刘', 'email' => 'liu@test.com',    'password' => '111111', 'store_id' => 1, 'senior_id' => 2,    ],
-        ['id' => 4, 'name' => '小红', 'email' => 'hong@test.com',   'password' => '111111', 'store_id' => 1, 'senior_id' => 3,    ],
+        ['id' => 1, 'name' => 'Admin', 'email' =>'admin@test.com', 'password' => '111111', 'openid' => '111111', 'unionid' => '111111'],
+        ['id' => 2, 'name' => '小张', 'email' => 'zhang@test.com',  'password' => '111111', 'store_id' => 1, 'senior_id' => null, 'openid' => '111112', 'unionid' => '111112'],
+        ['id' => 3, 'name' => '小刘', 'email' => 'liu@test.com',    'password' => '111111', 'store_id' => 1, 'senior_id' => 2,    'openid' => '111113', 'unionid' => '111113'],
+        ['id' => 4, 'name' => '小红', 'email' => 'hong@test.com',   'password' => '111111', 'store_id' => 1, 'senior_id' => 3,    'openid' => '111114', 'unionid' => '111114'],
     ],
     'address' => [
         [

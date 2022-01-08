@@ -19,12 +19,12 @@ class CreateUsersTable extends Migration
             $table->bigInteger('store_id')->unsigned()->nullable();
             $table->bigInteger('senior_id')->unsigned()->nullable();
             $table->string('name');
-            $table->string('openid', 64)->nullable();
-            $table->string('unionid', 64)->nullable();
+            $table->string('openid', 64)->nullable()->unique();
+            $table->string('unionid', 64)->nullable()->unique();
             $table->string('nickname', 32)->nullable();
             $table->string('avatar')->nullable();
             $table->integer('gender')->nullable();
-            $table->string('mobile', 24)->nullable();
+            $table->string('mobile', 24)->nullable()->index();
             $table->string('province', 32)->nullable();
             $table->string('city', 32)->nullable();
             $table->string('county', 32)->nullable();
