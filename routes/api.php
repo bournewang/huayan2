@@ -11,7 +11,7 @@ use App\Http\Controllers\API\ConfigController;
 use App\Http\Controllers\API\GoodsController;
 use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\API\RegionController;
-use App\Http\Controllers\API\SaleController;
+use App\Http\Controllers\API\SalesController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\WechatController;
 use App\Http\Controllers\API\LogisticController;
@@ -19,6 +19,9 @@ use App\Http\Controllers\API\FileController;
 use App\Http\Controllers\API\MappController;
 use App\Http\Controllers\API\StoreController;
 use App\Http\Controllers\API\ReviewController;
+use App\Http\Controllers\API\CustomerController;
+use App\Http\Controllers\API\ClerkController;
+use App\Http\Controllers\API\ServiceController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -93,8 +96,15 @@ Route::group(['middleware' => ['auth:api']], function(){
     
     Route::post     ('/stores',         [StoreController::class, 'create']);
     Route::get      ('/stores',         [StoreController::class, 'index']);
+    
+    Route::get      ('/customers',      [CustomerController::class, 'index']);
+    Route::get      ('/clerks',         [ClerkController::class, 'index']);
 
     // direct selling
-    Route::post('/sale/apply', [SaleController::class, 'apply']);
-    Route::get('/sale/members',[SaleController::class, 'members']);
+    // Route::post('/sale/apply', [SaleController::class, 'apply']);
+    // Route::get('/sale/members',[SaleController::class, 'members']);
+    Route::get('/sales',                [SalesController::class, 'index']);
+    Route::get('/sales/{user_id}',      [SalesController::class, 'show']);
+    Route::get('/services',             [ServiceController::class, 'index']);
+    Route::get('/services/{user_id}',   [ServiceController::class, 'show']);    
 });
