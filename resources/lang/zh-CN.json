@@ -140,6 +140,7 @@
     "Fee Num": "收费次数",
     "Message": "消息",
     "Data": "数据",
+    "Created At": "创建时间",
     "Created": "已下单",
     "Paid": "已支付",
     "Shipped": "已发货",

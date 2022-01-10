@@ -214,14 +214,28 @@ class User extends Authenticatable implements HasMedia
     
     public function info()
     {
-        if (!$this->qrcode) {
-            if ($url = UserHelper::qrcode($this)) {
-                $this->update(['qrcode' => $url]);
-            }
+        $attrs = [
+            'name', 
+            'openid',
+            'unionid',
+            'nickname',
+            'avatar',
+            'gender',
+            'mobile',
+            'province',
+            'city',
+            'county',
+        ];
+        foreach ($attrs as $attr){
+            $data[$attr] = $this->$attr;
         }
-        $data = $this->getOriginal();
         $data['qrcode'] = !$this->qrcode ? null : url(\Storage::url($this->qrcode));
         return $data;
+    }
+    
+    public function detail()
+    {
+        return $this->info();
     }
     
     // personal bussiness value

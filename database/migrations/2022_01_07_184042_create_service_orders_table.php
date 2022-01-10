@@ -23,6 +23,7 @@ class CreateServiceOrdersTable extends Migration
             $table->string('detail')->nullable();
             $table->decimal('amount', 8,2)->nullable();
             $table->text('raw_data')->nullable();
+            $table->string('status', 20)->nullable();
             $table->timestamps();
             
             $table->foreign('store_id')->references('id')->on('stores');  

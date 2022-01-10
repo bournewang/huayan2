@@ -87,6 +87,16 @@ class Store extends BaseModel
         return $this->hasMany(User::class);//->withPivot('superior_id', 'level', 'sharing');
     }
     
+    public function clerks()
+    {
+        return $this->users()->where('type', User::CLERK);
+    }
+    
+    public function customers()
+    {
+        return $this->users()->where('type', User::CUSTOMER);
+    }
+    
     public function roots()
     {
         return $this->users()->whereNull('senior_id')->get();

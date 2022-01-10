@@ -24,4 +24,20 @@ class ApiBaseController extends AppBaseController
         }
     }
 
+    public function paginateInfo($collection, $request, $func = 'info')
+    {
+        $total = $collection->count();
+        $perpage = $request->input('perpage', 20);
+        $data = [
+            'total' => $total,
+            'pages' => ceil($total/$perpage),
+            'page' => $request->input('page', 1),
+            'items' => []
+        ];
+        $collection = $collection->paginate($perpage);
+        foreach ($collection as $model) {
+            $data['items'][] = $model->$func();
+        }
+        return $data;
+    }
 }

@@ -4,7 +4,7 @@ use App\Models\Store;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\Revenue;
-
+use DB;
 class StoreHelper
 {
     static public function relationIds($store_id, $relation, $attr=null, $val=null)
@@ -86,4 +86,33 @@ class StoreHelper
         }
     }
 
+    // 月度消费额, only for manager/clerk/referer
+    static public function salesStats($user, $month, $perpage, $table = 'orders')
+    {
+        $start = date('Y-m-d', strtotime("first day of $month"));
+        $end = date('Y-m-d', strtotime("last day of $month")) . ' 23:59:59';
+
+        $builder = DB::table($table);
+        if ($user->type == User::MANAGER) {
+            $builder->where($table.'.store_id', $user->store_id);
+        }else {
+            $builder->where('users.senior_id', $user->id);
+        }
+        $res = $builder->whereIn('status', array_keys(Order::validStatus()))
+            ->whereBetween($table.'.created_at', [$start, $end])
+            ->select('users.avatar', 'users.nickname', 'users.mobile', DB::raw("sum(amount) as total_amount"))
+            ->join('users', $table.'.user_id', '=', 'users.id')
+            ->groupBy('user_id')
+            ->orderBy('total_amount', 'desc')
+            ->paginate($perpage)
+            ->toArray()
+            ;    
+        return [
+            'title'  => [__('Avatar'), __('Nickname'), __('Mobile'), __('Amount')],
+            'total' => $res['total'] ?? null,
+            'pages' => $res['last_page'] ?? 1,
+            'page' => $res['page'] ?? 1,
+            'items' => $res['data'] ?? [],
+        ];
+    }
 }

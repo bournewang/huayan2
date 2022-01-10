@@ -75,6 +75,16 @@ class Order extends BaseModel
         ];
     }
     
+    static public function validStatus()
+    {
+        return [
+            self::PAID      => __(ucfirst(self::PAID)),
+            self::SHIPPED   => __(ucfirst(self::SHIPPED)),
+            self::COMPLETE  => __(ucfirst(self::COMPLETE)),
+            self::REVIEWED  => __(ucfirst(self::REVIEWED)),
+        ];
+    }
+    
     public function statusLabel()
     {
         return self::statusOptions()[$this->status];
@@ -124,6 +134,19 @@ class Order extends BaseModel
     public function receive()
     {
         $this->update(['status' => self::COMPLETE]);
+    }
+    
+    public function display_info()
+    {
+        return [
+            'avatar' => $this->user->avatar,
+            'nickname' => $this->user->nickname,
+            'mobile' => $this->user->mobile,
+            // 'title' => $this->title,
+            // 'detail' => $this->detail,
+            'amount' => $this->amount,
+            'created_at' => $this->created_at ? $this->created_at->toDateString() : null
+        ];
     }
     
     public function info()

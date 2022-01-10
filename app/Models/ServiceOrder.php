@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ServiceOrder extends Model
+class ServiceOrder extends BaseModel
 {
     use HasFactory;
     
@@ -21,6 +21,7 @@ class ServiceOrder extends Model
         'detail',
         'amount',
         'raw_data',
+        'status'
     ];
     
     protected $casts = [
@@ -32,6 +33,7 @@ class ServiceOrder extends Model
         'detail' => 'string',
         'amount' => 'float',
         'raw_data' => 'json', 
+        'status' => 'string'
     ];
     
     public function device()
@@ -47,5 +49,17 @@ class ServiceOrder extends Model
     public function store()
     {
         return $this->belongsTo(Store::class);
-    }    
+    }  
+    
+    public function display_info()
+    {
+        return [
+            'avatar' => $this->user->avatar,
+            'nickname' => $this->user->nickname,
+            'mobile' => $this->user->mobile,
+            'title' => $this->title,
+            'detail' => $this->detail,
+            'amount' => $this->amount
+        ];
+    }
 }
