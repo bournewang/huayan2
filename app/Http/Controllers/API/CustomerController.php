@@ -8,7 +8,7 @@ use App\Models\User;
 class CustomerController extends ApiBaseController
 {
     /**
-     * Customer list api 获取门店下的顾客
+     * Customer list api 获取门店下的顾客，店长查看该店所有顾客，店员可查看自己开发的顾客
      *
      * @OA\Get(
      *  path="/api/customers",
