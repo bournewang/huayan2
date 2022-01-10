@@ -45,3 +45,23 @@ function storage_url($img)
 {
     return $img ? url(\Storage::url($img)) : null;
 }
+
+function benchmark_start()
+{
+    if (function_exists('xhprof_enable')) {
+        xhprof_enable();
+    }
+}
+function benchmark_end($request = null)
+{
+    if (function_exists('xhprof_disable')) {
+        $xhprof_data = xhprof_disable(); 
+        $XHPROF_ROOT = config('xhprof.dir');
+        include_once $XHPROF_ROOT . "/xhprof_lib/utils/xhprof_lib.php";
+        include_once $XHPROF_ROOT . "/xhprof_lib/utils/xhprof_runs.php";
+        $xhprof_runs = new XHProfRuns_Default();
+        $run_id = $xhprof_runs->save_run($xhprof_data, "xhprof_foo"); // 查看地址
+        \Log::debug("url: ".$request->fullUrl());
+        \Log::debug("http://xhprof.local/index.php?run=$run_id&source=xhprof_foo");
+    }
+}
