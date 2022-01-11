@@ -225,6 +225,7 @@ class User extends Authenticatable implements HasMedia
             'province',
             'city',
             'county',
+            'api_token'
         ];
         foreach ($attrs as $attr){
             $data[$attr] = $this->$attr;
