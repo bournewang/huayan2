@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Models\Device;
 use App\Models\User;
+use App\Models\Order;
 use App\Models\ServiceOrder;
 use Log;
 
@@ -45,6 +46,7 @@ class MappController extends ApiBaseController
             'title' => $request->input('orderTitle'),
             'detail' => $request->input('orderDetails'),
             'amount' => $request->input('money'),
+            'status' => Order::PAID,
             'raw_data' => $request->all()
         ]);
         
