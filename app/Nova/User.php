@@ -15,6 +15,8 @@ use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Vyuldashev\NovaPermission\PermissionBooleanGroup;
 use Vyuldashev\NovaPermission\RoleBooleanGroup;
+use Vyuldashev\NovaPermission\RoleSelect;
+
 class User extends Resource
 {
     /**
@@ -83,7 +85,7 @@ class User extends Resource
                 ->creationRules('required', 'string', 'min:8')
                 ->updateRules('nullable', 'string', 'min:8'),
             $this->mediaField(__('ID'), 'id card'),
-            RoleBooleanGroup::make(__('Roles'), 'roles'),
+            RoleSelect::make(__('Roles'), 'roles'),
             // PermissionBooleanGroup::make('Permissions'),
             HasMany::make(__("Address"), 'addresses', Address::class),
             HasMany::make(__('Service Order'), 'serviceOrders', ServiceOrder::class)

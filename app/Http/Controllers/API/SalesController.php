@@ -47,7 +47,7 @@ class SalesController extends ApiBaseController
             return $this->sendError("您只能查看自己门店的数据");
         }
         // return $this->sendResponse($this->paginateInfo($user->orders(), $request));
-        $data['titles'] = [__('Avatar'), __('Nickname'), __('Mobile'), __('Amount'), __('Created At')];
+        $data['titles'] = ['avatar' => __('Avatar'), 'nickname' => __('Nickname'), 'mobile' => __('Mobile'), 'amount' => __('Amount'), 'created_at' => __('Created At')];
         $data = array_merge($data, $this->paginateInfo($user->orders(), $request, 'display_info'));
         
         return $this->sendResponse($data);

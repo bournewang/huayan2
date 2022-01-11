@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SalesController;
 /*
 |--------------------------------------------------------------------------
@@ -21,4 +22,5 @@ Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });
 
+Route::post('login',  [LoginController::class, 'authLogin'])->name('mall.login');
 Route::get('sales/{id}/relation', [SalesController::class, 'relation']);

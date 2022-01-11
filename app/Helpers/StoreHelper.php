@@ -108,7 +108,7 @@ class StoreHelper
             ->toArray()
             ;    
         return [
-            'title'  => [__('Avatar'), __('Nickname'), __('Mobile'), __('Amount')],
+            'title'  => ['avatar' => __('Avatar'), 'nickname' => __('Nickname'), 'mobile' => __('Mobile'), 'amount' => __('Amount')],
             'total' => $res['total'] ?? null,
             'pages' => $res['last_page'] ?? 1,
             'page' => $res['page'] ?? 1,

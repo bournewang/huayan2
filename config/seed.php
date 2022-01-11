@@ -19,10 +19,19 @@ return [
             "View Store", "View Device", "View Order"
         ],
         User::MANAGER => [
-            "View Customer", "View Clerk", "View Order", "View Review"
+            "Index Customer", "View Customer", 
+            "Index Clerk", "View Clerk", 
+            "Index Order", "View Order", 
+            "Index ServiceOrder", "View ServiceOrder", 
+            "View Review", 
+            "Index Goods", "View Goods",
+            "View Cart"
         ],
         User::CLERK => [
-            "View Customer", "View Order"
+            "Index Customer", "View Customer", 
+            "Index Order", "View Order", 
+            "Index Goods", "View Goods",
+            "View Cart"
         ],
     ],
     'setting' => [
@@ -62,22 +71,13 @@ return [
         ['id' => 2, 'category_id' => 2, 'name' => '拉力器', 'price' => 88, 'status' => 'on_shelf'],
     ],
     'user' => [
-        ['id' => 1, 'name' => 'Admin', 'email' =>'admin@test.com', 'password' => '111111', 'openid' => '111111', 'unionid' => '111111'],
-        ['id' => 2, 'name' => '小张', 'email' => 'zhang@test.com',  'password' => '111111', 'store_id' => 1, 'senior_id' => null, 'openid' => '111112', 'unionid' => '111112'],
-        ['id' => 3, 'name' => '小刘', 'email' => 'liu@test.com',    'password' => '111111', 'store_id' => 1, 'senior_id' => 2,    'openid' => '111113', 'unionid' => '111113'],
-        ['id' => 4, 'name' => '小红', 'email' => 'hong@test.com',   'password' => '111111', 'store_id' => 1, 'senior_id' => 3,    'openid' => '111114', 'unionid' => '111114'],
+        ['id' => 1, 'name' => 'Admin', 'email' =>'admin@test.com',    'mobile' =>  '13811111110', 'password' => '111111', 'openid' => '111110', 'unionid' => '111110'],
+        ['id' => 2, 'name' => '王业务员', 'email' => 'sales@test.com',   'mobile' => '13811111111',  'password' => '111111', 'senior_id' => null, 'openid' => '111111', 'unionid' => '111111', 'type' => User::SALESMAN],
+        ['id' => 3, 'name' => '张店长', 'email' => 'zhang@test.com',   'mobile' => '13811111112',  'password' => '111111', 'store_id' => 1, 'senior_id' => null, 'openid' => '111112', 'unionid' => '111112', 'type' => User::MANAGER],
+        ['id' => 4, 'name' => '小刘/店员', 'email' => 'liu@test.com',   'mobile' => '13811111113',    'password' => '111111', 'store_id' => 1, 'senior_id' => 2,    'openid' => '111113', 'unionid' => '111113', 'type' => User::CLERK],
+        ['id' => 5, 'name' => '老赵', 'email' => 'zhao@test.com',       'mobile' => '13811111114',  'password' => '111111', 'store_id' => 1, 'senior_id' => 3,    'openid' => '111114', 'unionid' => '111114', 'type' => User::CUSTOMER],
     ],
     'address' => [
-        [
-            'user_id' => 2,
-            'contact' => '小张',
-            'mobile' => '13322223333',
-            'province_id' => 2,
-            'city_id' => 16,
-            'district_id' => 228,
-            'street' => 'xxx路222号4-1',
-            'default' => true
-        ],
         [
             'user_id' => 3,
             'contact' => '小张',
@@ -90,6 +90,16 @@ return [
         ],
         [
             'user_id' => 4,
+            'contact' => '小张',
+            'mobile' => '13322223333',
+            'province_id' => 2,
+            'city_id' => 16,
+            'district_id' => 228,
+            'street' => 'xxx路222号4-1',
+            'default' => true
+        ],
+        [
+            'user_id' => 5,
             'contact' => '小张',
             'mobile' => '13322223333',
             'province_id' => 2,

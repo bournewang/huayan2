@@ -24,7 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('nickname', 32)->nullable();
             $table->string('avatar')->nullable();
             $table->integer('gender')->nullable();
-            $table->string('mobile', 24)->nullable()->index();
+            $table->string('mobile', 24)->nullable()->unique();
             $table->string('province', 32)->nullable();
             $table->string('city', 32)->nullable();
             $table->string('county', 32)->nullable();

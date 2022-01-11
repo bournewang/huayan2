@@ -46,7 +46,7 @@ class ServiceController extends ApiBaseController
         if ($user->store_id != $this->user->store_id) {
             return $this->sendError("您只能查看自己门店的数据");
         }
-        $data['titles'] = [__('Avatar'), __('Nickname'), __('Mobile'), __('Title'), __('Detail'), __('Amount')];
+        $data['titles'] = ['avatar' => __('Avatar'), 'nickname' => __('Nickname'), 'mobile' => __('Mobile'), 'title' => __('Title'), 'detail' => __('Detail'), 'amount' => __('Amount')];
         $data = array_merge($data, $this->paginateInfo($user->serviceOrders(), $request, 'display_info'));
         
         return $this->sendResponse($data);
