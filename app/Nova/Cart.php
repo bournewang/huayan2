@@ -8,8 +8,9 @@ use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
-
-class Cart
+use Pdmfc\NovaFields\ActionButton;
+use Gate;
+class Cart extends Resource
 {
     public static $model = \App\Models\Cart::class;
     public static $title = 'id';
@@ -30,6 +31,11 @@ class Cart
     {
         return view("nova::svg.".strtolower(explode('\\', self::class)[2]));
     }
+    
+    public static function availableForNavigation(Request $request): bool
+    {
+        return Gate::allows('viewIndex', \App\Models\User::class);
+    }    
     /**
      * Get the fields displayed by the resource.
      *
@@ -39,11 +45,15 @@ class Cart
     public function fields(Request $request)
     {
         return [
-            ID::make(__('ID'), 'id')->sortable(),
-            BelongsTo::make(__('User'), 'user', User::class),
+            // ID::make(__('ID'), 'id')->sortable(),
+            // BelongsTo::make(__('User'), 'user', Customer::class),
+            Text::make(__('Store'))->displayUsing(function(){return $this->store->name ?? null;}),
+            Text::make(__('User'))->displayUsing(function(){return $this->user->name ?? ($this->user->nickname ?? null);}),
             Text::make(__('Total Quantity'), 'total_quantity'),
-            Text::make(__('Total Price'), 'total_price'),
-            BelongsToMany::make(__('Goods'), 'goods', Goods::class)->fields(new Fields\CartItemFields)
+            $this->money(__('Total Price'), 'total_price'),
+            Text::make(__('Address'), 'address')->displayUsing(function(){return $this->store->display_address();})->exceptOnForms(),
+            ActionButton::make('')->action(Actions\PlaceOrder::class, $this->id)->text(__('Place Order'))->buttonColor("var(--danger)"),
+            BelongsToMany::make(__('Goods'), 'goods', Goods::class)->fields(new Fields\CartItemFields)->actions(function(){return null;})
         ];
     }
 
@@ -88,6 +98,8 @@ class Cart
      */
     public function actions(Request $request)
     {
-        return [];
+        return [
+            $this->actionButton(new Actions\PlaceOrder, 'Ordering', $request),
+        ];
     }
 }

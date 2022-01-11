@@ -3,7 +3,7 @@
 namespace App\Nova\Fields;
 
 use Laravel\Nova\Fields\Text;
-
+use Laravel\Nova\Fields\Currency;
 class CartItemFields
 {
     /**
@@ -14,9 +14,9 @@ class CartItemFields
     public function __invoke()
     {
         return [
-            Text::make(__('Price'), 'price'),//->displayUsing(function($val){return moneyformat( $val);}),
+            Currency::make(__('Price'), 'price')->currency('CNY'),//->displayUsing(function($val){return moneyformat( $val);}),
             Text::make(__('Quantity'), 'quantity'),
-            Text::make(__('Subtotal'), 'subtotal')//->displayUsing(function($val){return moneyformat( $val);})
+            Currency::make(__('Subtotal'), 'subtotal')->currency('CNY')//->displayUsing(function($val){return moneyformat( $val);})
         ];
     }
 }

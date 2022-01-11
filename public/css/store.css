@@ -120,7 +120,7 @@ div[dusk="stores-detail-component"] a[dusk="attach-button"] {
     display: block;
 }
 
-
+a.card-panel .p-6{padding: 16px;}
 
 .key-value-item textarea {
     height: 2em !important;

@@ -112,7 +112,7 @@ class Cart extends BaseModel
         $this->save();
     }
 
-    public function submit(Address $address=null, $date = null)
+    public function submit($address=null)
     {
         if (!$this->goods->first()){
             throw new ApiException(__('There is nothing in cart'), 400);
@@ -125,7 +125,7 @@ class Cart extends BaseModel
             'order_no'  => Carbon::now()->format('YmdGis').rand(100000,999999),
             'amount'    => $this->total_price,
             'contact'       => $address->contact,
-            'mobile'     => $address->mobile,
+            'mobile'        => $address->mobile,
             'province_id'   => $address->province_id,
             'city_id'       => $address->city_id,
             'district_id'   => $address->district_id,

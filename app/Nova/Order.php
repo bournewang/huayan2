@@ -65,8 +65,10 @@ class Order extends Resource
             BelongsTo::make(__('Store'), 'store', Store::class),
             BelongsTo::make(__('User'), 'user', User::class),
             Text::make(__('Order No'), 'order_no'),
-            Text::make(__('Amount'), 'amount'),
+            Text::make(__('Contact'), 'contact'),
+            Text::make(__('Mobile'), 'mobile'),
             $this->addressFields(),
+            $this->money(__('Amount'), 'amount'),
             Select::make(__('Status'), 'status')->options(\App\Models\Order::statusOptions())->displayUsingLabels(),
             
             Panel::make(__('Logistic'), [

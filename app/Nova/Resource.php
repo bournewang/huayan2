@@ -12,6 +12,7 @@ use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;
 use OptimistDigital\NovaDetachedFilters\NovaDetachedFilters;
 use OptimistDigital\NovaDetachedFilters\HasDetachedFilters;
+use Laravel\Nova\Fields\Currency;
 use App\Models\Province;
 use Emilianotisato\NovaTinyMCE\NovaTinyMCE;
 use Nikaia\Rating\Rating;
@@ -133,7 +134,14 @@ abstract class Resource extends NovaResource
             Text::make(__('Street'), 'street')->onlyOnForms(),  
             Text::make(__('Contact'), 'contact')->onlyOnForms()->nullable(),
             Text::make(__('Mobile'), 'mobile')->onlyOnForms()->nullable(),
-            Text::make(__('Address'), 'address')->displayUsing(function(){return $this->display_address();})->exceptOnForms(),
+            Text::make(__('Address'), 'address')->displayUsing(function(){return $this->display_address();})->onlyOnDetail(),
+            Text::make(__('Address'), 'address')->displayUsing(function(){
+                $s = $this->display_address();
+                if (mb_strlen($s) > 15) {
+                    return mb_substr($s, 0, 15) . '...';
+                }
+                return $s;
+            })->onlyOnIndex(),
         ]);
     }  
     
@@ -166,5 +174,20 @@ abstract class Resource extends NovaResource
                 'glow-color' => '#fff',
                 'text-class' => 'inline-block text-80 h-9 pt-2',
             ]);
+    }
+    
+    public function actionButton($action, $permission, $request)
+    {
+        return $action
+            ->canRun(function ($request, $user) {
+                return 1;//$request->user()->can($permission, $user);
+            })->canRun(function ($request, $user) {
+                return 1;//$request->user()->can($permission, $user);
+            });
+    }
+    
+    public function money($label, $field)
+    {
+        return Currency::make($label, $field)->currency('CNY');
     }
 }

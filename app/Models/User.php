@@ -245,4 +245,16 @@ class User extends Authenticatable implements HasMedia
         return $this->revenues()->where('year', $year)->where('index', $index)->first();
     }
     
+    public function getCart()
+    {
+        if (!$cart = $this->cart) {
+            $cart = Cart::create([
+                'store_id' => $this->store_id,
+                'user_id' => $this->id,
+                'total_quantity' => 0,
+                'total_price' => 0,
+            ]);
+        }
+        return $cart;
+    }
 }
