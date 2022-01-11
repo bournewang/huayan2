@@ -40,7 +40,7 @@ class MappController extends ApiBaseController
         $device = Device::where('device_name', $request->input('deviceName'))->first();
         ServiceOrder::create([
             'store_id' => $device->store_id ?? null,
-            'device_id' => $device->id,
+            'device_id' => $device->id ?? null,
             'user_id' => $user->id,
             'order_no' => $request->input('orderNo'),
             'title' => $request->input('orderTitle'),
