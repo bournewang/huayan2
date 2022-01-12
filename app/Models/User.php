@@ -215,6 +215,8 @@ class User extends Authenticatable implements HasMedia
     public function info()
     {
         $attrs = [
+            'id',
+            'type',
             'name', 
             'openid',
             'unionid',
