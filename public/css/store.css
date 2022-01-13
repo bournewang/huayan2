@@ -120,6 +120,12 @@ div[dusk="stores-detail-component"] a[dusk="attach-button"] {
     display: block;
 }
 
+button.group-control[dusk="collapse-group"] {
+    display: none;
+}
+
+table.vxe-table--body{margin-bottom: 5em;}
+
 a.card-panel .p-6{padding: 16px;}
 
 .key-value-item textarea {

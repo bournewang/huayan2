@@ -94,7 +94,7 @@ class Store extends BaseModel
     
     public function customers()
     {
-        return $this->users()->where('type', User::CUSTOMER);
+        return $this->users()->where('type', User::CUSTOMER)->get();
     }
     
     public function roots()

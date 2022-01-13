@@ -84,6 +84,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         return [
             new \Anaseqal\NovaSidebarIcons\NovaSidebarIcons,
             new \Anaseqal\NovaImport\NovaImport,
+            new \Yukun\SalesOrder\SalesOrder,
             \Vyuldashev\NovaPermission\NovaPermissionTool::make()
                 ->rolePolicy(\App\Policies\RootPolicy::class)
                 ->permissionPolicy(\App\Policies\RootPolicy::class),

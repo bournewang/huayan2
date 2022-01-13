@@ -3,6 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SalesController;
+use App\Http\Controllers\Ajax\GoodsController;
+use App\Http\Controllers\Ajax\SalesOrderController;
+use App\Http\Controllers\Ajax\CustomerController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,3 +28,14 @@ Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']
 
 Route::post('login',  [LoginController::class, 'authLogin'])->name('mall.login');
 Route::get('sales/{id}/relation', [SalesController::class, 'relation']);
+
+Route::group(['prefix' => 'ajax'], function(){
+    Route::get('customers',     [CustomerController::class, 'index']);
+    Route::get('goods',         [GoodsController::class, 'index']);
+    Route::get('goods/options', [GoodsController::class, 'options']);
+    Route::post('sales-orders',             [SalesOrderController::class, 'create']);
+    Route::get ('sales-orders/{id}',        [SalesOrderController::class, 'show']);
+    Route::post('sales-orders/calculate',   [SalesOrderController::class, 'calculate']);
+    
+    
+});

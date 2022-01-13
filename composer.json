@@ -36,7 +36,9 @@
         "unisharp/laravel-filemanager": "^2.3",
         "vladimir-yuldashev/laravel-queue-rabbitmq": "^11.3",
         "vyuldashev/nova-permission": "^3.0",
-        "wesselperik/nova-status-field": "^1.2"
+        "wesselperik/nova-status-field": "^1.2",
+        "whitecube/nova-flexible-content": "^0.2.8",
+        "yukun/sales-order": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
@@ -95,6 +97,10 @@
         "nova": {
             "type": "path",
             "url": "./nova"
+        },
+        "0": {
+            "type": "path",
+            "url": "./nova-components/SalesOrder"
         }
     }
 }
