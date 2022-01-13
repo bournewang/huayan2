@@ -56,7 +56,9 @@ class SalesOrder extends BaseModel
     
     public function detail()
     {
-        return $this->info();
+        return array_merge($this->info(), [
+            'total_price_label' => money($this->total_price)
+        ]);
     }
 }
 

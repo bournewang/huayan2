@@ -19,16 +19,21 @@ class SalesOrderController extends AppBaseController
         foreach ($request->input('items') as $row) {
             $item = $row['attributes'];
             if ($good = Goods::find($item['goods_id'] ?? null)) {
-                $total_quantity += ($item['quantity'] ?? 0);
-                $total_price += $good->price * ($item['quantity'] ?? 0);
+                $quantity = ($item['quantity'] ?? 0);
+                if ($quantity > 0) {
+                    $total_quantity += $quantity;
+                    $total_price += $good->price * $quantity;
+                    
+                    $items[] = $row;
+                }
             }
-            // $items[] = ['layout' => 'items', 'key' => md5($user->id.time()), 'attributes' => $item];
         }
         $data = array_merge($request->all(), [
             'store_id' => $user->store_id,
             'user_id' => $user->id,
             'total_quantity' => $total_quantity,
             'total_price' => $total_price,
+            'items' => $items
         ]);
         \Log::debug($data);
         if ($id = $request->input('id')) {
@@ -64,9 +69,11 @@ class SalesOrderController extends AppBaseController
                 $total_price += $good->price * ($item['quantity'] ?? 0);
             }
         }
+        $total_price = round($total_price, 2);
         return $this->sendResponse([
             'total_quantity' => $total_quantity,
-            'total_price' => round($total_price, 2),
+            'total_price' => $total_price,
+            'total_price_label' => money($total_price)
         ]);
     }
     

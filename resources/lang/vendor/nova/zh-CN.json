@@ -5,6 +5,8 @@
     "Image": "图片",
     "Price": "价格",
     "Quantity": "数量",
+    "Subtotal": "小计",
+    "Total": "合计",
     "Paid Price": "实付",
     "Comment": "备注",
     "Total Quantity": "合计件数",
