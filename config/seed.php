@@ -12,7 +12,8 @@ return [
     'resources' => [
         "Address","Banner","BaseModel","Cart","Category","City","Clerk",
         "Customer","Device","District","Example","Expert","Goods","Logistic","Order",
-        "Province","Revenue","Salesman","Setting","Store","Supplier","User",        
+        "Province","Revenue","Salesman","Setting","Store","Supplier","User",   
+        "PurchaseOrder","SalesOrder",
     ],
     'roles' => [
         User::SALESMAN => [
@@ -25,12 +26,16 @@ return [
             "Index ServiceOrder", "View ServiceOrder", 
             "View Review", 
             "Index Goods", "View Goods",
+            'Index PurchaseOrder',  'Create PurchaseOrder', 'View PurchaseOrder', 'Update PurchaseOrder', 'Delete PurchaseOrder',
+            'Index SalesOrder',     'Create SalesOrder',    'View SalesOrder', 'Update SalesOrder', 'Delete SalesOrder',
             "View Cart"
         ],
         User::CLERK => [
             "Index Customer", "View Customer", 
             "Index Order", "View Order", 
             "Index Goods", "View Goods",
+            'Index PurchaseOrder',  'Create PurchaseOrder', 'View PurchaseOrder', 'Update PurchaseOrder',
+            'Index SalesOrder',     'Create SalesOrder',    'View SalesOrder', 'Update SalesOrder', 
             "View Cart"
         ],
     ],

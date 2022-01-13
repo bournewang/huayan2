@@ -4,39 +4,35 @@ namespace App\Nova;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Review extends Resource
+class Example extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Review::class;
-
+    public static $model = \App\Models\Example::class;
+    public static function label()
+    {
+        return __('Example');
+    }
+    public static function group()
+    {
+        return __("Chain Store");
+    }
+    public static function icon()
+    {
+        return null;//view("nova::svg.".strtolower(explode('\\', self::class)[2]));
+    }
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
     public static $title = 'id';
-    public static function label()
-    {
-        return __("Review");
-    }
-    
-    public static function group()
-    {
-        return __("Mall");
-    }
-    
-    public static function icon()
-    {
-        return view("nova::svg.".strtolower(explode('\\', self::class)[2]));
-    }
+
     /**
      * The columns that should be searched.
      *
@@ -55,11 +51,7 @@ class Review extends Resource
     public function fields(Request $request)
     {
         return [
-            // ID::make(__('ID'), 'id')->sortable(),
-            BelongsTo::make(__('Order'), 'order', Order::class),
-            $this->ratingField(),
-            Text::make(__('Review'), 'comment'),
-            $this->mediaField(__('Image'), 'photo')
+            ID::make(__('ID'), 'id')->sortable(),
         ];
     }
 
@@ -69,10 +61,10 @@ class Review extends Resource
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function cards(Request $request)
-    {
-        return [];
-    }
+    // public function cards(Request $request)
+    // {
+    //     return [];
+    // }
 
     /**
      * Get the filters available for the resource.

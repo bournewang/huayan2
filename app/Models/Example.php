@@ -1,15 +1,12 @@
 <?php
-
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Example extends Model
+class Example extends BaseModel
 {
-    use SoftDeletes;
-    
-    protected $primaryKey = 'id';
+    use HasFactory;
     
     public $table = 'examples';
 

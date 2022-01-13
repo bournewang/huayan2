@@ -23,6 +23,7 @@ class GoodsImport extends ModelImport
             'brand'         => $row['品牌'],
             'price'         => $row['价格'],
             'price_ori'     => $row['原价'],
+            'price_purchase' => $row['采购价'],
             'qty'           => $row['库存'], 
             'detail'        => $row['详情'],
             'status'        => $status[$row['状态']] ?? null,

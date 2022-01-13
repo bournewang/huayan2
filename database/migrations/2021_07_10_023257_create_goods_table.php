@@ -22,6 +22,7 @@ class CreateGoodsTable extends Migration
             // $table->string('type')->nullable();
             $table->string('brand')->nullable();
             $table->decimal('price_ori', 8, 2)->nullable();
+            $table->decimal('price_purchase', 8, 2)->nullable();
             $table->decimal('price', 8, 2)->nullable();
             $table->text('detail')->nullable();
             $table->enum('status', array_keys((new App\Models\Goods)->statusOptions()))->nullable();

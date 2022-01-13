@@ -10,13 +10,16 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Laravel\Nova\Fields\File;
+use Laravel\Nova\Fields\Text;
+
+// use App\Imports\PurchaseOrdersImport;
 use Maatwebsite\Excel\Facades\Excel;
 
-trait ImportModels 
+class ImportPurchaseOrders extends Action
 {
     use InteractsWithQueue, Queueable, SerializesModels;
-    // public $model = '';
-    // public $import_class = '';
+    public $withoutConfirmation = true;
+    
     public function shownOnIndex()
     {
         return true;
@@ -32,7 +35,7 @@ trait ImportModels
      * @return string
      */
     public function name() {
-        return __('Import');//.explode('\\', $this->model)[2]);
+        return __('New') . __('PurchaseOrder');
     }
 
     /**
@@ -40,7 +43,7 @@ trait ImportModels
      */
     public function uriKey() :string
     {
-        return 'import-'.strtolower(explode('\\', $this->model)[2]);
+        return 'import-purchase-orders';
     }
 
     /**
@@ -51,9 +54,7 @@ trait ImportModels
      */
     public function handle(ActionFields $fields)
     {
-        Excel::import(new $this->import_class, $fields->file);
-
-        return Action::message('It worked!');
+        return Action::push("/sales-orders?order_type=purchase-orders");
     }
 
     /**
@@ -63,9 +64,6 @@ trait ImportModels
      */
     public function fields()
     {
-        return [
-            File::make(__('File'), 'file')
-                ->rules('required'),
-        ];
+        return [];
     }
 }

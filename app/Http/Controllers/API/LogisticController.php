@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Models\Order;
+use App\Models\PurchaseOrder;
 use App\Models\Logistic;
 use App\Models\LogisticProgress;
 
@@ -21,12 +22,16 @@ class LogisticController extends ApiBaseController
                 \Log::error("logistic $com not exists");
                 return "logistic $com not exists";
             }
-            if (!$model = Order::where('logistic_id', $log->id)->where('waybill_number', $nu)->first()) {
-                \Log::error("order with logistic/waybill_number $com/$nu not exists");
-                return "order with logistic/waybill_number $com/$nu not exists";
+            if ($model = Order::where('logistic_id', $log->id)->where('waybill_number', $nu)->first()) {
+                // \Log::error("order with logistic/waybill_number $com/$nu not exists");
+            }elseif ($model = PurchaseOrder::where('logistic_id', $log->id)->where('waybill_number', $nu)->first() ) {
+                
+            }else{
+                return "(purchase)order with logistic/waybill_number $com/$nu not exists";
             }
             
             $data = json_decode(json_encode($res), 1);
+            $data['order_type'] = get_class($model);
             $data['order_id'] = $model->id;
             $data['updated_at'] = $data['updateStr'];
             // $data['data'] = json_encode($data['data']);

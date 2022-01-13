@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Ajax;
 
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
-use App\Models\SalesOrder;
+use App\Models\PurchaseOrder;
 use App\Models\Goods;
 use Auth;
 
-class SalesOrderController extends AppBaseController
+class PurchaseOrderController extends AppBaseController
 {
     public function create(Request $request)
     {
@@ -22,7 +22,7 @@ class SalesOrderController extends AppBaseController
                 $quantity = ($item['quantity'] ?? 0);
                 if ($quantity > 0) {
                     $total_quantity += $quantity;
-                    $total_price += $good->price * $quantity;
+                    $total_price += $good->price_purchase * $quantity;
                     
                     $items[] = $row;
                 }
@@ -37,19 +37,19 @@ class SalesOrderController extends AppBaseController
         ]);
         \Log::debug($data);
         if ($id = $request->input('id')) {
-            if ($sales_order = SalesOrder::find($id))
-                $sales_order->update($data);
+            if ($purchase_order = PurchaseOrder::find($id))
+                $purchase_order->update($data);
         }else{
-            $sales_order = SalesOrder::create($data);
+            $purchase_order = PurchaseOrder::create($data);
         }
         
-        return $this->sendResponse(['id' => $sales_order->id]);
+        return $this->sendResponse(['id' => $purchase_order->id]);
     }
     
     public function show($id)
     {
-        if (!$order = SalesOrder::find($id)) {
-            return $this->sendError("no sales order found");
+        if (!$order = PurchaseOrder::find($id)) {
+            return $this->sendError("no purchase order found");
         }
         return $this->sendResponse($order->detail());
     }    

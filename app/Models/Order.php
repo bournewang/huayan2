@@ -112,7 +112,7 @@ class Order extends BaseModel
     
     public function logisticProgress()
     {
-        return $this->hasOne(LogisticProgress::class);
+        return $this->morphOne(LogisticProgress::class, 'order');
     }
     
     public function review()

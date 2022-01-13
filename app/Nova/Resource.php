@@ -21,6 +21,7 @@ abstract class Resource extends NovaResource
     use HasDetachedFilters;
     public static $tableStyle = 'tight';
     public static $showColumnBorders = true;
+    public static $preventFormAbandonment = true;
     public static $orderBy = [
         'id' => 'desc'
     ];

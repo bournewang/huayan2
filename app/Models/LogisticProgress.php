@@ -10,6 +10,7 @@ class LogisticProgress extends Model
     use HasFactory;
     
     protected $fillable = [
+        'order_type',
         'order_id',
         'queryTimes',
         'fee_num',
@@ -28,6 +29,7 @@ class LogisticProgress extends Model
     ];
     
     protected $casts = [
+        'order_type' => 'string',
         'order_id' => 'integer',
         'queryTimes' => 'integer',
         'fee_num' => 'integer',
@@ -47,7 +49,7 @@ class LogisticProgress extends Model
     
     public function order()
     {
-        return $this->belongsTo(Order::class);
+        return $this->morphTo();
     }
     
     public function detail()

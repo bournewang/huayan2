@@ -15,6 +15,7 @@ class CreateLogisticProgressTable extends Migration
     {
         Schema::create('logistic_progress', function (Blueprint $table) {
             $table->id();
+            $table->string('order_type', 32);
             $table->bigInteger('order_id')->unsigned();
             // $table->bigInteger('logistic_id')->unsigned();
             $table->integer('queryTimes')->nullable();
@@ -34,7 +35,7 @@ class CreateLogisticProgressTable extends Migration
             $table->text('data')->nullable();
             $table->timestamps();
             
-            $table->foreign('order_id')->references('id')->on('orders');  
+            // $table->foreign('order_id')->references('id')->on('orders');  
             // $table->foreign('logistic_id')->references('id')->on('logistics');  
         });
     }

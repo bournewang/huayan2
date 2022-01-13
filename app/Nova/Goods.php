@@ -16,9 +16,6 @@ use Laravel\Nova\Fields\Select;
 use Pdmfc\NovaFields\ActionButton;
 use App\Helpers\StoreHelper;
 use OptimistDigital\NovaDetachedFilters\NovaDetachedFilters;
-use Jubeki\Nova\Cards\Linkable\Linkable;
-use Jubeki\Nova\Cards\Linkable\LinkableAway;
-use Jubeki\Nova\Cards\Linkable\LinkableRouter;
 
 class Goods extends Resource
 {
@@ -67,6 +64,8 @@ class Goods extends Resource
             Text::make(__('Stock'), 'qty')->sortable()->rules('required', 'max:255'),
             Text::make(__('Brand'), 'brand')->sortable()->nullable()->hideFromIndex(),
             $this->money(__('Price'), 'price')->sortable()->nullable(),
+            $this->money(__('Price Original'), 'price_ori')->sortable()->nullable(),
+            $this->money(__('Price Purchase'), 'price_purchase')->sortable()->nullable(),
             Select::make(__('Status'), 'status')->options((new \App\Models\Category)->statusOptions())->onlyOnForms(),
             Text::make(__('Status'))->displayUsing(function(){return $this->statusRichLabel();})->asHtml()->exceptOnForms(),
             ActionButton::make(__('Add To Cart'))->action(Actions\AddToCart::class, $this->id)->text(__('Add To Cart')),
@@ -74,25 +73,7 @@ class Goods extends Resource
             $this->mediaField(__('Detail'), 'detail'),
         ];
     }
-
-    public function cards(Request $request)
-    {
-        $cart = $request->user()->getCart();
-        $brief = [];
-        foreach ($cart->goods as $good){
-            $brief[] = $good->name . 'x' . $good->pivot->quantity . ' ' . $good->pivot->subtotal;
-        }
-        return [
-            (new NovaDetachedFilters($this->detachedFilters($request)))->withReset()->width('1/3'),
-            (new LinkableRouter)
-            ->title(__('Cart'))
-            ->url('{"name": "detail", "params": {"resourceName": "carts", "resourceId": '.$cart->id.'}}')
-            // ->subtitle( . "件商品")
-            // ->width('1/3 ')
-            // ->withMeta(['class' => 'linkable']),
-            
-        ];
-    }  
+ 
     /**
      * Get the filters available for the resource.
      *

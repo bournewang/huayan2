@@ -1,14 +1,27 @@
 <template>
     <div>
-        <heading class="mb-6">{{__('Sales Order')}} </heading>
+        <heading class="mb-6">{{order_type == 'sales-orders' ? __('Sales Order') : __('Purchase Order')}}</heading>
         
         <card class="flex flex-col mb-8 items-center justify-left" style="min-height: 300px">
             <div class="flex border-b border-40 w-full">
                 <div class="px-8 py-2 w-1/5">
+                    <label for="customer" class="inline-block text-80 pt-2 leading-tight">{{__('Store')}}&nbsp;<!----></label>
+                </div> 
+                <div class="py-2 px-8 w-1/2">{{user_info.store_name}}</div>
+            </div>
+            <div class="flex border-b border-40 w-full">
+                <div class="px-8 py-2 w-1/5">
+                    <label for="customer" class="inline-block text-80 pt-2 leading-tight">{{__('Form Maker')}}&nbsp;<!----></label>
+                </div> 
+                <div class="py-2 px-8 w-1/2">{{user_info.name}}{{user_info.mobile}}</div>
+            </div>
+            <span class="text text-danger">{{error}}</span>
+            <div class="flex border-b border-40 w-full" v-if="order_type == 'sales-orders'">
+                <div class="px-8 py-2 w-1/5">
                     <label for="customer" class="inline-block text-80 pt-2 leading-tight">{{__('Customer')}}&nbsp;<!----></label>
                 </div> 
                 <div class="py-2 px-8 w-1/2">
-                    <v-select class="" name="" v-model="sales_order.customer_id" v-if="customers" :options="customers" :reduce="item => item.id" label="name">
+                    <v-select class="" name="" v-model="order.customer_id" v-if="customers" :options="customers" :reduce="item => item.id" label="name">
                     </v-select>
                 </div>
             </div>
@@ -21,7 +34,7 @@
                         class="w-full" 
                         ref="xTable"
                         :footer-method="footerMethod"
-                        :data="sales_order.items" 
+                        :data="order.items" 
                         :edit-config="{trigger: 'click', mode: 'row'}">
                         <vxe-column type="seq" :title="__('Index No')" width="10%">
                             <template #default="{ row }">
@@ -54,7 +67,7 @@
                         </vxe-column>
                         <vxe-column field="num6" :title="__('Price')" width="10%">
                             <template #default="{ row }">
-                                <span>¥{{goodsInfo(row.attributes.goods_id, 'price')}}</span>
+                                <span>¥{{price(row.attributes.goods_id)}}</span>
                             </template>
                         </vxe-column>
                         <vxe-column field="num6" :title="__('Quantity')" :edit-render="{immediate: true}" width="15%">
@@ -73,19 +86,18 @@
                     </vxe-table>   
                 </div>        
             </div>   
-            
-                          
-            <div class="flex border-b border-40 w-full">
+
+            <div class="flex border-b border-40 w-full" v-if="order_type == 'sales-orders'">    
                 <div class="px-8 py-2 w-1/5">
                     <label for="paid_price" class="inline-block text-80 pt-2 leading-tight">{{__('Paid Price')}}&nbsp;<!----></label>
                 </div> 
-                <div class="py-2 px-8 w-1/2"><input v-model="sales_order.paid_price" v-on:keyup.enter="submit" id="paid_price" dusk="paid_price" list="paid_price-list" type="text" :placeholder="__('Paid Price')" class="w-full form-control form-input form-input-bordered"></div>
+                <div class="py-2 px-8 w-1/2"><input v-model="order.paid_price" v-on:keyup.enter="submit" id="paid_price" dusk="paid_price" list="paid_price-list" type="text" :placeholder="__('Paid Price')" class="w-full form-control form-input form-input-bordered"></div>
             </div> 
             <div class="flex border-b border-40 w-full">
                 <div class="px-8 py-2 w-1/5">
                     <label for="comment" class="inline-block text-80 pt-2 leading-tight">{{__('Comment')}}&nbsp;<!----></label>
                 </div> 
-                <div class="py-2 px-8 w-1/2"><textarea v-model="sales_order.comment" rows="3" id="comment" dusk="comment" list="paid_price-list" type="text" :placeholder="__('Comment')" class="w-full form-control form-input form-input-bordered"/></div>
+                <div class="py-2 px-8 w-1/2"><textarea v-model="order.comment" rows="3" id="comment" dusk="comment" list="paid_price-list" type="text" :placeholder="__('Comment')" class="w-full form-control form-input form-input-bordered"/></div>
             </div> 
             
             <!-- <button type="button" name="button" class="btn btn-default" @click="cancel">{{__('Cancel')}}</button>     -->
@@ -98,7 +110,7 @@
             <div class="py-2 px-8 w-1/2 flex items-center">
                 <a tabindex="0" @click="cancel" class="btn btn-link dim cursor-pointer text-80 ml-auto mr-6">{{__('Cancel')}}</a> 
                 <button type="submit" @click="submit" class="btn btn-default btn-primary inline-flex items-center relative" dusk="update-button"><span class="">
-                    {{(this.sales_order.id ? __('Update') : __('New')) + __('Sales Order')}} </span> <!---->
+                    {{(this.order.id ? __('Update') : __('New')) + __('Sales Order')}} </span> <!---->
                 </button>
             </div>
         </div>   
@@ -112,10 +124,12 @@ export default {
     components: {"v-select": vSelect},
     data: function(){
         return {
-            sales_order: {total_quantity: 0, total_price:0, total_price_label: "", items:[]},
+            order: {total_quantity: 0, total_price:0, total_price_label: "", items:[]},
             goods_detail: null,
             goods_options: [],
             customers: [],
+            user_info: {},
+            order_type: null //order or purchase_order
         }
     },
     metaInfo() {
@@ -124,22 +138,22 @@ export default {
     },
     methods: {
         initRow(){
-            return {layout: "items", key: Math.random(), attributes: {quantity: 0}}
+            return {layout: "items", key: Math.random(), attributes: {quantity: 1}}
         },
         addItem(key){
-            for (var i=0; i<this.sales_order.items.length; i++) {
-                if (this.sales_order.items[i].key == key) {
-                    this.sales_order.items.splice(i+1,0,this.initRow())
+            for (var i=0; i<this.order.items.length; i++) {
+                if (this.order.items[i].key == key) {
+                    this.order.items.splice(i+1,0,this.initRow())
                     return;
                 }
             }
-            this.sales_order.items.splice(0,0, this.initRow())
+            this.order.items.splice(0,0, this.initRow())
         },
         deleteItem(key) {
             // find index
-            for (var i=0; i<this.sales_order.items.length; i++) {
-                if (this.sales_order.items[i].key == key) {
-                    this.sales_order.items.splice(i,1)
+            for (var i=0; i<this.order.items.length; i++) {
+                if (this.order.items[i].key == key) {
+                    this.order.items.splice(i,1)
                     return;
                 }
             }
@@ -153,27 +167,31 @@ export default {
             $table.updateFooter()            
         },
         calculate(){
-            this.axios.post('/ajax/sales-orders/calculate', {goods: this.sales_order.items}).then((response) => {
+            this.axios.post('/ajax/'+this.order_type+'/calculate', {goods: this.order.items}).then((response) => {
                 console.log(response.data)
                 if (response.data.success) {
                     var data = response.data.data
-                    this.$set(this.sales_order, 'total_quantity', data.total_quantity)
-                    this.$set(this.sales_order, 'total_price', data.total_price)
-                    this.$set(this.sales_order, 'total_price_label', data.total_price_label)
+                    this.$set(this.order, 'total_quantity', data.total_quantity)
+                    this.$set(this.order, 'total_price', data.total_price)
+                    this.$set(this.order, 'total_price_label', data.total_price_label)
                 }
             })
         },
-        
+        price(goods_id) {
+            var key = (this.order_type == 'sales-orders') ? 'price' : 'price_purchase'
+            return this.goodsInfo(goods_id, key)
+        },
         sumNum (list, field) {
           let count = 0
           list.forEach(item => {
-            count += Number(item.attributes[field])
+              if (!item.attributes.goods_id)return;
+              count += Number(item.attributes[field])
           })
           return count
         },
         subtotal (row) {
             if (!row.attributes.goods_id)return null;
-            return (this.goodsInfo(row.attributes.goods_id, 'price') * row.attributes.quantity).toFixed(2)
+            return (this.price(row.attributes.goods_id) * row.attributes.quantity).toFixed(2)
         },
         totalAmount (data) {
           let count = 0
@@ -189,10 +207,10 @@ export default {
                     return '合计'
                   }
                   if (columnIndex === 4) {
-                    // return `${this.sales_order.total_quantity} 件`
+                    // return `${this.order.total_quantity} 件`
                     return `${this.sumNum(data, 'quantity')} 件`
                 } else if (columnIndex === 5) {
-                    // return `${this.sales_order.total_price_label} `
+                    // return `${this.order.total_price_label} `
                     return `¥${this.totalAmount(data)}`
                   }
                   return '-'
@@ -200,32 +218,37 @@ export default {
               ]
           },
         cancel(){
-            if (this.sales_order.id) {
-                this.$router.push({path: '/resources/sales-orders/'+this.sales_order.id})
+            if (this.order.id) {
+                this.$router.push({path: '/resources/'+this.order_type+'/'+this.order.id})
             }else{
-                this.$router.push({path: '/resources/sales-orders'})
+                this.$router.push({path: '/resources/'+this.order_type})
             }
         },
         submit(){
-            this.axios.post('/ajax/sales-orders', this.sales_order).then((response) => {
+            this.axios.post('/ajax/'+this.order_type, this.order).then((response) => {
                 console.log(response.data.data)
                 if (response.data.success) { 
-                    this.$router.push({path: '/resources/sales-orders/'+response.data.data.id})
+                    this.$router.push({path: '/resources/'+this.order_type+'/'+response.data.data.id})
                 }
             })
         }
     },
     mounted() {
         //
+        if (!this.$route.query.order_type){
+            // return alert("no order_type select")
+            this.error = "no order_type select"
+        }
+        this.order_type = this.$route.query.order_type
         if (this.$route.query.id) {
-            this.axios.get('/ajax/sales-orders/'+this.$route.query.id).then((response) => {
+            this.axios.get('/ajax/'+this.order_type+'/'+this.$route.query.id).then((response) => {
                 if (response.data.success) {
-                    this.sales_order = response.data.data
+                    this.order = response.data.data
                     this.updateFooterEvent()
                 }
             })
         }else{
-            this.sales_order.items.push(this.initRow())
+            this.order.items.push(this.initRow())
         }
         this.axios.get('/ajax/customers').then((response) => {
             console.log(response.data.success)
@@ -244,6 +267,12 @@ export default {
                 this.goods_options = response.data.data
             }
         })
+        this.axios.get('/ajax/user/info').then((response) => {
+            if (response.data.success) {
+                this.user_info = response.data.data
+            }
+        })
+        
     },
 }
 import 'vue-select/dist/vue-select.css';

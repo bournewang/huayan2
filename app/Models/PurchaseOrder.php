@@ -1,23 +1,26 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Auth;
-class SalesOrder extends BaseModel
+
+class PurchaseOrder extends BaseModel
 {
     use HasFactory;
     
-    public $table = 'sales_orders';
+    public $table = 'purchase_orders';
+
     protected $dates = ['deleted_at'];
     protected $fillable = [
         'store_id',
         'user_id',
-        'customer_id',
         'order_no',
         'total_quantity',
         'total_price',
-        'paid_price',
+        'logistic_id',
+        'waybill_number',
+        'status',
         'items',
         'comment'
     ];
@@ -25,15 +28,16 @@ class SalesOrder extends BaseModel
     protected $casts = [
         'store_id' => 'integer',
         'user_id' => 'integer', 
-        'customer_id' => 'integer',
         'order_no' => 'string',
         'total_quantity' => 'float',
         'total_price' => 'float',
-        'paid_price' => 'float',
+        'logistic_id' => 'integer',
+        'waybill_number' => 'string',
+        'status' => 'string',
         'items' => 'array',
-        'comment' => 'string',
+        'comment' => 'string'
     ];
-        
+    
     public static function boot()
     {
         parent::boot();
@@ -44,25 +48,44 @@ class SalesOrder extends BaseModel
         });
         static::updating(function($instance) {
         });
-    }        
+    }       
+    const PURCHASING = 'purchasing';
+    const SHIPPED = 'shipped';
+    const IMPORTED = 'imported';    
+    const CANCELED = 'canceled';
+    
+    static public function statusOptions()
+    {
+        return [
+            self::PURCHASING    => __(ucfirst(self::PURCHASING)),
+            self::SHIPPED       => __(ucfirst(self::SHIPPED)),
+            self::IMPORTED      => __(ucfirst(self::IMPORTED)),
+            self::CANCELED      => __(ucfirst(self::CANCELED)),
+        ];
+    }
+    
+    public function statusLabel()
+    {
+        return self::statusOptions()[$this->status];
+    }
+    
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-    public function customer()
+    
+    public function logisticProgress()
     {
-        return $this->belongsTo(Customer::class);
+        return $this->morphOne(LogisticProgress::class, 'order');
     }
     
     public function store()
     {
         return $this->belongsTo(Store::class);
-    }  
+    }    
     
     public function detail()
     {
         return $this->info();
-    }
+    }        
 }
-
-

@@ -1,6 +1,6 @@
 <?php
 // use Cache;
-
+use Carbon\Carbon;
 function cache1($tags, $key, $callback, $expires = null)
 {
     // \Log::debug(__FUNCTION__);
@@ -64,4 +64,9 @@ function benchmark_end($request = null)
         \Log::debug("url: ".$request->fullUrl());
         \Log::debug("http://xhprof.local/index.php?run=$run_id&source=xhprof_foo");
     }
+}
+
+function new_order_no()
+{
+    return Carbon::now()->format('YmdGis').rand(100000,999999);
 }

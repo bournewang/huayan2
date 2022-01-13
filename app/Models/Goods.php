@@ -27,6 +27,7 @@ class Goods extends BaseModel
         'type',
         'brand',
         'price',
+        'price_purchase',
         'price_ori',
         'detail',
         'status'
@@ -40,6 +41,7 @@ class Goods extends BaseModel
         'type' => 'string',
         'brand' => 'string',
         'price' => 'float',
+        'price_purchase'=> 'float',
         'detail' => 'string',
     ];
     public static $rules = [

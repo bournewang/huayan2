@@ -32,7 +32,11 @@ class Customer extends Resource
      *
      * @var string
      */
-    public static $title = 'id';
+    // public static $title = 'mobile';
+    public function title()
+    {
+        return ($this->name ?? $this->nickname) . $this->mobile;
+    }
 
     /**
      * The columns that should be searched.
@@ -40,7 +44,7 @@ class Customer extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'id', 'name', 'nickname', 'mobile'
     ];
 
     /**
