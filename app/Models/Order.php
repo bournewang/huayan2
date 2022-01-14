@@ -10,6 +10,7 @@ class Order extends BaseModel
 {
     use SoftDeletes;
     use AddressTrait;
+    use ShipTrait;
     
     public $table = 'orders';
 
@@ -105,35 +106,9 @@ class Order extends BaseModel
         return $this->belongsToMany(Goods::class)->withPivot('quantity', 'price', 'subtotal');
     }
     
-    public function logistic()
-    {
-        return $this->belongsTo(Logistic::class);
-    }
-    
-    public function logisticProgress()
-    {
-        return $this->morphOne(LogisticProgress::class, 'order');
-    }
-    
     public function review()
     {
         return $this->hasOne(Review::class);
-    }
-    
-    public function deliver($logistic, $num)
-    {
-        $this->update([
-            'status' => self::SHIPPED,
-            'ship_status' => 1, // no record
-            'logistic_id' => $logistic->id,
-            'waybill_number' => $num
-        ]);
-        ExpressHelper::query($logistic->code, $num, $logistic->code == 'shunfeng' ? substr($this->mobile, -4) : null);
-    }
-    
-    public function receive()
-    {
-        $this->update(['status' => self::COMPLETE]);
     }
     
     public function display_info()

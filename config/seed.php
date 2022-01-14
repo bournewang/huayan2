@@ -9,16 +9,31 @@ return [
         'ggz17zg9nAJ' => ['Graphene_G0001', 'Graphene_G0002', 'Graphene_G0003'],
         'ggz1JU0WNFH' => ['JQR_0003', 'JQR_0004', 'JQR_0005']
     ],
+    // resource to build permissions of View/Create/Update/Delete/ForceDelete
+    // new resource must put here
     'resources' => [
         "Address","Banner","BaseModel","Cart","Category","City","Clerk",
         "Customer","Device","District","Example","Expert","Goods","Logistic","Order",
-        "Province","Revenue","Salesman","Setting","Store","Supplier","User",   
-        "PurchaseOrder","SalesOrder",
+        "Province","Revenue","Salesman","Setting","Store","Supplier","User",
+        "Review", "PurchaseOrder","SalesOrder","Stock", "StockItem"
+    ],
+    // special permissions
+    'permissions' => [
+        'Delivery', 'StockImport'
     ],
     'roles' => [
         User::SALESMAN => [
-            "View Store", "View Device", "View Order"
+            "Index Store", "View Store", 
+            "Index Device", "View Device", 
+            "Index Order", "View Order",
+            "View"
         ],
+        // User::WAREHOUSE_KEEPER => [
+        // 
+        // ],
+        // User::FINANCIAL => [
+        // 
+        // ],
         User::MANAGER => [
             "Index Customer", "View Customer", 
             "Index Clerk", "View Clerk", 
@@ -26,8 +41,10 @@ return [
             "Index ServiceOrder", "View ServiceOrder", 
             "View Review", 
             "Index Goods", "View Goods",
-            'Index PurchaseOrder',  'Create PurchaseOrder', 'View PurchaseOrder', 'Update PurchaseOrder', 'Delete PurchaseOrder',
-            'Index SalesOrder',     'Create SalesOrder',    'View SalesOrder', 'Update SalesOrder', 'Delete SalesOrder',
+            'Index PurchaseOrder',  'View PurchaseOrder',   'Delete PurchaseOrder', 'StockImport',
+            'Index SalesOrder',     'View SalesOrder',      'Delete SalesOrder',
+            'View Stock',
+            'Index StockItem', 'View StockItem',
             "View Cart"
         ],
         User::CLERK => [
@@ -36,6 +53,8 @@ return [
             "Index Goods", "View Goods",
             'Index PurchaseOrder',  'Create PurchaseOrder', 'View PurchaseOrder', 'Update PurchaseOrder',
             'Index SalesOrder',     'Create SalesOrder',    'View SalesOrder', 'Update SalesOrder', 
+            'Index Stock', 'View Stock',
+            'Index StockItem', 'View StockItem',
             "View Cart"
         ],
     ],

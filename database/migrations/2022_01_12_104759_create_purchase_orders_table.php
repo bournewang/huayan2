@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+use App\Models\PurchaseOrder;
 class CreatePurchaseOrdersTable extends Migration
 {
     /**
@@ -23,7 +23,8 @@ class CreatePurchaseOrdersTable extends Migration
             $table->bigInteger('logistic_id')->unsigned()->nullable();
             $table->string('waybill_number', 32)->nullable();
             $table->text('items')->nullable();
-            $table->string('status', 20)->nullable();
+            // $table->string('status', 20)->nullable();
+            $table->enum('status', array_keys(PurchaseOrder::statusOptions()))->nullable();
             $table->string('comment')->nullable();
             $table->timestamps();
             

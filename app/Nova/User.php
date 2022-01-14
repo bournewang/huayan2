@@ -73,6 +73,7 @@ class User extends Resource
             Text::make(__('City'), 'city'),
             Text::make(__('Gender'), 'gender'),
             Text::make(__('Mobile'), 'mobile'),
+            Select::make(__("Status"), 'status')->options(function(){return \App\Models\User::statusOptions();})->displayUsingLabels(),
             // Image::make(__('QR Code'), 'qrcode'),
             // Text::make(__('Email'), 'email')
             //     ->sortable()

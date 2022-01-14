@@ -69,9 +69,14 @@ class Goods extends BaseModel
         return $this->belongsToMany(Order::class)->withPivot('quantity', 'price', 'subtotal');
     }
     
+    public function thumb()
+    {
+        $main_img = $this->getMedia('main')->first();
+        return $main_img ? $main_img->getUrl('thumb') : null;
+    }
     public function info()
     {
-        $main_img = $this->media->first();
+        $main_img = $this->getMedia('main')->first();
         return array_merge(parent::info(),[
             'thumb' => $main_img ? $main_img->getUrl('thumb') : null,
         ]);

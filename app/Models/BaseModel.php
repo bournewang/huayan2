@@ -12,7 +12,7 @@ class BaseModel extends Model implements HasMedia
     {
         if ($this->info_fields) {
             $info = [];
-            foreach ($attrs as $attr){
+            foreach ($this->info_fields as $attr){
                 $info[$attr] = $this->$attr;
             }
         } else {

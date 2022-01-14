@@ -5,6 +5,7 @@ namespace App\Nova;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Resource as NovaResource;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Panel;
 use NovaAjaxSelect\AjaxSelect;
@@ -177,14 +178,35 @@ abstract class Resource extends NovaResource
             ]);
     }
     
+    public function datetime($label = null, $attr = null)
+    {
+        return DateTime::make($label ?? __('Created At'), $attr ?? 'created_at');
+    }
+    
+    public function userName($label = null)
+    {
+        return Text::make($label ?? __('User'))->displayUsing(function(){return $this->user->name ?? ($this->user->nickname ?? null);})->exceptOnForms();
+    }
+    
     public function actionButton($action, $permission, $request)
     {
         return $action
             ->canRun(function ($request, $user) {
-                return 1;//$request->user()->can($permission, $user);
+                return $request->user()->can($permission, $user);
             })->canRun(function ($request, $user) {
-                return 1;//$request->user()->can($permission, $user);
+                return $request->user()->can($permission, $user);
             });
+    }
+    
+    // data: ['perm_name' => (new Actions\xxxxAction)]
+    public function actions_with_perm($data, $request)
+    {
+        $actions = [];
+        foreach ($data as $permission => $action) {
+            if (!$can = $request->user()->can($permission, \App\Models\User::class)) continue;
+            $actions[] = $action->canSee(function () {return true;})->canRun(function ($can) {return true;});
+        }
+        return $actions;
     }
     
     public function money($label, $field)

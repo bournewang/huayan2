@@ -29,7 +29,7 @@ class RoleSeeder extends Seeder
             $perms = [];
             foreach ($array as $item) {
                 $b = explode(' ', $item);
-                $perms[] = __($b[0]) . __($b[1]);
+                $perms[] = __($b[0]) . (($b[1]??null) ? __($b[1]) : '');
             }
             echo "-----------------------------------------\n";
             echo "set perms to role $role_name \n";

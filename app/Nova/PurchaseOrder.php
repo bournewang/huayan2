@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Select;
 use Whitecube\NovaFlexibleContent\Flexible;
@@ -36,7 +37,7 @@ class PurchaseOrder extends Resource
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'order_no';
 
     /**
      * The columns that should be searched.
@@ -44,7 +45,7 @@ class PurchaseOrder extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'id', 'order_no'
     ];
 
     /**
@@ -57,6 +58,7 @@ class PurchaseOrder extends Resource
     {
         return [
             // ID::make(__('ID'), 'id')->sortable(),
+            Text::make(__('Order No'), 'order_no'),
             Text::make(__('Store'))->displayUsing(function(){return $this->store->name ?? null;})->exceptOnForms(),
             Text::make(__('User'))->displayUsing(function(){return $this->user->name ?? ($this->user->nickname ?? null);})->exceptOnForms(),
             // BelongsTo::make(__('Customer'), 'customer', Customer::class)->searchable(),//->displayUsing(function(){return $this->user->name ?? ($this->user->nickname ?? null);}),
@@ -74,6 +76,7 @@ class PurchaseOrder extends Resource
                             Text::make(__('Quantity'), 'quantity')
                         ])
                         ->button('+'),
+            HasMany::make(__('StockItem'), 'stockItems', StockItem::class)            
         ];
     }
 
@@ -107,8 +110,10 @@ class PurchaseOrder extends Resource
      */
     public function actions(Request $request)
     {
-        return [
-            new Actions\ImportPurchaseOrders
-        ];
+        return $this->actions_with_perm([
+            __('View').__('PurchaseOrder') => new Actions\ImportPurchaseOrders,
+            __('Deliver') => new Actions\Deliver,
+            __('StockImport') => new Actions\StockImport
+        ], $request);
     }
 }

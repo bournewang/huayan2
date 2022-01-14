@@ -5,20 +5,21 @@ namespace App\Nova;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Manager extends Resource
+class Stock extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Manager::class;
+    public static $model = \App\Models\Stock::class;
     public static function label()
     {
-        return __('Manager');
+        return __('Stock');
     }
     public static function group()
     {
@@ -54,11 +55,10 @@ class Manager extends Resource
     {
         return [
             ID::make(__('ID'), 'id')->sortable(),
-            Text::make(__('Realname'), 'name')->sortable()->rules('required', 'max:255'),
-            Text::make(__('Gender'), 'gender'),
-            Text::make(__('Mobile'), 'mobile'),
-            Select::make(__("Status"), 'status')->options(function(){return \App\Models\User::statusOptions();})->displayUsingLabels(),
-            $this->mediaField(__('Id Card'), 'id_card')
+            Text::make(__('Store'))->displayUsing(function(){return $this->store->name ?? null;})->exceptOnForms(),
+            BelongsTo::make(__('Goods'), 'goods', Goods::class), //->displayUsing(function(){return $this->goods->name ?? null;})->exceptOnForms(),
+            Text::make(__('Quantity'), 'quantity'),
+            HasMany::make(__('StockItem'), 'stockItems', StockItem::class)
         ];
     }
 
@@ -68,10 +68,10 @@ class Manager extends Resource
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function cards(Request $request)
-    {
-        return [];
-    }
+    // public function cards(Request $request)
+    // {
+    //     return [];
+    // }
 
     /**
      * Get the filters available for the resource.
@@ -104,10 +104,5 @@ class Manager extends Resource
     public function actions(Request $request)
     {
         return [];
-    }
-    
-    public static function indexQuery(NovaRequest $request, $query)
-    {
-        return parent::indexQuery($request, $query)->where('type', \App\Models\User::MANAGER);
     }
 }

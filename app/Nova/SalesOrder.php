@@ -38,7 +38,7 @@ class SalesOrder extends Resource
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'order_no';
 
     /**
      * The columns that should be searched.
@@ -46,7 +46,7 @@ class SalesOrder extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'id', 'order_no'
     ];
 
     /**
@@ -59,6 +59,7 @@ class SalesOrder extends Resource
     {
         return [
             // ID::make(__('ID'), 'id')->sortable(),
+            Text::make(__('Order No'), 'order_no'),
             Text::make(__('Store'))->displayUsing(function(){return $this->store->name ?? null;})->exceptOnForms(),
             Text::make(__('User'))->displayUsing(function(){return $this->user->name ?? ($this->user->nickname ?? null);})->exceptOnForms(),
             BelongsTo::make(__('Customer'), 'customer', Customer::class)->searchable(),//->displayUsing(function(){return $this->user->name ?? ($this->user->nickname ?? null);}),

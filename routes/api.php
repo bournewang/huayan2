@@ -22,6 +22,7 @@ use App\Http\Controllers\API\ReviewController;
 use App\Http\Controllers\API\CustomerController;
 use App\Http\Controllers\API\ClerkController;
 use App\Http\Controllers\API\ServiceController;
+use App\Http\Controllers\API\StockController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -100,11 +101,10 @@ Route::group(['middleware' => ['auth:api']], function(){
     Route::get      ('/customers',      [CustomerController::class, 'index']);
     Route::get      ('/clerks',         [ClerkController::class, 'index']);
 
-    // direct selling
-    // Route::post('/sale/apply', [SaleController::class, 'apply']);
-    // Route::get('/sale/members',[SaleController::class, 'members']);
     Route::get('/sales',                [SalesController::class, 'index']);
     Route::get('/sales/{user_id}',      [SalesController::class, 'show']);
     Route::get('/services',             [ServiceController::class, 'index']);
     Route::get('/services/{user_id}',   [ServiceController::class, 'show']);    
+    
+    Route::get('/stocks',               [StockController::class, 'index']);
 });

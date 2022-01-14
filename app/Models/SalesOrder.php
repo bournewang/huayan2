@@ -59,9 +59,47 @@ class SalesOrder extends BaseModel
         return $this->belongsTo(Store::class);
     }  
     
+    public function stockItems()
+    {
+        return $this->morphMany(StockItem::class, 'order');
+    }
+    
     public function detail()
     {
         return $this->info();
+    }
+    
+    public function export()
+    {
+        $this->stockItems()->delete();
+        foreach ($this->items as $item) {
+            $data = $item['attributes']; 
+            $goods_id = $data['goods_id'] ?? null;
+            $quantity = $data['quantity'] ?? 0;
+            if (!$stock = Stock::where('store_id', $this->store_id)->where('goods_id',$goods_id)->first()){
+                $stock = Stock::create([
+                    'store_id' => $this->store_id,
+                    'goods_id' => $goods_id,
+                    'quantity' => $quantity
+                ]);
+            }
+            
+            StockItem::create([
+                'stock_id' => $stock->id,
+                'store_id' => $this->store_id,
+                'goods_id' => $goods_id,
+                'user_id' => Auth::user()->id,
+                'order_id' => $this->id,
+                'order_type' => self::class,
+                'quantity' => $quantity * -1,
+                'type' => StockItem::SALE
+            ]);
+            
+            // else{
+            $total = StockItem::where('store_id', $this->store_id)->where('goods_id',$goods_id)->sum('quantity');
+            $stock->update(['quantity' => $total]);
+            // }
+        }
     }
 }
 

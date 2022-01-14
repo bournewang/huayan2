@@ -39,6 +39,7 @@ class User extends Authenticatable implements HasMedia
         'type',
         'email', 
         'password',
+        'status',
         // 'level', 
         // 'dd',
         // 'dds',  // number of dd 
@@ -65,6 +66,7 @@ class User extends Authenticatable implements HasMedia
         'name' => 'required|string',
         'gender' => 'integer',
         'mobile' => 'required',
+        'status' => 'string'
     ];
     
     /**
@@ -102,7 +104,7 @@ class User extends Authenticatable implements HasMedia
     const APPLYING = 'applying';
     const GRANT = 'grant';
     const REJECT = 'reject';
-    public static function applyOptions()
+    public static function statusOptions()
     {
         return [
             self::APPLYING => __(ucfirst(self::APPLYING)),

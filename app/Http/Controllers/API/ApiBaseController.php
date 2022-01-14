@@ -7,6 +7,8 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
+use App\Exceptions\ApiException;
+use App\Models\User;
 use Auth;
 
 class ApiBaseController extends AppBaseController
@@ -39,5 +41,13 @@ class ApiBaseController extends AppBaseController
             $data['items'][] = $model->$func();
         }
         return $data;
+    }
+    
+    public function checkStorePermit()
+    {
+        if (!in_array($this->user->type, [User::MANAGER, User::CLERK]) || 
+            $this->user->status != User::GRANT) {
+            throw new ApiException("没有通过申请，暂不能查看该数据！");
+        }
     }
 }

@@ -38,7 +38,7 @@ class UserController extends ApiBaseController
         if (!array_key_exists($type, User::typeOptions())) {
             return $this->sendError("invalid type $type");
         }
-        $this->user->update(['type' => $type]);
+        $this->user->update(['type' => $type, 'status' => User::APPLYING]);
         return $this->sendResponse(null);
     }
     

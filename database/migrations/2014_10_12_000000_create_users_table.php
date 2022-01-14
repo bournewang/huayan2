@@ -37,6 +37,7 @@ class CreateUsersTable extends Migration
             $table->string('account_no', 32)->nullable();
             
             $table->enum('type', array_keys(User::typeOptions()));
+            $table->enum('status', array_keys(User::statusOptions()));
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

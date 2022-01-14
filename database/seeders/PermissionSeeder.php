@@ -19,10 +19,12 @@ class PermissionSeeder extends Seeder
         foreach ($resources as $res) {
             foreach ($actions as $action) {
                 $label = __($action) . __($res);
-                $slug = $action . $res;
                 $perm = Permission::create(['name' => $label, 'guard_name' => 'web']);
-                echo "!!!!! create $slug/$label \n";
             }
+        }
+        
+        foreach (config('seed.permissions') as $name) {
+            $perm = Permission::create(['name' => __($name), 'guard_name' => 'web']);
         }
     }
 }
