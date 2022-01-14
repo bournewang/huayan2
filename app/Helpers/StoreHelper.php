@@ -98,9 +98,9 @@ class StoreHelper
         }else {
             $builder->where('users.senior_id', $user->id);
         }
-        $res = $builder->whereIn('status', array_keys(Order::validStatus()))
+        $res = $builder->whereIn($table.'.status', array_keys(Order::validStatus()))
             ->whereBetween($table.'.created_at', [$start, $end])
-            ->select('users.avatar', 'users.nickname', 'users.mobile', DB::raw("sum(amount) as total_amount"))
+            ->select('users.avatar as img', 'users.nickname', 'users.mobile', DB::raw("sum(amount) as total_amount"))
             ->join('users', $table.'.user_id', '=', 'users.id')
             ->groupBy('user_id')
             ->orderBy('total_amount', 'desc')
@@ -108,7 +108,7 @@ class StoreHelper
             ->toArray()
             ;    
         return [
-            'title'  => ['avatar' => __('Avatar'), 'nickname' => __('Nickname'), 'mobile' => __('Mobile'), 'amount' => __('Amount')],
+            'titles'  => ['img' => __('Avatar'), 'nickname' => __('Nickname'), 'mobile' => __('Mobile'), 'amount' => __('Amount')],
             'total' => $res['total'] ?? null,
             'pages' => $res['last_page'] ?? 1,
             'page' => $res['page'] ?? 1,

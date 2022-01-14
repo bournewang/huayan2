@@ -27,14 +27,20 @@ class StockController extends ApiBaseController
         $total = $stocks->count();
         $perpage = $request->input('perpage', 20);
         $data = [
+            'titles' => ['index_no' => __('Index No'), 'img' => __('Image'), 'goods_name' => __('Goods').__('Name'), 'quantity' => __('Quantity')],
             'total' => $total,
             'pages' => ceil($total/$perpage),
             'page' => $request->input('page', 1),
             'items' => []
         ];
         $stocks = $stocks->paginate($perpage);
+        $i=1;
         foreach ($stocks as $review) {
-            $data['items'][] = $review->detail();
+            $d = $review->detail();
+            $data['items'][] = array_merge($d, [
+                'index_no' => $i++,
+                'img' => $d['goods_img']
+            ]);
         }
         return $this->sendResponse($data);
     }
