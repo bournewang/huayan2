@@ -6,7 +6,7 @@ return [
         // ['title' => 'ipad mini3 64G', 'goods_id' => 5, 'image' => 'ipad.jpeg', 'store_id' => 1],
     ],
     'devices' => [
-        'ggz17zg9nAJ' => ['Graphene_G0001', 'Graphene_G0002', 'Graphene_G0003'],
+        'ggz17zg9nAJ' => ['QYB_D0001', 'Graphene_G0002', 'Graphene_G0003'],
         'ggz1JU0WNFH' => ['JQR_0003', 'JQR_0004', 'JQR_0005']
     ],
     // resource to build permissions of View/Create/Update/Delete/ForceDelete
