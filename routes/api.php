@@ -62,11 +62,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['middleware' => ['auth:api']], function(){
     Route::put ('/user/type/{type}',   [UserController::class, 'type']);
     
-    Route::get ('/user/info',   [UserController::class, 'info']);
-    Route::post('/user/modify',[UserController::class, 'modify']);
-    Route::post('/user/mobile',[UserController::class, 'mobile']);
-    Route::get ('/user/revenue',[UserController::class, 'revenue']);
-    Route::get ('/user/qrcode',[UserController::class, 'qrcode']);
+    Route::get ('/user/info',           [UserController::class, 'info']);
+    Route::post('/user/modify',         [UserController::class, 'modify']);
+    Route::post('/user/mobile',         [UserController::class, 'mobile']);
+    Route::get ('/user/revenue',        [UserController::class, 'revenue']);
+    Route::get ('/user/qrcode',         [UserController::class, 'qrcode']);
     
     Route::post ('/file',               [FileController::class, 'upload']);
     

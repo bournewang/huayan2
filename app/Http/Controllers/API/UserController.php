@@ -58,7 +58,29 @@ class UserController extends ApiBaseController
     // code: 051prj0008KT6M1Eyb000YG9jS2prj0o
     // encryptedData: vgAcVXTqhTzoRImU/ekjxVVi/dKFx8XfjXbiZVDfxRA72wrmUhPUKOWp8FGqpi9YCR4TNyxfsGtG0/Zf/EQxeWxp3p+q2jXyMjNwQHsyijNfrIaqde43O4/M/fPcdjXGqy1+/VxMlMwHH1lBqlW0dtzXgWAtt18YqFLwrlk1+Q3ZtiaE+oacJhOzzVYy2L00dw9pSHl7ctCcK09KyCrEQw==
     // iv: qcWYc+YzH+CUjOjTyZrH0w==
-    public function mobile($store_id, Request $request)
+    /**
+     * 修改手机号
+     *
+     * @OA\Post(
+     *  path="/api/user/mobile",
+     *  tags={"User"},
+     *   @OA\RequestBody(
+     *       required=false,
+     *       @OA\MediaType(
+     *           mediaType="application/x-www-form-urlencoded",
+     *           @OA\Schema(
+     *               type="object",
+     *               @OA\Property(property="code",description="login code",type="string"),
+     *               @OA\Property(property="iv",description="iv from wx.login",type="string"),
+     *               @OA\Property(property="encryptedData",description="encryptedData from wx.login",type="string"),
+     *           )
+     *       )
+     *   ),     
+     *  @OA\Response(response=200,description="successful operation"),
+     *  security={{ "api_key":{} }}
+     * )
+     */      
+    public function mobile(Request $request)
     {
         \Log::debug(__CLASS__.'->'.__FUNCTION__);
         \Log::debug($request->all());
@@ -67,8 +89,8 @@ class UserController extends ApiBaseController
         \Log::debug("wx session: ");
         \Log::debug($sess);
         
-        $iv = $request->get('iv');
-        $encryptedData = $request->get('encryptedData');
+        $iv = $request->input('iv');
+        $encryptedData = $request->input('encryptedData');
         $data = $mpp->encryptor->decryptData($sess['session_key'], $iv, $encryptedData);
         \Log::debug("decryptData: ");
         \Log::debug($data);

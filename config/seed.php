@@ -19,7 +19,7 @@ return [
     ],
     // special permissions
     'permissions' => [
-        'Delivery', 'StockImport'
+        'Deliver', 'StockImport'
     ],
     'roles' => [
         User::SALESMAN => [
