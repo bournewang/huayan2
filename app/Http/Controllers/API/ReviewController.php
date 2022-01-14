@@ -33,7 +33,7 @@ class ReviewController extends ApiBaseController
         $perpage = $request->input('perpage', 20);
         $data = [
             'total' => $total,
-            'avg_rating' => round((float)$reviews->sum('rating') / $total, 2),
+            // 'avg_rating' => round((float)$reviews->sum('rating') / $total, 2),
             'pages' => ceil($total/$perpage),
             'page' => $request->input('page', 1),
             'items' => []
