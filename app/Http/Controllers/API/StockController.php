@@ -33,6 +33,9 @@ class StockController extends ApiBaseController
             'page' => $request->input('page', 1),
             'items' => []
         ];
+        if ($this->user->type == User::MANAGER) {
+            $data['titles']['cost_label'] = __('Cost');
+        }
         $stocks = $stocks->paginate($perpage);
         $i=1;
         foreach ($stocks as $review) {

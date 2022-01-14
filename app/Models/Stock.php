@@ -48,10 +48,17 @@ class Stock extends BaseModel
     
     public function detail()
     {
-        return array_merge(parent::info(), [
-            'goods_name' => $this->goods->name ?? null,
-            'goods_img' => $this->goods ? $this->goods->thumb() : null
-        ]);
+        $info = $this->info();
+        if ($goods = $this->goods) {
+            $cost = $goods->price_purchase * $this->quantity;
+            $info = array_merge($info, [
+                'goods_name' => $goods->name,
+                'goods_img' => $goods->thumb(),
+                'cost' => round($cost, 2),
+                'cost_label' => money($cost)
+            ]);
+        }
+        return $info;
     }
 }
 
