@@ -23,6 +23,7 @@ use App\Http\Controllers\API\CustomerController;
 use App\Http\Controllers\API\ClerkController;
 use App\Http\Controllers\API\ServiceController;
 use App\Http\Controllers\API\StockController;
+use App\Http\Controllers\API\HealthController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -67,6 +68,8 @@ Route::group(['middleware' => ['auth:api']], function(){
     Route::post('/user/mobile',         [UserController::class, 'mobile']);
     Route::get ('/user/revenue',        [UserController::class, 'revenue']);
     Route::get ('/user/qrcode',         [UserController::class, 'qrcode']);
+    Route::get ('/health',              [HealthController::class, 'index']);
+    Route::get ('/health/{id}',         [HealthController::class, 'show']);
     
     Route::post ('/file',               [FileController::class, 'upload']);
     

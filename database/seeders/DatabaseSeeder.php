@@ -28,7 +28,10 @@ class DatabaseSeeder extends Seeder
             DeviceSeeder::class,
             PermissionSeeder::class,
             RoleSeeder::class,
-            LogisticSeeder::class
+            LogisticSeeder::class,
+            ServiceOrderSeeder::class,
+            SalesOrderSeeder::class,
+            HealthSeeder::class
         ]);
     }
 }

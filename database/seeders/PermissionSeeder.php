@@ -14,7 +14,7 @@ class PermissionSeeder extends Seeder
     {
         //
         Permission::whereNotNull('id')->forceDelete();
-        $actions = ['Index', 'View', 'Create', 'Update', 'Delete', 'Restore', 'ForceDelete', 'Action'];
+        $actions = ['View', 'Create', 'Update', 'Delete', 'Restore', 'ForceDelete', 'Action'];
         $resources = config('seed.resources');
         foreach ($resources as $res) {
             foreach ($actions as $action) {

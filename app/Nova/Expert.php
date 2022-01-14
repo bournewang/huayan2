@@ -31,7 +31,7 @@ class Expert extends Resource
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'nickname';
 
     /**
      * The columns that should be searched.

@@ -21,7 +21,7 @@ class RoleSeeder extends Seeder
         $i=1;
         User::find($i++)->assignRole($role);
         foreach (config('seed.roles') as $role_name => $array) {
-            $role_name = __(ucfirst($role_name));
+            $role_name = __(ucwords($role_name));
             if (!$role = Role::where('name', $role_name)->first()){
                 echo "create role $role_name\n";
                 $role = Role::create(['name' => $role_name]);

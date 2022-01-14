@@ -190,9 +190,9 @@ class User extends Authenticatable implements HasMedia
         return $this->hasMany(User::class, 'senior_id');
     }
     
-    public function revenues()
+    public function healths()
     {
-        return $this->hasMany(Revenue::class);
+        return $this->hasMany(Health::class);
     }
     
     public function isRoot()

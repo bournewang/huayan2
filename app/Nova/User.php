@@ -11,6 +11,7 @@ use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Vyuldashev\NovaPermission\PermissionBooleanGroup;
@@ -31,15 +32,18 @@ class User extends Resource
      *
      * @var string
      */
-    public static $title = 'name';
-
+    // public static $title = 'name';
+    public function title()
+    {
+        return ($this->name ?? $this->nickname) . $this->mobile;
+    }
     /**
      * The columns that should be searched.
      *
      * @var array
      */
     public static $search = [
-        'id', 'name', 'email',
+        'id', 'nickname', 'name', 'mobile',
     ];
     public static $with = ['store'];
 

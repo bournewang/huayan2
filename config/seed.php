@@ -1,5 +1,6 @@
 <?php
 use App\Models\User;
+use App\Models\Health;
 return [
     'banner' => [
         // ['title' => 'iphone12美版64G', 'goods_id' => 2, 'image' => 'iphone.jpeg', 'store_id' => 1],
@@ -15,7 +16,7 @@ return [
         "Address","Banner","BaseModel","Cart","Category","City","Clerk",
         "Customer","Device","District","Example","Expert","Goods","Logistic","Order",
         "Province","Revenue","Salesman","Setting","Store","Supplier","User",
-        "Review", "PurchaseOrder","SalesOrder","Stock", "StockItem"
+        "Review", "PurchaseOrder","SalesOrder","Stock", "StockItem", 'Health',
     ],
     // special permissions
     'permissions' => [
@@ -28,10 +29,6 @@ return [
             "View Order",
             "View"
         ],
-        'warehouse keeper' => [
-            "View Order", 
-            'Deliver',
-        ],
         User::MANAGER => [
             "View Customer", 
             "View Clerk", 
@@ -39,21 +36,25 @@ return [
             "View ServiceOrder", 
             "View Review", 
             "View Goods",
-            'Index PurchaseOrder',  'View PurchaseOrder',   'Delete PurchaseOrder', 'StockImport',
-            'Index SalesOrder',     'View SalesOrder',      'Delete SalesOrder',
+            'View PurchaseOrder',   'Delete PurchaseOrder', 'StockImport',
+            'View SalesOrder',      'Delete SalesOrder',
             'View Stock',
-            'Index StockItem', 'View StockItem',
+            'View StockItem',
             "View Cart"
         ],
         User::CLERK => [
             "View Customer", 
             "View Order", 
             "View Goods",
-            'Index PurchaseOrder',  'Create PurchaseOrder', 'View PurchaseOrder', 'Update PurchaseOrder',
-            'Index SalesOrder',     'Create SalesOrder',    'View SalesOrder', 'Update SalesOrder', 
-            'Index Stock', 'View Stock',
-            'Index StockItem', 'View StockItem',
+            'Create PurchaseOrder', 'View PurchaseOrder', 'Update PurchaseOrder',
+            'Create SalesOrder',    'View SalesOrder', 'Update SalesOrder', 
+            'View Stock',
+            'View StockItem',
             "View Cart"
+        ],
+        'warehouse keeper' => [
+            "View Order", 
+            'Deliver',
         ],
     ],
     'setting' => [
@@ -95,9 +96,16 @@ return [
     'user' => [
         ['id' => 1, 'name' => 'Admin', 'email' =>'admin@test.com',    'mobile' =>  '13811111110', 'password' => '111111', 'openid' => '111110', 'unionid' => '111110'],
         ['id' => 2, 'name' => '王业务员', 'nickname' => '王业务员','email' => 'sales@test.com',   'mobile' => '13811111111',  'password' => '111111', 'senior_id' => null, 'openid' => '111111', 'unionid' => '111111', 'type' => User::SALESMAN],
-        ['id' => 3, 'name' => '张店长', 'nickname' => '张店长','email' => 'zhang@test.com',   'mobile' => '13811111112',  'password' => '111111', 'store_id' => 1, 'senior_id' => null, 'openid' => '111112', 'unionid' => '111112', 'type' => User::MANAGER, 'api_token' => '111111'],
-        ['id' => 4, 'name' => '小刘/店员', 'nickname' => '小刘','email' => 'liu@test.com',   'mobile' => '13811111113',    'password' => '111111', 'store_id' => 1, 'senior_id' => null,    'openid' => '111113', 'unionid' => '111113', 'type' => User::CLERK],
+        ['id' => 3, 'name' => '张店长', 'nickname' => '张店长','email' => 'zhang@test.com',       'mobile' => '13811111112',  'password' => '111111', 'store_id' => 1, 'senior_id' => null, 'openid' => '111112', 'unionid' => '111112', 'type' => User::MANAGER, 'api_token' => '111111'],
+        ['id' => 4, 'name' => '小刘/店员', 'nickname' => '小刘','email' => 'liu@test.com',        'mobile' => '13811111113',    'password' => '111111', 'store_id' => 1, 'senior_id' => null,    'openid' => '111113', 'unionid' => '111113', 'type' => User::CLERK],
         ['id' => 5, 'name' => '老赵',  'nickname' => '老赵', 'email' => 'zhao@test.com',       'mobile' => '13811111114',  'password' => '111111', 'store_id' => 1, 'senior_id' => 4,    'openid' => '111114', 'unionid' => '111114', 'type' => User::CUSTOMER],
+        ['id' => 6, 'name' => '黄医生',  'nickname' => '黄医生', 'email' => 'huang@test.com',   'mobile' => '13811111115',  'password' => '111111', 'openid' => '111115', 'unionid' => '111115', 'type' => User::EXPERT],
+    ],
+    'health' => [
+        ['store_id' => 1, 'user_id' => 2,'expert_id' => 6, 'status' => Health::PENDING, 'suggestion' => '多喝开水'],
+        ['store_id' => 1, 'user_id' => 3,'expert_id' => 6, 'status' => Health::REPLIED, 'suggestion' => '气虚，多吃如肉蛋奶，适当锻炼身体'],
+        ['store_id' => 1, 'user_id' => 4,'expert_id' => 6, 'status' => Health::REPLIED, 'suggestion' => '早睡早起，补充维生素、钙片'],
+        ['store_id' => 1, 'user_id' => 5,'expert_id' => 6, 'status' => Health::DENIED, 'suggestion' => '适当锻炼，补充纤维素'],
     ],
     'address' => [
         [
