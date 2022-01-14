@@ -18,6 +18,7 @@ class SalesOrder extends BaseModel
         'total_quantity',
         'total_price',
         'paid_price',
+        'status',
         'items',
         'comment'
     ];
@@ -31,6 +32,7 @@ class SalesOrder extends BaseModel
         'total_price' => 'float',
         'paid_price' => 'float',
         'items' => 'array',
+        'status' => 'string',
         'comment' => 'string',
     ];
         
@@ -87,8 +89,8 @@ class SalesOrder extends BaseModel
             StockItem::create([
                 'stock_id' => $stock->id,
                 'store_id' => $this->store_id,
-                'goods_id' => $goods_id,
-                'user_id' => Auth::user()->id,
+                'goods_id' => $goods_id, 
+                'user_id' => Auth::user()->id ?? 1,
                 'order_id' => $this->id,
                 'order_type' => self::class,
                 'quantity' => $quantity * -1,

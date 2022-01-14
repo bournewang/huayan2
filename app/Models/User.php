@@ -236,6 +236,7 @@ class User extends Authenticatable implements HasMedia
         }
         $data['qrcode'] = !$this->qrcode ? null : url(\Storage::url($this->qrcode));
         $data['store_name'] = $this->store->name ?? null;
+        $data['type_label'] = $this->typeLabel();
         return $data;
     }
     

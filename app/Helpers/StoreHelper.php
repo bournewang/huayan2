@@ -115,4 +115,63 @@ class StoreHelper
             'items' => $res['data'] ?? [],
         ];
     }
+    
+    static private function stats($user, $start, $end, $table = 'orders', $price_field = 'amount')
+    {
+        $builder = DB::table($table);
+        if ($user->type == User::MANAGER) {
+            $builder->where($table.'.store_id', $user->store_id);
+        }else {
+            $builder->where('users.senior_id', $user->id);
+        }
+        $res = $builder->whereIn($table.'.status', array_keys(Order::validStatus()))
+            ->whereBetween($table.'.created_at', [$start, $end])
+            ->select("senior_id", DB::raw("sum($price_field) as total_amount"))
+            ->join('users', $table.'.user_id', '=', 'users.id')
+            ->groupBy('senior_id')
+            ->orderBy('total_amount', 'desc')
+            ->pluck('total_amount', 'senior_id')
+            ->all()
+            // ->paginate(20)
+            // ->toArray()
+            ;
+        return $res;       
+    }
+    static public function salesStatsBySenior($user, $month, $perpage, $table = 'orders')
+    {
+        $start = date('Y-m-d', strtotime("first day of $month"));
+        $end = date('Y-m-d', strtotime("last day of $month")) . ' 23:59:59';
+
+        \Log::debug(self::stats($user, $start, $end, $table));
+        $arr1 = self::stats($user, $start, $end, 'orders');
+        $arr2 = self::stats($user, $start, $end, 'service_orders');
+        $arr3 = self::stats($user, $start, $end, 'sales_orders', 'total_price');
+
+        $sums = array();
+        foreach (array_keys($arr1 + $arr2 + $arr3) as $key) {
+            $sums[$key] = @($arr1[$key] + $arr2[$key] + $arr3[$key]);
+        } 
+        $data = [];     
+        $i=1;
+        foreach ($sums as $senior_id => $total_amount) {
+            if ($senior_id) {
+                $senior = User::find($senior_id);
+                $data[] = [
+                    // 'index_no' => $i++,
+                    'img' => $senior->avatar,
+                    'nickname' => $senior->nickname,
+                    // 'mobile' => $senior->mobile,
+                    'total_amount' => money($total_amount)
+                ];
+            }
+        }    
+        return [
+            'titles'  => ['img' => __('Avatar'), 'nickname' => __('Nickname'), 'amount' => __('Amount')],
+            'total' => $res['total'] ?? null,
+            'pages' => $res['last_page'] ?? 1,
+            'page' => $res['page'] ?? 1,
+            'items' => $data,
+        ];
+    }
+    
 }

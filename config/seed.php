@@ -23,24 +23,22 @@ return [
     ],
     'roles' => [
         User::SALESMAN => [
-            "Index Store", "View Store", 
-            "Index Device", "View Device", 
-            "Index Order", "View Order",
+            "View Store", 
+            "View Device", 
+            "View Order",
             "View"
         ],
-        // User::WAREHOUSE_KEEPER => [
-        // 
-        // ],
-        // User::FINANCIAL => [
-        // 
-        // ],
+        'warehouse keeper' => [
+            "View Order", 
+            'Deliver',
+        ],
         User::MANAGER => [
-            "Index Customer", "View Customer", 
-            "Index Clerk", "View Clerk", 
-            "Index Order", "View Order", 
-            "Index ServiceOrder", "View ServiceOrder", 
+            "View Customer", 
+            "View Clerk", 
+            "View Order", 
+            "View ServiceOrder", 
             "View Review", 
-            "Index Goods", "View Goods",
+            "View Goods",
             'Index PurchaseOrder',  'View PurchaseOrder',   'Delete PurchaseOrder', 'StockImport',
             'Index SalesOrder',     'View SalesOrder',      'Delete SalesOrder',
             'View Stock',
@@ -48,9 +46,9 @@ return [
             "View Cart"
         ],
         User::CLERK => [
-            "Index Customer", "View Customer", 
-            "Index Order", "View Order", 
-            "Index Goods", "View Goods",
+            "View Customer", 
+            "View Order", 
+            "View Goods",
             'Index PurchaseOrder',  'Create PurchaseOrder', 'View PurchaseOrder', 'Update PurchaseOrder',
             'Index SalesOrder',     'Create SalesOrder',    'View SalesOrder', 'Update SalesOrder', 
             'Index Stock', 'View Stock',
@@ -96,10 +94,10 @@ return [
     ],
     'user' => [
         ['id' => 1, 'name' => 'Admin', 'email' =>'admin@test.com',    'mobile' =>  '13811111110', 'password' => '111111', 'openid' => '111110', 'unionid' => '111110'],
-        ['id' => 2, 'name' => '王业务员', 'email' => 'sales@test.com',   'mobile' => '13811111111',  'password' => '111111', 'senior_id' => null, 'openid' => '111111', 'unionid' => '111111', 'type' => User::SALESMAN],
-        ['id' => 3, 'name' => '张店长', 'email' => 'zhang@test.com',   'mobile' => '13811111112',  'password' => '111111', 'store_id' => 1, 'senior_id' => null, 'openid' => '111112', 'unionid' => '111112', 'type' => User::MANAGER],
-        ['id' => 4, 'name' => '小刘/店员', 'email' => 'liu@test.com',   'mobile' => '13811111113',    'password' => '111111', 'store_id' => 1, 'senior_id' => 2,    'openid' => '111113', 'unionid' => '111113', 'type' => User::CLERK],
-        ['id' => 5, 'name' => '老赵', 'email' => 'zhao@test.com',       'mobile' => '13811111114',  'password' => '111111', 'store_id' => 1, 'senior_id' => 3,    'openid' => '111114', 'unionid' => '111114', 'type' => User::CUSTOMER],
+        ['id' => 2, 'name' => '王业务员', 'nickname' => '王业务员','email' => 'sales@test.com',   'mobile' => '13811111111',  'password' => '111111', 'senior_id' => null, 'openid' => '111111', 'unionid' => '111111', 'type' => User::SALESMAN],
+        ['id' => 3, 'name' => '张店长', 'nickname' => '张店长','email' => 'zhang@test.com',   'mobile' => '13811111112',  'password' => '111111', 'store_id' => 1, 'senior_id' => null, 'openid' => '111112', 'unionid' => '111112', 'type' => User::MANAGER, 'api_token' => '111111'],
+        ['id' => 4, 'name' => '小刘/店员', 'nickname' => '小刘','email' => 'liu@test.com',   'mobile' => '13811111113',    'password' => '111111', 'store_id' => 1, 'senior_id' => null,    'openid' => '111113', 'unionid' => '111113', 'type' => User::CLERK],
+        ['id' => 5, 'name' => '老赵',  'nickname' => '老赵', 'email' => 'zhao@test.com',       'mobile' => '13811111114',  'password' => '111111', 'store_id' => 1, 'senior_id' => 4,    'openid' => '111114', 'unionid' => '111114', 'type' => User::CUSTOMER],
     ],
     'address' => [
         [

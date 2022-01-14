@@ -22,7 +22,7 @@ class CreateSalesOrdersTable extends Migration
             $table->decimal('total_quantity',8,2)->nullable();
             $table->decimal('total_price',8,2)->nullable();
             $table->decimal('paid_price',8,2)->nullable();
-            $table->string('status', 20)->nullable();
+            $table->string('status', 20)->nullable()->default('shipped');
             $table->text('items')->nullable();
             $table->string('comment')->nullable();
             $table->timestamps();

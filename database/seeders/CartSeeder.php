@@ -46,6 +46,7 @@ class CartSeeder extends Seeder
             
             echo "$user->id $user->name addresses: ". $user->addresses->count()."\n";
             $order = $cart->refresh()->submit($user->addresses->first(), $date);
+            $order->update(['status' => 'shipped']);
         }
     }
 }

@@ -23,7 +23,7 @@ class GoodsSeeder extends Seeder
         //     }
         // }
         Excel::import(new GoodsImport, './database/goods.xlsx');
-        // (new GoodsImagesImport('./database/goods-images.zip'))->import();
+        (new GoodsImagesImport('./database/goods-images.zip'))->import();
         
     }
 }

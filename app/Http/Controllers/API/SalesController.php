@@ -22,7 +22,7 @@ class SalesController extends ApiBaseController
      */       
     public function index(Request $request)
     {
-        $data = StoreHelper::salesStats($this->user, date('Y-m'), $request->input('perpage', 20));
+        $data = StoreHelper::salesStatsBySenior($this->user, date('Y-m'), $request->input('perpage', 20));
         return $this->sendResponse($data);
     }
 
@@ -46,11 +46,7 @@ class SalesController extends ApiBaseController
         if ($user->store_id != $this->user->store_id) {
             return $this->sendError("您只能查看自己门店的数据");
         }
-        // return $this->sendResponse($this->paginateInfo($user->orders(), $request));
-        $data['titles'] = ['img' => __('Avatar'), 'nickname' => __('Nickname'), 'mobile' => __('Mobile'), 'amount' => __('Amount'), 'created_at' => __('Created At')];
-        $data = array_merge($data, $this->paginateInfo($user->orders(), $request, 'display_info'));
-        
+        $data = StoreHelper::salesStatsBySenior($user, date('Y-m'), $request->input('perpage', 20));
         return $this->sendResponse($data);
-
     }
 }

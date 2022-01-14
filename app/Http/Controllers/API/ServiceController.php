@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
-use App\Models\Goods;
-use App\Models\User;
+use App\Models\ServiceOrder;
+// use App\Models\User;
 use App\Helpers\StoreHelper;
 
 class ServiceController extends ApiBaseController
 {
     /**
-     * Services in a store(for manager/clerk and referer) 门店顾客的服务数据，店长查看本店的数据，店员/推荐人则返回自己推荐顾客的数据
+     * Services in a store(for manager/clerk and referer) 服务订单列表
      *
      * @OA\Get(
      *  path="/api/services",
@@ -22,33 +22,23 @@ class ServiceController extends ApiBaseController
      */       
     public function index(Request $request)
     {
-        $data = StoreHelper::salesStats($this->user, date('Y-m'), $request->input('perpage', 20), 'service_orders');
-        return $this->sendResponse($data);
-    }
-
-    /**
-     * User's orders 用户的消费订单
-     *
-     * @OA\Get(
-     *  path="/api/services/{user_id}",
-     *  tags={"Services"},
-     *  @OA\Parameter(name="user_id",    in="path",required=true,explode=true,@OA\Schema(type="integer"),description="user id"),
-     *  @OA\Parameter(name="perpage",       in="query",required=false,explode=true,@OA\Schema(type="integer"),description="items per page"),
-     *  @OA\Parameter(name="page",          in="query",required=false,explode=true,@OA\Schema(type="integer"),description="page num"),  
-     *  @OA\Response(response=200,description="successful operation")
-     * )
-     */  
-    public function show($id, Request $request)
-    {
-        if (!$user = User::find($id) ){
-            return $this->sendError("没有找到该顾客");
-        }
-        if ($user->store_id != $this->user->store_id) {
-            return $this->sendError("您只能查看自己门店的数据");
-        }
-        $data['titles'] = ['img' => __('Avatar'), 'nickname' => __('Nickname'), 'mobile' => __('Mobile'), 'title' => __('Title'), 'detail' => __('Detail'), 'amount' => __('Amount')];
-        $data = array_merge($data, $this->paginateInfo($user->serviceOrders(), $request, 'display_info'));
-        
-        return $this->sendResponse($data);
+        $month = date('Y-m');
+        $start = date('Y-m-d', strtotime("first day of $month"));
+        $end = date('Y-m-d', strtotime("last day of $month")) . ' 23:59:59';
+        $res = \DB::table('service_orders')
+            ->where('user_id', $this->user->id)
+            ->whereBetween('created_at', [$start, $end])
+            ->select("amount", "detail", \DB::raw("date(created_at) as date"))
+            ->orderBy('id', 'desc')
+            ->paginate($request->input('perpage', 20))
+            ->toArray()
+            ;
+        return $this->sendResponse([
+            'titles' => ['detail' => __('Detail'), 'amount' => __('Amount'), 'created_at' => __('Date')],
+            'total' => $res['total'] ?? null,
+            'pages' => $res['last_page'] ?? 1,
+            'page' => $res['page'] ?? 1,
+            'items' => $res['data']
+        ]);
     }
 }
