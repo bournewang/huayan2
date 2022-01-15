@@ -79,6 +79,7 @@ Route::group(['middleware' => ['auth:api']], function(){
     Route::delete('/cart/{goods_id}',   [CartController::class, 'delete']);
     
     Route::get ('/orders',              [OrderController::class, 'index']);
+    Route::get ('/orders/summary',      [OrderController::class, 'summary']);
     Route::get ('/orders/{id}',         [OrderController::class, 'show']);    
     Route::post('/orders',              [OrderController::class, 'create']);
     Route::put ('/orders/{id}/place',   [OrderController::class, 'place']);

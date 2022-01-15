@@ -37,6 +37,25 @@ class OrderController extends ApiBaseController
     }
 
     /**
+     * Get order status summary 获取各状态订单数量
+     *
+     * @OA\Get(
+     *  path="/api/orders/summary",
+     *  tags={"Order"},
+     *  @OA\Response(response=200,description="successful operation"),
+     *  security={{ "api_key":{} }}
+     * )
+     */  
+    public function summary(Request $request)
+    {
+        $orders = $this->user->orders();
+        $res = $orders->select('status', \DB::raw('count(id) as total'))->groupBy('status')->pluck('total', 'status')->all();
+        $all = array_sum($res);
+        $res['all'] = $all;
+        return $this->sendResponse($res);
+    }
+    
+    /**
      * Place an order 提交订单
      *
      * @OA\Post(
