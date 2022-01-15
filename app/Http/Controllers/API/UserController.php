@@ -111,6 +111,16 @@ class UserController extends ApiBaseController
     //     ]);
     // }
     
+    /**
+     * 获取用户二维码
+     *
+     * @OA\Get(
+     *  path="/api/user/qrcode",
+     *  tags={"User"},
+     *  @OA\Response(response=200,description="successful operation"),
+     *  security={{ "api_key":{} }}
+     * )
+     */      
     public function qrcode()
     {
         $mpp = \EasyWeChat::miniProgram();

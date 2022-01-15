@@ -67,7 +67,7 @@ class Expert extends Resource
                     if ($this->bank_key == 'OTHER') {
                         return $this->bank_name;
                     }else{
-                        return \App\Models\Setting::first()->banks[$this->bank_key];
+                        return \App\Models\Setting::first()->banks[$this->bank_key] ?? null;
                     }
                 }),
             NovaDependencyContainer::make([
