@@ -82,19 +82,9 @@ class UserController extends ApiBaseController
      */      
     public function mobile(Request $request)
     {
-        \Log::debug(__CLASS__.'->'.__FUNCTION__);
-        \Log::debug($request->all());
         $mpp = \EasyWeChat::miniProgram();
-        $sess = $mpp->auth->session($request->input('code'));
-        \Log::debug("wx session: ");
-        \Log::debug($sess);
-        
-        $iv = $request->input('iv');
-        $encryptedData = $request->input('encryptedData');
-        $data = $mpp->encryptor->decryptData($sess['session_key'], $iv, $encryptedData);
-        \Log::debug("decryptData: ");
-        \Log::debug($data);
-        if ($mobile = ($data['purePhoneNumber'] ?? $data['phoneNumber'])) {
+        $data = $mpp->phone_number->getUserPhoneNumber($request->input('code'));
+        if ($mobile = ($data['phone_info']['purePhoneNumber'] ?? $data['phone_info']['phoneNumber'] ?? null)) {
             $this->user->update(['mobile' => $mobile]);
         }
         
@@ -133,6 +123,6 @@ class UserController extends ApiBaseController
             $filename = $response->save(\Storage::disk('public')->path('user'), $this->user->id.".jpg");
             \Log::debug("save to $filename");
         }
-        return $this->sendResponse($filename);
+        return $this->sendResponse(url($filename));
     }
 }
