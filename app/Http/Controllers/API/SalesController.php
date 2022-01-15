@@ -22,12 +22,13 @@ class SalesController extends ApiBaseController
      */       
     public function index(Request $request)
     {
+        $this->checkStorePermit();
         $data = StoreHelper::salesStatsBySenior($this->user, date('Y-m'), $request->input('perpage', 20));
         return $this->sendResponse($data);
     }
 
     /**
-     * User's orders 用户的消费订单
+     * User's orders 店员开发的顾客消费明细
      *
      * @OA\Get(
      *  path="/api/sales/{user_id}",
@@ -40,6 +41,8 @@ class SalesController extends ApiBaseController
      */  
     public function show($id, Request $request)
     {
+        $this->checkStorePermit();
+        
         if (!$user = User::find($id) ){
             return $this->sendError("没有找到该顾客");
         }
