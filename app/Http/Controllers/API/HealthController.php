@@ -62,4 +62,42 @@ class HealthController extends ApiBaseController
         return $this->sendResponse($health->detail());
     }
     
+    /**
+     * Create a health 提交一个健康咨询
+     *
+     * @OA\Post(
+     *   path="/api/health",
+     *   tags={"User"},
+     *   @OA\RequestBody(
+     *       required=false,
+     *       @OA\MediaType(
+     *           mediaType="application/x-www-form-urlencoded",
+     *           @OA\Schema(
+     *               type="object",
+     *               @OA\Property(property="detail", type="string", description="健康状况描述及问题"),
+     *               @OA\Property(property="imgs[]", type="array", description="img urls, 病例及症状", collectionFormat="multi", @OA\Items(type="string")),
+     *           )
+     *       )
+     *   ),
+     *  @OA\Response(response=200,description="successful operation"),
+     *  security={{ "api_key":{} }}
+     * )
+     */    
+    public function create(Request $request)
+    {
+        $health = Health::create([
+            'store_id' => $this->user->store_id,
+            'user_id' => $this->user->id,
+            'detail' => $request->input('detail'),
+            'suggestion' => null,
+        ]);
+        if ($array = $request->input('imgs')) {
+            foreach ($array as $img){
+                $path = public_path(str_replace(config('app.url'), '', $img));
+                $health->addMedia($path)->toMediaCollection('main');
+            }
+        }
+        return $this->sendResponse($health->detail());
+    }
+    
 }

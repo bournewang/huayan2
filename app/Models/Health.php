@@ -17,6 +17,7 @@ class Health extends BaseModel
         'store_id',
         'user_id',
         'expert_id',
+        'detail',
         'suggestion',
     ];
     
@@ -24,6 +25,7 @@ class Health extends BaseModel
         'store_id' => 'integer',
         'user_id' => 'integer',
         'expert_id' => 'integer',
+        'detail' => 'string',
         'suggestion' => 'string',
     ];
 

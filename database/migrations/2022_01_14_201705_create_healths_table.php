@@ -15,10 +15,11 @@ class CreateHealthsTable extends Migration
     {
         Schema::create('healths', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('store_id')->unsigned();
+            $table->bigInteger('store_id')->unsigned()->nullable();
             $table->bigInteger('user_id')->unsigned();
-            $table->bigInteger('expert_id')->unsigned();
-            $table->text('suggestion');
+            $table->bigInteger('expert_id')->unsigned()->nullable();
+            $table->text('detail');
+            $table->text('suggestion')->nullable();
             $table->enum('status', array_keys(\App\Models\Health::statusOptions()))->nullable();
             $table->timestamps();
             
