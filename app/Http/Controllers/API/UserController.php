@@ -124,7 +124,7 @@ class UserController extends ApiBaseController
     public function qrcode()
     {
         $mpp = \EasyWeChat::miniProgram();
-        $response = $mpp->app_code->getUnlimit("from=".$this->user->id, ['path' => '/pages/goods/list']);
+        $response = $mpp->app_code->getUnlimit("referer_id=".$this->user->id, ['path' => '/']);
         
         \Log::debug($response);
         // 保存小程序码到文件
