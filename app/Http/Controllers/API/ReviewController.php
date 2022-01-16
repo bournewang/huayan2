@@ -40,7 +40,7 @@ class ReviewController extends ApiBaseController
         ];
         $reviews = $reviews->paginate($perpage);
         foreach ($reviews as $review) {
-            $data['items'][] = $review->info();
+            $data['items'][] = $review->detail();
         }
         return $this->sendResponse($data);
     }
