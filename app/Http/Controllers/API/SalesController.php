@@ -49,7 +49,7 @@ class SalesController extends ApiBaseController
         if ($user->store_id != $this->user->store_id) {
             return $this->sendError("您只能查看自己门店的数据");
         }
-        $data = StoreHelper::salesStatsBySenior($user, date('Y-m'), $request->input('perpage', 20));
+        $data = StoreHelper::salesItemsBySenior($user, date('Y-m'), $request->input('perpage', 20));
         return $this->sendResponse($data);
     }
 }

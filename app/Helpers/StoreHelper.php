@@ -12,18 +12,18 @@ class StoreHelper
         $key = implode('.', array_filter(['store', $store_id, __FUNCTION__, $relation, $attr, $val]));
         return cache1("store.$store_id", $key, function()use($store_id, $relation, $attr, $val){
             $builder = Store::find($store_id)->$relation();
-            if ($attr && $val) 
+            if ($attr && $val)
                 $builder = $builder->wherePivot($attr, $val);
             return $builder->pluck('id')->all();
         });
     }
-    
+
     static public function refreshSales($store, $start, $end)
     {
         foreach ($store->users as $user) {
             $user->initSales();
         }
-        
+
         // FIXME: should be paid_at
         $res = Order::where('store_id', $store->id)
             ->whereBetween('created_at', [$start, $end])
@@ -34,34 +34,34 @@ class StoreHelper
         foreach ($res as $user_id => $total) {
             User::find($user_id)->update(['ppv' => $total]);
         }
-        
+
         foreach ($store->refresh()->roots() as $root) {
             $root->tgpv();
         }
-        
+
         foreach ($store->refresh()->roots() as $user) {
             $user->make_dds();
         }
-        
+
         foreach ($store->refresh()->roots() as $user) {
             $user->make_leader_base();
         }
-        
+
         foreach ($store->refresh()->users as $user) {
             $user->income();
         }
     }
-    
+
     static public function calculateRevenue($store, $year, $index)
     {
         $start = date('Y-m-d', strtotime("first day of $year-$index"));
         $end = date('Y-m-d', strtotime("last day of $year-$index")) . ' 23:59:59';
 
         self::refreshSales($store, $start, $end);
-        
+
         foreach ($store->refresh()->users as $user) {
             $data = [
-                'ppv' => $user->ppv, 
+                'ppv' => $user->ppv,
                 'gpv' => $user->gpv,
                 'tgpv' => $user->tgpv,
                 'pgpv' => $user->pgpv,
@@ -78,7 +78,7 @@ class StoreHelper
                     'year' => $year,
                     'index' => $index,
                     'start'  => $start,
-                    'end'  => $end, 
+                    'end'  => $end,
                 ], $data));
             }else{
                 $revenue->update($data);
@@ -106,7 +106,7 @@ class StoreHelper
             ->orderBy('total_amount', 'desc')
             ->paginate($perpage)
             ->toArray()
-            ;    
+            ;
         return [
             'titles'  => ['img' => __('Avatar'), 'nickname' => __('Nickname'), 'mobile' => __('Mobile'), 'amount' => __('Amount')],
             'total' => $res['total'] ?? null,
@@ -115,15 +115,15 @@ class StoreHelper
             'items' => $res['data'] ?? [],
         ];
     }
-    
+
     static private function stats($user, $start, $end, $table = 'orders', $price_field = 'amount')
     {
         $builder = DB::table($table);
-        if ($user->type == User::MANAGER) {
-            $builder->where($table.'.store_id', $user->store_id);
-        }else {
-            $builder->where('users.senior_id', $user->id);
-        }
+        // if ($user->type == User::MANAGER) {
+        $builder->where($table.'.store_id', $user->store_id);
+        // }else {
+        //     $builder->where('users.senior_id', $user->id);
+        // }
         $res = $builder->whereIn($table.'.status', array_keys(Order::validStatus()))
             ->whereBetween($table.'.created_at', [$start, $end])
             ->select("senior_id", DB::raw("sum($price_field) as total_amount"))
@@ -135,14 +135,14 @@ class StoreHelper
             // ->paginate(20)
             // ->toArray()
             ;
-        return $res;       
+        return $res;
     }
-    static public function salesStatsBySenior($user, $month, $perpage, $table = 'orders')
+    static public function salesStatsBySenior($user, $month, $perpage)
     {
         $start = date('Y-m-d', strtotime("first day of $month"));
         $end = date('Y-m-d', strtotime("last day of $month")) . ' 23:59:59';
 
-        \Log::debug(self::stats($user, $start, $end, $table));
+        // \Log::debug(self::stats($user, $start, $end, $table));
         $arr1 = self::stats($user, $start, $end, 'orders');
         $arr2 = self::stats($user, $start, $end, 'service_orders');
         $arr3 = self::stats($user, $start, $end, 'sales_orders', 'total_price');
@@ -150,8 +150,8 @@ class StoreHelper
         $sums = array();
         foreach (array_keys($arr1 + $arr2 + $arr3) as $key) {
             $sums[$key] = @($arr1[$key] + $arr2[$key] + $arr3[$key]);
-        } 
-        $data = [];     
+        }
+        $data = [];
         $i=1;
         foreach ($sums as $senior_id => $total_amount) {
             if ($senior_id) {
@@ -165,14 +165,73 @@ class StoreHelper
                     'total_amount' => money($total_amount)
                 ];
             }
-        }    
+        }
         return [
-            'titles'  => ['img' => __('Avatar'), 'nickname' => __('Nickname'), 'amount' => __('Amount')],
+            'titles'  => ['img' => __('Avatar'), 'nickname' => __('Nickname'), 'total_amount' => __('Amount')],
             'total' => $res['total'] ?? null,
             'pages' => $res['last_page'] ?? 1,
             'page' => $res['page'] ?? 1,
             'items' => $data,
         ];
     }
-    
+
+    static private function statsItem($user, $start, $end, $table = 'orders', $price_field = 'amount')
+    {
+        $builder = DB::table($table);
+        // if ($user->type == User::MANAGER) {
+        //     $builder->where($table.'.store_id', $user->store_id);
+        // }else {
+        $builder->where('users.senior_id', $user->id);
+        // }
+        $res = $builder->whereIn($table.'.status', array_keys(Order::validStatus()))
+            ->whereBetween($table.'.created_at', [$start, $end])
+            ->select("user_id", DB::raw("sum($price_field) as total_amount"))
+            ->join('users', $table.'.user_id', '=', 'users.id')
+            ->groupBy('user_id')
+            ->orderBy('total_amount', 'desc')
+            ->pluck('total_amount', 'user_id')
+            ->all()
+            // ->paginate(20)
+            // ->toArray()
+            ;
+        return $res;
+    }
+    static public function salesItemsBySenior($user, $month, $perpage)
+    {
+        $start = date('Y-m-d', strtotime("first day of $month"));
+        $end = date('Y-m-d', strtotime("last day of $month")) . ' 23:59:59';
+
+        // \Log::debug(self::stats($user, $start, $end, $table));
+        $arr1 = self::statsItem($user, $start, $end, 'orders');
+        $arr2 = self::statsItem($user, $start, $end, 'service_orders');
+        $arr3 = self::statsItem($user, $start, $end, 'sales_orders', 'total_price');
+
+        $sums = array();
+        foreach (array_keys($arr1 + $arr2 + $arr3) as $key) {
+            $sums[$key] = @($arr1[$key] + $arr2[$key] + $arr3[$key]);
+        }
+        $data = [];
+        $i=1;
+        foreach ($sums as $user_id => $total_amount) {
+            if ($user_id) {
+                $user = User::find($user_id);
+                $data[] = [
+                    // 'index_no' => $i++,
+                    'user_id' => $user_id,
+                    'img' => $user->avatar,
+                    'nickname' => $user->nickname,
+                    // 'mobile' => $senior->mobile,
+                    'total_amount' => money($total_amount)
+                ];
+            }
+        }
+        return [
+            'titles'  => ['img' => __('Avatar'), 'nickname' => __('Nickname'), 'total_amount' => __('Amount')],
+            'total' => $res['total'] ?? null,
+            'pages' => $res['last_page'] ?? 1,
+            'page' => $res['page'] ?? 1,
+            'items' => $data,
+        ];
+    }
+
 }
