@@ -158,6 +158,7 @@ class StoreHelper
                 $senior = User::find($senior_id);
                 $data[] = [
                     // 'index_no' => $i++,
+                    'user_id' => $senior_id,
                     'img' => $senior->avatar,
                     'nickname' => $senior->nickname,
                     // 'mobile' => $senior->mobile,
