@@ -81,7 +81,7 @@ class StoreController extends ApiBaseController
       */
       public function index(Request $request)
       {
-          $stores = Store::where('id', '>', 0);
+          $stores = Store::where('salesman_id', $this->user->id);
           if ($key = $request->input('k')) {
               $stores->where('name', 'like', "%$key%");
           }
