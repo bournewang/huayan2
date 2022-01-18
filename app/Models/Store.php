@@ -11,7 +11,7 @@ class Store extends BaseModel
     use SoftDeletes;
     use StatusTrait;
     use AddressTrait;
-    
+
     public $table = 'stores';
 
     protected $dates = ['deleted_at'];
@@ -21,7 +21,7 @@ class Store extends BaseModel
         'name',
         'company_name',
         'license_no',
-        'account_no', 
+        'account_no',
         'contact',
         'mobile',
         'province_id',
@@ -33,12 +33,12 @@ class Store extends BaseModel
         'salesman_id',
         // 'commission'
     ];
-    
+
     protected $casts = [
         'name' => 'string',
         'company_name' => 'string',
         'license_no' => 'string',
-        'account_no' => 'string', 
+        'account_no' => 'string',
         'contact' => 'string',
         'mobile' => 'string',
         // 'license_img' => 'string',
@@ -47,7 +47,7 @@ class Store extends BaseModel
 
     public static $rules = [
         'name' => 'required|string|unique:stores',
-        'company_name' => 'requried|string',
+//        'company_name' => 'required|string',
         'contact' => 'required|string',
         'mobile' => 'required|string|max:11|min:11',
     ];
@@ -59,13 +59,13 @@ class Store extends BaseModel
     protected $hidden = [
         // 'shopId',
     ];
-    
 
-    
+
+
     // protected static function beforesave(&$instance)
     // {
     // }
-    // 
+    //
     // public static function boot()
     // {
     //     parent::boot();
@@ -76,32 +76,32 @@ class Store extends BaseModel
     //         self::beforesave($instance);
     //     });
     // }
-    
+
     public function flush()
     {
         flush_tag("store.$this->id");
     }
-    
+
     public function users()
     {
         return $this->hasMany(User::class);//->withPivot('superior_id', 'level', 'sharing');
     }
-    
+
     public function clerks()
     {
         return $this->users()->where('type', User::CLERK);
     }
-    
+
     public function customers()
     {
         return $this->users()->where('type', User::CUSTOMER)->get();
     }
-    
+
     public function roots()
     {
         return $this->users()->whereNull('senior_id')->get();
     }
-    
+
     public function orders()
     {
         return $this->hasMany(Order::class);
@@ -111,7 +111,7 @@ class Store extends BaseModel
     {
         return $this->hasMany(ServiceOrder::class);
     }
-    
+
     public function manager(){return $this->belongsTo(User::class);}
     public function salesman(){return $this->belongsTo(User::class);}
     public function devices(){return $this->hasMany(Device::class);}
