@@ -118,15 +118,11 @@ class Store extends BaseModel
 
     public function detail()
     {
-        $imgs = [];
-        foreach (['contract', 'license', 'photo', 'id_card'] as $collect) {
-            $imgs[$collect] = ['thumb' => [], 'large' => []];
-            foreach ($this->getMedia($collect) as $item) {
-                $imgs[$collect]['thumb'][] = $item->getUrl('thumb');
-                $imgs[$collect]['large'][] = $item->getUrl('large');
-            }
-        }
-        return array_merge($this->info(),$imgs, [
+        return array_merge($this->info(),[
+            'contract' => $this->getMediaData('contract'),
+            'license' => $this->getMediaData('license'),
+            'photo' => $this->getMediaData('photo'),
+            'id_card' => $this->getMediaData('id_card'),
             'address' => $this->display_address(),
             'status_label' => $this->statusLabel()
         ]);

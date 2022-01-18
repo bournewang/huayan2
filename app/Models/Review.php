@@ -18,15 +18,15 @@ class Review extends BaseModel
         'rating',
         'comment'
     ];
-    
+
     protected $casts = [
         'store_id' => 'integer',
         'user_id' => 'integer',
         'order_id' => 'integer',
         'rating' => 'integer',
-        'comment' => 'string',   
+        'comment' => 'string',
     ];
-    
+
     public static function boot()
     {
         parent::boot();
@@ -38,22 +38,22 @@ class Review extends BaseModel
             // self::beforesave($instance);
         });
     }
-    
+
     public function order()
     {
         return $this->belongsTo(Order::class);
     }
-    
+
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-    
+
     public function store()
     {
         return $this->belongsTo(Store::class);
     }
-    
+
     public function info()
     {
         return array_merge(parent::info(), [
@@ -61,16 +61,11 @@ class Review extends BaseModel
             'nickname' => $this->user->nickname,
         ]);
     }
-    
+
     public function detail()
     {
-        $imgs = [];
-        $details = [];
-        foreach ($this->getMedia('photo') as $item) {
-            $imgs[] = $item->getUrl('large');
-        }
         return array_merge($this->info(),[
-            'imgs' => $imgs,
+            'imgs' => $this->getMediaData('photo'),
             'order' => $this->order->detail()
         ]);
     }

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\MediaLibrary\HasMedia; 
+use Spatie\MediaLibrary\HasMedia;
 class BaseModel extends Model implements HasMedia
 {
     use MediaTrait;
@@ -22,5 +22,16 @@ class BaseModel extends Model implements HasMedia
             $info[$key] = $this->$key ? $this->$key->toDateTimeString() : null;
         }
         return $info;
+    }
+
+    public function getMediaData($collect)
+    {
+        $imgs = [];
+        $imgs[$collect] = ['thumb' => [], 'large' => []];
+        foreach ($this->getMedia($collect) as $item) {
+            $imgs[$collect]['thumb'][] = $item->getUrl('thumb');
+            $imgs[$collect]['large'][] = $item->getUrl('large');
+        }
+        return $imgs;
     }
 }

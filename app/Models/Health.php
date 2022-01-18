@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Health extends BaseModel
 {
     use HasFactory;
-    
+
     public $table = 'healths';
 
     protected $dates = ['deleted_at'];
@@ -20,7 +20,7 @@ class Health extends BaseModel
         'detail',
         'suggestion',
     ];
-    
+
     protected $casts = [
         'store_id' => 'integer',
         'user_id' => 'integer',
@@ -32,7 +32,7 @@ class Health extends BaseModel
     protected $hidden = [
         'id',
     ];
-    
+
     const PENDING = 'pending';
     const REPLIED = 'replied';
     const DENIED = 'denied';
@@ -44,7 +44,7 @@ class Health extends BaseModel
             self::DENIED => __(ucfirst(self::DENIED)),
         ];
     }
-    
+
     public function statusLabel()
     {
         return self::statusOptions()[$this->status] ?? '-';
@@ -53,17 +53,17 @@ class Health extends BaseModel
     {
         return $this->belongsTo(Store::class);
     }
-    
+
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-    
+
     public function expert()
     {
         return $this->belongsTo(Expert::class);
     }
-    
+
     public function info()
     {
         return array_merge(parent::info(), [
@@ -73,16 +73,11 @@ class Health extends BaseModel
             // 'customer_name' => $this->user->name ?? null,
         ]);
     }
-    
+
     public function detail()
     {
-        $imgs = [];
-        foreach ($this->getMedia('main') as $item) {
-            $imgs[] = $item->getUrl('large');
-        }
-        
         return array_merge($this->info(),[
-            'imgs' => $imgs
+            'imgs' => $this->getMediaData('main'),
         ]);
     }
 }
