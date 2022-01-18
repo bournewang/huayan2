@@ -49,9 +49,9 @@ class StoreController extends ApiBaseController
             return $this->sendError("请填写店长手机") ;
          }
          if (!$manager = Manager::where('mobile', $phone)->first()) {
-             return $this->sendError("该用户没有注册 $phone");
+//             return $this->sendError("该用户没有注册 $phone");
          }
-         $data['manager_id'] = $manager->id;
+         $data['manager_id'] = $manager->id ?? null;
          $data['status'] = (new Store)->pending;
          if ($error = ValidatorHelper::validate(Store::$rules, $data)) {
              return $this->sendError($error);
