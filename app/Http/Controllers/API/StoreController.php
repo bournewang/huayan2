@@ -8,7 +8,7 @@ use App\Models\Manager;
 use App\Helpers\ValidatorHelper;
 
 class StoreController extends ApiBaseController
-{    
+{
     /**
      * create an store 业务员开发/创建新门店
      *
@@ -57,22 +57,16 @@ class StoreController extends ApiBaseController
              return $this->sendError($error);
          }
          $store = Store::create($data);
-         foreach (['contract', 'license', 'photo'] as $collect) {
+         foreach (['contract', 'license', 'photo', 'id_card'] as $collect) {
              if (!$array = $request->input($collect)) continue;
              foreach ($array as $img){
                  $path = public_path(str_replace(config('app.url'), '', $img));
                  $store->addMedia($path)->toMediaCollection($collect);
              }
          }
-         if ($array = $request->input('id_card')) {
-             foreach ($array as $img){
-                 $path = public_path(str_replace(config('app.url'), '', $img));
-                 $manager->addMedia($path)->toMediaCollection('id_card');
-             }
-         }
          return $this->sendResponse(['store_id' => $store]);
      }
-     
+
      /**
       * Store list api 获取该业务员开发/创建的门店
       *
@@ -80,11 +74,11 @@ class StoreController extends ApiBaseController
       *  path="/api/stores",
       *  tags={"Store"},
       *  @OA\Parameter(name="perpage",       in="query",required=false,explode=true,@OA\Schema(type="integer"),description="items per page"),
-      *  @OA\Parameter(name="page",          in="query",required=false,explode=true,@OA\Schema(type="integer"),description="page num"),  
+      *  @OA\Parameter(name="page",          in="query",required=false,explode=true,@OA\Schema(type="integer"),description="page num"),
       *  @OA\Parameter(name="k",             in="query",required=false,explode=true,@OA\Schema(type="string"), description="key words"),
       *  @OA\Response(response=200,description="successful operation")
       * )
-      */  
+      */
       public function index(Request $request)
       {
           $stores = Store::where('id', '>', 0);
@@ -94,7 +88,7 @@ class StoreController extends ApiBaseController
           if ($s = $request->input('status')) {
               $stores->where('status', $s);
           }
-          
+
           $total = $stores->count();
           $perpage = $request->input('perpage', 20);
           $data = [
@@ -109,4 +103,25 @@ class StoreController extends ApiBaseController
           }
           return $this->sendResponse($data);
       }
+
+    /**
+     * Store detail api 获取该门店详情
+     *
+     * @OA\Get(
+     *  path="/api/stores/{id}",
+     *  tags={"Store"},
+     *  @OA\Parameter(name="id",       in="path",required=true,explode=true,@OA\Schema(type="integer"),description="store id"),
+     *  @OA\Response(response=200,description="successful operation")
+     * )
+     */
+    public function show($id)
+    {
+        if (!$store = Store::find($id)) {
+            return $this->sendError("没有该门店信息");
+        }
+        if ($store->saleman_id != $this->user->id) {
+            return $this->sendError("你只能查看自己开发的店");
+        }
+        return $this->sendResponse($store->detail());
+    }
 }

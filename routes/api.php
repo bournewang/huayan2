@@ -58,11 +58,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::post('/mapp/notify',         [MappController::class, 'notify']);
 
     Route::get ('/reviews',              [ReviewController::class, 'index']);
-    Route::get ('/reviews/{id}',         [ReviewController::class, 'detail']);    
+    Route::get ('/reviews/{id}',         [ReviewController::class, 'detail']);
 
 Route::group(['middleware' => ['auth:api']], function(){
     Route::put ('/user/type/{type}',   [UserController::class, 'type']);
-    
+
     Route::get ('/user/info',           [UserController::class, 'info']);
     Route::post('/user/modify',         [UserController::class, 'modify']);
     Route::post('/user/mobile',         [UserController::class, 'mobile']);
@@ -71,45 +71,46 @@ Route::group(['middleware' => ['auth:api']], function(){
     Route::post ('/health',             [HealthController::class, 'create']);
     Route::get ('/health',              [HealthController::class, 'index']);
     Route::get ('/health/{id}',         [HealthController::class, 'show']);
-    
+
     Route::post ('/file',               [FileController::class, 'upload']);
-    
+
     Route::get   ('/cart',              [CartController::class, 'show']);
     Route::post  ('/cart/{goods_id}',   [CartController::class, 'add']);
     Route::put   ('/cart/{goods_id}',   [CartController::class, 'update']);
     Route::delete('/cart/{goods_id}',   [CartController::class, 'delete']);
-    
+
     Route::get ('/orders',              [OrderController::class, 'index']);
     Route::get ('/orders/summary',      [OrderController::class, 'summary']);
-    Route::get ('/orders/{id}',         [OrderController::class, 'show']);    
+    Route::get ('/orders/{id}',         [OrderController::class, 'show']);
     Route::post('/orders',              [OrderController::class, 'create']);
     Route::put ('/orders/{id}/place',   [OrderController::class, 'place']);
     Route::put ('/orders/{id}/receive', [OrderController::class, 'receive']);
     Route::post('/orders/{id}/review',  [OrderController::class, 'review']);
-    
+
     Route::post  ('/goods/{id}/like',   [GoodsController::class, 'like']);
     Route::delete('/goods/{id}/like',   [GoodsController::class, 'dislike']);
-    
+
     Route::get      ('/address',        [AddressController::class, 'index']);
     Route::get      ('/address/default',[AddressController::class, 'default']);
     Route::get      ('/address/current',[AddressController::class, 'current']);
     Route::get      ('/address/{id}',   [AddressController::class, 'show']);
-    
+
     Route::post     ('/address',        [AddressController::class, 'create']);
     Route::put      ('/address/{id}',   [AddressController::class, 'update']);
     Route::delete   ('/address/{id}',   [AddressController::class, 'delete']);
     Route::post('/address/{id}/select', [AddressController::class, 'select']);
-    
+
     Route::post     ('/stores',         [StoreController::class, 'create']);
     Route::get      ('/stores',         [StoreController::class, 'index']);
-    
+    Route::get      ('/stores/{id}',    [StoreController::class, 'show']);
+
     Route::get      ('/customers',      [CustomerController::class, 'index']);
     Route::get      ('/clerks',         [ClerkController::class, 'index']);
 
     Route::get('/sales',                [SalesController::class, 'index']);
     Route::get('/sales/{user_id}',      [SalesController::class, 'show']);
     Route::get('/services',             [ServiceController::class, 'index']);
-    Route::get('/services/{user_id}',   [ServiceController::class, 'show']);    
-    
+    Route::get('/services/{user_id}',   [ServiceController::class, 'show']);
+
     Route::get('/stocks',               [StockController::class, 'index']);
 });
