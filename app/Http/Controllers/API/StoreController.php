@@ -119,7 +119,7 @@ class StoreController extends ApiBaseController
         if (!$store = Store::find($id)) {
             return $this->sendError("没有该门店信息");
         }
-        if ($store->saleman_id != $this->user->id) {
+        if ($store->salesman_id != $this->user->id) {
             return $this->sendError("你只能查看自己开发的店");
         }
         return $this->sendResponse($store->detail());
