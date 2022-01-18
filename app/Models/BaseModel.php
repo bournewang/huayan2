@@ -26,11 +26,11 @@ class BaseModel extends Model implements HasMedia
 
     public function getMediaData($collect)
     {
-        $imgs = [];
-        $imgs[$collect] = ['thumb' => [], 'large' => []];
+//        $imgs = [];
+        $imgs = ['thumb' => [], 'large' => []];
         foreach ($this->getMedia($collect) as $item) {
-            $imgs[$collect]['thumb'][] = $item->getUrl('thumb');
-            $imgs[$collect]['large'][] = $item->getUrl('large');
+            $imgs['thumb'][] = $item->getUrl('thumb');
+            $imgs['large'][] = $item->getUrl('large');
         }
         return $imgs;
     }
