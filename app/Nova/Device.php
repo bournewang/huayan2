@@ -24,9 +24,9 @@ class Device extends Resource
     }
     public static function group()
     {
-        return __("Chain Store");
+        return __("Stock");
     }
-    
+
     public static function icon()
     {
         return view("nova::svg.".strtolower(explode('\\', self::class)[2]));

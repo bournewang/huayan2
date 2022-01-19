@@ -55,10 +55,14 @@ class User extends Resource
     {
         return __("Chain Store");
     }
-    public static function icon() 
+    public static function icon()
     {
         return view("nova::svg.".strtolower(explode('\\', self::class)[2]));
-    }    
+    }
+    public static function availableForNavigation(Request $request): bool
+    {
+        return false;
+    }
     /**
      * Get the fields displayed by the resource.
      *

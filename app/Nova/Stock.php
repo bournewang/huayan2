@@ -23,7 +23,7 @@ class Stock extends Resource
     }
     public static function group()
     {
-        return __("Chain Store");
+        return __("Stock");
     }
     public static function icon()
     {

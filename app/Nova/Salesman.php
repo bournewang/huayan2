@@ -22,7 +22,7 @@ class Salesman extends Resource
     }
     public static function group()
     {
-        return __("Chain Store");
+        return __("Settings");
     }
     public static function icon()
     {
@@ -57,7 +57,7 @@ class Salesman extends Resource
             Text::make(__('Realname'), 'name')->sortable()->rules('required', 'max:255'),
             Select::make(__('Gender'), 'gender')->options(User::genderOptions())->displayUsingLabels(),
             Text::make(__('Mobile'), 'mobile'),
-            
+
         ];
     }
 
@@ -106,7 +106,7 @@ class Salesman extends Resource
             new Actions\ImportSalesmen
         ];
     }
-    
+
     public static function indexQuery(NovaRequest $request, $query)
     {
         return $query->where('type', \App\Models\Salesman::SALESMAN);

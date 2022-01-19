@@ -26,6 +26,10 @@ class Example extends Resource
     {
         return null;//view("nova::svg.".strtolower(explode('\\', self::class)[2]));
     }
+    public static function availableForNavigation(Request $request): bool
+    {
+        return false;
+    }
     /**
      * The single value that should be used to represent the resource when being displayed.
      *

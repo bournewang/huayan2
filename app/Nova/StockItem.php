@@ -23,7 +23,7 @@ class StockItem extends Resource
     }
     public static function group()
     {
-        return __("Chain Store");
+        return __("Stock");
     }
     public static function icon()
     {
@@ -61,7 +61,7 @@ class StockItem extends Resource
             Text::make(__('Quantity'), 'quantity'),
             MorphTo::make(__('Order'), 'order'),
             $this->datetime(),
-            
+
         ];
     }
 

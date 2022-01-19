@@ -24,7 +24,7 @@ class Expert extends Resource
     }
     public static function group()
     {
-        return __("Chain Store");
+        return __("Expert");
     }
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -41,7 +41,7 @@ class Expert extends Resource
     public static $search = [
         'id',
     ];
-    
+
     public static function icon()
     {
         return view("nova::svg.".strtolower(explode('\\', self::class)[2]));
@@ -74,7 +74,7 @@ class Expert extends Resource
                 Text::make(__('Bank Name'), 'bank_name'),
             ])->dependsOn('bank_key', 'OTHER')->onlyOnForms(),
             Text::make(__('Account No'), 'account_no'),
-            
+
         ];
     }
 
@@ -121,7 +121,7 @@ class Expert extends Resource
     {
         return [];
     }
-    
+
     public static function indexQuery(NovaRequest $request, $query)
     {
         return parent::indexQuery($request, $query)->where('type', \App\Models\Salesman::EXPERT);

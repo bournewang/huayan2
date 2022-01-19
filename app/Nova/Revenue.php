@@ -25,20 +25,24 @@ class Revenue extends Resource
     public static $search = [
         'id',
     ];
-    
+
     public static function label()
     {
         return __("Revenue");
     }
-    
+
     public static function group()
     {
         return __("Finance");
     }
-    
+
     public static function icon()
     {
         return view("nova::svg.".strtolower(explode('\\', self::class)[2]));
+    }
+    public static function availableForNavigation(Request $request): bool
+    {
+        return false;
     }
     /**
      * Get the fields displayed by the resource.

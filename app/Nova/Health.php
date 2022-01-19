@@ -24,7 +24,7 @@ class Health extends Resource
     }
     public static function group()
     {
-        return __("Chain Store");
+        return __("Expert");
     }
     public static function icon()
     {
@@ -62,6 +62,7 @@ class Health extends Resource
             BelongsTo::make(__('Store'), 'store', Store::class),
             BelongsTo::make(__('Customer'), 'user', User::class)->searchable(),
             BelongsTo::make(__('Expert'), 'expert', Expert::class),
+            Trix::make(__('Detail'), 'detail'),
             Trix::make(__('Health Suggestion'), 'suggestion'),
             Select::make(__('Status'), 'status')->options(function(){return \App\Models\Health::statusOptions();})->onlyOnForms(),
             StatusField::make(__('Status'), 'status')
@@ -71,7 +72,7 @@ class Health extends Resource
                         'active'    => $this->status == \App\Models\Health::REPLIED
                     ])
                     ->info($this->statusLabel())
-                    ->exceptOnForms(),            
+                    ->exceptOnForms(),
             $this->mediaField(__('Main'), 'main'),
         ];
     }
