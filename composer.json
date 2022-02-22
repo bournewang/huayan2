@@ -29,6 +29,7 @@
         "maatwebsite/excel": "^3.1",
         "nikaia/nova-rating-field": "^1.0",
         "optimistdigital/nova-detached-filters": "^1.1",
+        "optimistdigital/nova-simple-repeatable": "^1.4",
         "overtrue/laravel-wechat": "^6.0",
         "pdmfc/nova-action-button": "^0.7.4",
         "predis/predis": "^1.1",

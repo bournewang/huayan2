@@ -70,7 +70,7 @@ class Bill extends Resource
             Select::make(__('Status'), 'status')->options(\App\Models\Bill::statusOptions())->onlyOnForms(),
             StatusField::make(__('Status'), 'status')
                 ->values([
-                    'inactive'  => \App\Models\Bill::OUTSTANDING  == $this->status,
+                    'pending'  => \App\Models\Bill::OUTSTANDING  == $this->status,
 //                    'pending'   => $this->pending == $this->status,
                     'active'    => \App\Models\Bill::CLOSED == $this->status
                 ])

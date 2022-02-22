@@ -18,12 +18,12 @@ class CreateHealthsTable extends Migration
             $table->bigInteger('store_id')->unsigned()->nullable();
             $table->bigInteger('user_id')->unsigned();
             $table->bigInteger('expert_id')->unsigned()->nullable();
-            $table->text('detail');
+            $table->text('detail')->nullable();
             $table->text('suggestion')->nullable();
             $table->enum('status', array_keys(\App\Models\Health::statusOptions()))->nullable();
             $table->timestamps();
-            
-            $table->foreign('store_id')->references('id')->on('stores');  
+
+            $table->foreign('store_id')->references('id')->on('stores');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('expert_id')->references('id')->on('users');
         });

@@ -40,13 +40,14 @@ class CartSeeder extends Seeder
                 'total_price' => $cart->goods->sum('pivot.subtotal'),
                 'total_quantity' => $cart->goods->sum('pivot.quantity'),
             ]);
-            
+
             // $date = "2021-07-".rand(28, 31). " ".rand(8,16).":".rand(0,59).":".rand(0,59);
             $date = Carbon::today()->subDay(rand(1, 30)-1)->subHour(rand(0,12))->subMinute(rand(0,59))->subSecond(rand(0, 59));
-            
+
             echo "$user->id $user->name addresses: ". $user->addresses->count()."\n";
             $order = $cart->refresh()->submit($user->addresses->first(), $date);
-            $order->update(['status' => 'shipped']);
+            $order->update(['status' => 'shipped', 'created_at' => $date]);
+
         }
     }
 }

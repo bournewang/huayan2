@@ -55,7 +55,7 @@ function benchmark_start()
 function benchmark_end($request = null)
 {
     if (function_exists('xhprof_disable')) {
-        $xhprof_data = xhprof_disable(); 
+        $xhprof_data = xhprof_disable();
         $XHPROF_ROOT = config('xhprof.dir');
         include_once $XHPROF_ROOT . "/xhprof_lib/utils/xhprof_lib.php";
         include_once $XHPROF_ROOT . "/xhprof_lib/utils/xhprof_runs.php";
@@ -69,4 +69,16 @@ function benchmark_end($request = null)
 function new_order_no()
 {
     return Carbon::now()->format('YmdGis').rand(100000,999999);
+}
+
+function get_period($day)
+{
+    if ($day > 20) {
+        $period = 3;
+    }elseif($day > 10) {
+        $period = 2;
+    }else{
+        $period = 1;
+    }
+    return $period;
 }

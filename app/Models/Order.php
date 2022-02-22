@@ -34,7 +34,9 @@ class Order extends BaseModel
         'status',
         'logistic_id',
         'waybill_number',
-        'ship_status'
+        'ship_status',
+        'paid_at',
+        'refund_at'
     ];
 
     protected $casts = [
@@ -48,6 +50,8 @@ class Order extends BaseModel
         'city_id'  => 'integer',
         'district_id'=> 'integer',
         'street' => 'string',
+        'paid_at' => 'datetime',
+        'refund_at' => 'datetime',
     ];
 
     public static $rules = [

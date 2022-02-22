@@ -29,9 +29,11 @@ class CreateOrdersTable extends Migration
             $table->string('waybill_number', 32)->nullable();
             $table->enum('status', array_keys(Order::statusOptions()))->nullable();
             $table->integer('ship_status')->nullable();
+            $table->dateTime('paid_at')->nullable();
+            $table->dateTime('refund_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
-            
+
             $table->foreign('store_id')->references('id')->on('stores');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('province_id')->references('id')->on('provinces');

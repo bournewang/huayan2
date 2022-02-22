@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Carbon\Carbon;
+
 class BillItem extends BaseModel
 {
     use HasFactory;
@@ -60,26 +60,39 @@ class BillItem extends BaseModel
 
     static public function generate($order)
     {
-        $day = $order->created_at->format('d');
-        $period = 0;
-        if ($day > 20) {
-            $period = 3;
-        }elseif($day > 10) {
-            $period = 2;
-        }else{
-            $period = 1;
-        }
-        return self::create([
+        $data = [
             'store_id' => $order->store_id,
-            'user_id' => $order->user_id,
             'order_type' => get_class($order),
             'order_id' => $order->id,
-            'year' => $order->created_at->format('Y'),
-            'month' => $order->created_at->format('m'),
-            'period' => $period,
+            'year' => $order->paid_at->format('Y'),
+            'month' => $order->paid_at->format('m'),
+            'period' => get_period($order->paid_at->format('d')),
             'price' => $order->amount ?? 0,
-            'share' => 15,
-            'amount' => round($order->amount * 15 / 100, 2)
-        ]);
+        ];
+        if ($profit_sharing = $order->store->profit_sharing) {
+            $sharing = $data;
+            foreach ($profit_sharing as $item) {
+                echo $item['role'].",".$item['sharing_ratio']."\n";
+                if (array_key_exists($item['role'], User::sharingRoleOptions())){
+                    if ($item['role'] == User::ROLE_VICE_MANAGER) {
+                        $sharing['user_id'] = $order->store->vice_manager_id;
+                    }elseif ($item['role'] == User::ROLE_REFERER) {
+                        $sharing['user_id'] = $order->user->senior_id;
+                    }
+                    if (!$sharing['user_id']) {
+//                        echo "user id is null, continue;\n";
+                        continue;
+                    }
+                    $ratio = intval($item['sharing_ratio']);
+                    $sharing['share'] = $ratio;
+                    if ($ratio < 1 || $ratio > 100) {
+                        throw new \Exception(__("Invalid Sharing Ratio", ['ratio' => $ratio]));
+                    }
+                    $sharing['amount'] = round($order->amount * $ratio / 100, 2);
+                    self::create($sharing);
+                }
+            }
+        }
+        return true;
     }
 }

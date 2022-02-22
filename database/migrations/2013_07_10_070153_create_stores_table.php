@@ -23,21 +23,24 @@ class CreateStoresTable extends Migration
             $table->string('contact')->index()->nullable();
             $table->string('mobile')->index()->nullable();
             $table->bigInteger('manager_id')->unsigned()->nullable();
+            $table->bigInteger('vice_manager_id')->unsigned()->nullable();
             $table->bigInteger('salesman_id')->unsigned()->nullable();
             $table->bigInteger('province_id')->unsigned()->nullable();
             $table->bigInteger('city_id')->unsigned()->nullable();
             $table->bigInteger('district_id')->unsigned()->nullable();
             $table->string('street')->nullable();
             $table->enum('status', array_keys((new Store)->statusOptions()))->nullable();
-            
+            $table->text('profit_sharing')->nullable();
+
             $table->timestamps();
             $table->softDeletes();
-            
+
             $table->foreign('province_id')->references('id')->on('provinces');
             $table->foreign('city_id')->references('id')->on('cities');
             $table->foreign('district_id')->references('id')->on('districts');
-            // $table->foreign('manager_id')->references('id')->on('users');
-            // $table->foreign('salesman_id')->references('id')->on('users');            
+//            $table->foreign('manager_id')->references('id')->on('users');
+//            $table->foreign('vice_manager_id')->references('id')->on('users');
+//            $table->foreign('salesman_id')->references('id')->on('users');
         });
     }
 
