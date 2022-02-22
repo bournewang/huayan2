@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             LogisticSeeder::class,
             ServiceOrderSeeder::class,
             SalesOrderSeeder::class,
+            BillSeeder::class,
             HealthSeeder::class
         ]);
     }

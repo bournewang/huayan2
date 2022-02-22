@@ -13,6 +13,7 @@ return [
     // resource to build permissions of View/Create/Update/Delete/ForceDelete
     // new resource must put here
     'resources' => [
+	    'Bill', 'BillItem',
         "Address","Banner","BaseModel","Cart","Category","City","Clerk",
         "Customer","Device","District","Example","Expert","Goods","Logistic","Order",
         "Province","Revenue","Salesman","Setting","Store","Supplier","User",
@@ -24,17 +25,17 @@ return [
     ],
     'roles' => [
         User::SALESMAN => [
-            "View Store", 
-            "View Device", 
+            "View Store",
+            "View Device",
             "View Order",
             "View"
         ],
         User::MANAGER => [
-            "View Customer", 
-            "View Clerk", 
-            "View Order", 
-            "View ServiceOrder", 
-            "View Review", 
+            "View Customer",
+            "View Clerk",
+            "View Order",
+            "View ServiceOrder",
+            "View Review",
             "View Goods",
             'View PurchaseOrder',   'Delete PurchaseOrder', 'StockImport',
             'View SalesOrder',      'Delete SalesOrder',
@@ -43,19 +44,22 @@ return [
             "View Cart"
         ],
         User::CLERK => [
-            "View Customer", 
-            "View Order", 
+            "View Customer",
+            "View Order",
             "View Goods",
             'Create PurchaseOrder', 'View PurchaseOrder', 'Update PurchaseOrder',
-            'Create SalesOrder',    'View SalesOrder', 'Update SalesOrder', 
+            'Create SalesOrder',    'View SalesOrder', 'Update SalesOrder',
             'View Stock',
             'View StockItem',
             "View Cart"
         ],
         'warehouse keeper' => [
-            "View Order", 
+            "View Order",
             'Deliver',
         ],
+        'financial' => [
+
+        ]
     ],
     'setting' => [
         'banks' => [
@@ -64,9 +68,9 @@ return [
             "HSBC" 	=> "汇丰银行",
             "BC" 	=> "中国银行",
             "ABC" 	=> "中国农业银行",
-            "BC" 	=> "交通银行",
+            "BCM" 	=> "交通银行",
             "CMB" 	=> "招商银行",
-            "CMB" 	=> "中国民生银行",
+            "CMBC" 	=> "中国民生银行",
             "SPDB" 	=> "上海浦东发展银行",
             "CITIC" => "中信银行",
             "CEB" 	=> "中国光大银行",
@@ -77,7 +81,7 @@ return [
             "CDB" 	=> "国家开发银行",
             "EIBC" 	=> "中国进出口银行",
             "ADBC" 	=> "中国农业发展银行",
-            "OTHER" => "其他"            
+            "OTHER" => "其他"
         ],
         'device_types' => [
             'ggz1JU0WNFH' => '强筋机器人',
@@ -138,6 +142,6 @@ return [
             'street' => 'xxx路222号4-1',
             'default' => true
         ],
-        
+
     ]
 ];

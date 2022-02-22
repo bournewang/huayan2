@@ -11,7 +11,7 @@ class Order extends BaseModel
     use SoftDeletes;
     use AddressTrait;
     use ShipTrait;
-    
+
     public $table = 'orders';
 
     protected $dates = ['deleted_at'];
@@ -36,7 +36,7 @@ class Order extends BaseModel
         'waybill_number',
         'ship_status'
     ];
-    
+
     protected $casts = [
         'store_id' => 'integer',
         'user_id' => 'integer',
@@ -47,23 +47,23 @@ class Order extends BaseModel
         'province_id' => 'integer',
         'city_id'  => 'integer',
         'district_id'=> 'integer',
-        'street' => 'string',    
+        'street' => 'string',
     ];
-    
+
     public static $rules = [
         'contact' => 'required|string|max:12',
         'mobile' => 'required|string|max:16',
         'order_no' => 'required|string|max:24',
         'amount' => 'required|numeric|min:0.01'
     ];
-    
+
     const CREATED = 'created';
     const PAID = 'paid';
     const SHIPPED = 'shipped';
     const COMPLETE = 'complete';
     const REVIEWED = 'reviewed';
     const CANCELED = 'canceled';
-    
+
     static public function statusOptions()
     {
         return [
@@ -75,7 +75,7 @@ class Order extends BaseModel
             self::CANCELED  => __(ucfirst(self::CANCELED)),
         ];
     }
-    
+
     static public function validStatus()
     {
         return [
@@ -85,32 +85,37 @@ class Order extends BaseModel
             self::REVIEWED  => __(ucfirst(self::REVIEWED)),
         ];
     }
-    
+
     public function statusLabel()
     {
         return self::statusOptions()[$this->status];
     }
-    
+
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-    
+
     public function store()
     {
         return $this->belongsTo(Store::class);
     }
-    
+
     public function goods()
     {
         return $this->belongsToMany(Goods::class)->withPivot('quantity', 'price', 'subtotal');
     }
-    
+
     public function review()
     {
         return $this->hasOne(Review::class);
     }
-    
+
+    public function billItems()
+    {
+        return $this->morphMany(BillItem::class, 'order');
+    }
+
     public function display_info()
     {
         return [
@@ -123,15 +128,15 @@ class Order extends BaseModel
             'created_at' => $this->created_at ? $this->created_at->toDateString() : null
         ];
     }
-    
+
     public function info()
     {
         $info = parent::info();
         $info['address'] = $this->display_address();
         $info['store_name'] = $this->store->name ?? null;
-        return $info;    
+        return $info;
     }
-    
+
     public function detail()
     {
         $info = $this->info();
@@ -148,7 +153,7 @@ class Order extends BaseModel
             $info['ship_status_label'] = $p->statusLabel();
         }
         $info['review_id'] = $this->review->id ?? null;
-        
+
         return $info;
     }
 }
