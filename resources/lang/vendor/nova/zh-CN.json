@@ -406,6 +406,7 @@
     "Import 设备": "导入设备",
     "Import 销售单": "新建销售单",
     "Import 采购单": "新建采购单",
+    "Import 结算单": "生成结算单",
     "Success": "成功",
     "Fail": "失败",
     "Add row": "添加行",
@@ -669,5 +670,5 @@
     "Update attached :resource: :title": "更新附件 :resource: :title",
     ":resource Details: :title": ":resource 详情: :title",
     "The HasOne relationship has already been filled.": "The HasOne relationship has already been filled.",
-    "An error occured while uploading the file.": "An error occured while uploading the file."    
+    "An error occured while uploading the file.": "An error occured while uploading the file."
 }
