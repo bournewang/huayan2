@@ -17,7 +17,8 @@ class CreateBillsTable extends Migration
             $table->id();
             $table->bigInteger('store_id')->unsigned()->nullable();
             $table->bigInteger('user_id')->unsigned();
-            $table->tinyInteger('month')->unsigned();
+            $table->smallInteger('year');
+            $table->tinyInteger('month');
             $table->tinyInteger('period')->unsigned();
             $table->decimal('amount', 10,2);
             $table->enum('status', array_keys(\App\Models\Bill::statusOptions()))->nullable();

@@ -19,7 +19,8 @@ class CreateBillItemsTable extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->string('order_type', 32);
             $table->bigInteger('order_id')->unsigned();
-            $table->tinyInteger('month')->unsigned();
+            $table->smallInteger('year');
+            $table->tinyInteger('month');
             $table->tinyInteger('period')->unsigned();
             $table->decimal('price', 10,2);
             $table->decimal('share', 4,2);

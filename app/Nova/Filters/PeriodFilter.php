@@ -4,9 +4,8 @@ namespace App\Nova\Filters;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Filters\Filter;
-use Carbon\Carbon;
 
-class IndexFilter extends Filter
+class PeriodFilter extends Filter
 {
     /**
      * The filter's component.
@@ -17,7 +16,7 @@ class IndexFilter extends Filter
 
     public function name()
     {
-        return __('Index No');
+        return __('Period');
     }
     /**
      * Apply the filter to the given query.
@@ -29,9 +28,7 @@ class IndexFilter extends Filter
      */
     public function apply(Request $request, $query, $value)
     {
-        // return $query->where('goods_id', $value);
-        $range = explode('-', $value);
-        return $query->where('year', $range[0])->where('index', $range[1]);
+        return $query->where('period', $value);
     }
 
     /**
@@ -42,13 +39,10 @@ class IndexFilter extends Filter
      */
     public function options(Request $request)
     {
-        // return \App\Models\Goods::pluck('id', 'name')->all();
-        $index = [];
-        $i = 0;
-        do {
-            $month = Carbon::today()->subMonth($i)->format('Y-m');
-            $index[$month] = $month; //[$month->startOfMonth()->format('Y-m-d'), $month->endOfMonth()->format('Y-m-d')];
-        }while ($i++ < 3);
-        return $index;
+        return [
+            __('Period Index', ['period' => 1]) => 1,
+            __('Period Index', ['period' => 2]) => 2,
+            __('Period Index', ['period' => 3]) => 3,
+        ];
     }
 }
