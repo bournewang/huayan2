@@ -23,7 +23,7 @@ class Goods extends Resource
     public static $title = 'name';
     public static $with = ['category'];
     public static $search = [
-        'name', 
+        'name',
     ];
 
     public static function label()
@@ -34,7 +34,7 @@ class Goods extends Resource
     {
         return __("Mall");
     }
-    
+
     public static function icon()
     {
         return view("nova::svg.".strtolower(explode('\\', self::class)[2]));
@@ -63,17 +63,17 @@ class Goods extends Resource
                     ,
             Text::make(__('Stock'), 'qty')->sortable()->rules('required', 'max:255'),
             Text::make(__('Brand'), 'brand')->sortable()->nullable()->hideFromIndex(),
-            $this->money(__('Price'), 'price')->sortable()->nullable(),
             $this->money(__('Price Original'), 'price_ori')->sortable()->nullable(),
+            $this->money(__('Price Sales'), 'price')->sortable()->nullable(),
             $this->money(__('Price Purchase'), 'price_purchase')->sortable()->nullable(),
             Select::make(__('Status'), 'status')->options((new \App\Models\Category)->statusOptions())->onlyOnForms(),
             Text::make(__('Status'))->displayUsing(function(){return $this->statusRichLabel();})->asHtml()->exceptOnForms(),
-            ActionButton::make(__('Add To Cart'))->action(Actions\AddToCart::class, $this->id)->text(__('Add To Cart')),
+//            ActionButton::make(__('Add To Cart'))->action(Actions\AddToCart::class, $this->id)->text(__('Add To Cart')),
             $this->mediaField(__('Main'), 'main'),
             $this->mediaField(__('Detail'), 'detail'),
         ];
     }
- 
+
     /**
      * Get the filters available for the resource.
      *
@@ -112,11 +112,11 @@ class Goods extends Resource
             new Actions\Recommend,
             new Actions\OnShelf,
             new Actions\OffShelf,
-            $this->actionButton(new Actions\AddToCart, 'Ordering', $request),
+//            $this->actionButton(new Actions\AddToCart, 'Ordering', $request),
             new Actions\ImportGoods
         ];
     }
-    
+
     public static function indexQuery(NovaRequest $request, $query)
     {
         return $query;
