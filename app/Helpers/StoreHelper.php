@@ -24,9 +24,8 @@ class StoreHelper
             $user->initSales();
         }
 
-        // FIXME: should be paid_at
         $res = Order::where('store_id', $store->id)
-            ->whereBetween('created_at', [$start, $end])
+            ->whereBetween('paid_at', [$start, $end])
             ->select(\DB::raw("sum(orderAmount) as total"), 'user_id')
             ->groupBy('user_id')
             ->pluck('total', 'user_id')

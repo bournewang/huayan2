@@ -47,14 +47,14 @@ ul.sidemenu ul.dropdown-menu li svg {
     flex-direction: row;
 }
 .nova-detached-filters-card .detached-filters {
-    padding-top: 2px; 
+    padding-top: 2px;
     padding-bottom: 2px;
 }
 .nova-detached-filters-card .detached-filters-buttons{
     position: relative !important;
-    top: 0 !important; 
+    top: 0 !important;
     padding-top: 1em;
-    display: flex; 
+    display: flex;
 }
 .nova-detached-filters-card .detached-filters-buttons .detached-filters-button svg {
     cursor: pointer;
@@ -81,12 +81,15 @@ div[dusk$="index-component"] .table.table-grid td .whitespace-no-wrap{
     overflow-wrap: anywhere;
 }
 div[dusk$="index-component"] .card > .flex.items-center {padding-top: 1px; padding-bottom: 1px;}
-div[dusk$="detail-component"] a[dusk="attach-button"], 
-div[dusk$="detail-component"] a[dusk$="attached-button"], 
+div[dusk$="detail-component"] a[dusk="attach-button"],
+div[dusk$="detail-component"] a[dusk$="attached-button"],
 div[dusk$="detail-component"] button[dusk$="delete-button"]
 /* div[dusk$="detail-component"] div[dusk$="index-component"] div.relative.h-9.flex-no-shrink.mb-6, */
 /* div[dusk$="detail-component"] div[dusk$="index-component"] div.flex.items-center.py-3.border-b.border-50 */
 {
+    display: none;
+}
+div[dusk$="detail-component"] .simple-repeatable-header-row{
     display: none;
 }
 div[dusk$="detail-component"] > div > div.card  div.py-4,
@@ -103,17 +106,17 @@ div[dusk$="detail-component"] > div > div.card > div.flex
 /* div[dusk$="detail-component"] > div > div.card > .tab-content > div > div.flex */
 /* form > div > div.card  .flex.border-b.border-40  */
 {
-    width: 50%; 
+    width: 50%;
     float: left;
 }
 div[dusk$="detail-component"] div.card:after,
 form > div > div.card:after
 /* form > div > div.card > div.relationship-tabs-panel > div:after */
 {
-    content:"."; 
-    display:block; 
-    height:0; 
-    visibility:hidden; 
+    content:".";
+    display:block;
+    height:0;
+    visibility:hidden;
     clear:both;
 }
 div[dusk="stores-detail-component"] a[dusk="attach-button"] {

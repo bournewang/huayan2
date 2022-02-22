@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\API;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Store;
 use App\Models\User;
@@ -24,7 +25,7 @@ class WechatController extends ApiBaseController
      *               @OA\Property(property="code",description="code",type="string")
      *           )
      *       )
-     *   ),  
+     *   ),
      *  @OA\Response(response=200,description="successful operation"),
      *  security={{ "api_key":{} }}
      * )
@@ -51,7 +52,7 @@ class WechatController extends ApiBaseController
             'session_key' => $data['session_key']
         ]);
     }
-    
+
     /**
      * Register api
      *
@@ -71,7 +72,7 @@ class WechatController extends ApiBaseController
      *               @OA\Property(property="referer_id",description="referer id from init",type="integer"),
      *           )
      *       )
-     *   ),  
+     *   ),
      *  @OA\Response(response=200,description="successful operation"),
      *  security={{ "api_key":{} }}
      * )
@@ -88,8 +89,8 @@ class WechatController extends ApiBaseController
         $encryptedData = $request->get('encryptedData');
         $data = $mpp->encryptor->decryptData($session_key, $iv, $encryptedData);
         \Log::debug("decrypt data: ");
-        \Log::debug($data);    
-        
+        \Log::debug($data);
+
         if ($sess = \Cache::get("wx.session.".$session_key)) {
             $session = json_decode($sess, 1);
             $openid = $session['openid'] ?? null;
@@ -99,14 +100,14 @@ class WechatController extends ApiBaseController
                 $user = User::create([
                     'store_id'  => $request->input('store_id', null),
                     'senior_id' => $request->input('referer_id', null),
-                    'openid'    => $openid, 
+                    'openid'    => $openid,
                     'unionid'   => $unionid,
                     'email'     => $openid."@wechat.com",
-                    'name'      => $data['nickName'] ?? null, 
-                    'nickname'  => $data['nickName'] ?? null, 
-                    'avatar'    => $data['avatarUrl'] ?? null, 
-                    'province'  => $data['province'] ?? null, 
-                    'city'      => $data['city'] ?? null, 
+                    'name'      => $data['nickName'] ?? null,
+                    'nickname'  => $data['nickName'] ?? null,
+                    'avatar'    => $data['avatarUrl'] ?? null,
+                    'province'  => $data['province'] ?? null,
+                    'city'      => $data['city'] ?? null,
                     'password'  => bcrypt($openid)
                 ]);
                 $user->refreshToken();
@@ -117,12 +118,12 @@ class WechatController extends ApiBaseController
         }
         return $this->sendError("no openId in decrypt data");
     }
-    
+
     public function notify(Request $request)
     {
         \Log::debug(__CLASS__.'->'.__FUNCTION__);
         $app = \EasyWeChat::payment();
-        //  data: 
+        //  data:
         //  array (
         //   'appid' => 'wx561877352e872072',
         //   'bank_type' => 'OTHERS',
@@ -140,20 +141,20 @@ class WechatController extends ApiBaseController
         //   'total_fee' => '1',
         //   'trade_type' => 'JSAPI',
         //   'transaction_id' => '4200001310202201054219704874',
-        // )        
+        // )
         $response = $app->handlePaidNotify(function ($data, $fail) {
             \Log::debug($data);
-            if ($data['result_code'] == 'SUCCESS' && 
-                $data['return_code'] == 'SUCCESS' && 
+            if ($data['result_code'] == 'SUCCESS' &&
+                $data['return_code'] == 'SUCCESS' &&
                 ($order_no = $data['out_trade_no'])) {
                 if ($order = Order::where('order_no', $order_no)->first()) {
-                    $order->update(['status' => Order::PAID]);
+                    $order->update(['status' => Order::PAID, 'paid_at' => Carbon::now()]);
                     return true;
                 }
             }
             // 或者错误消息
             $fail('Something going wrong.');
         });
-        $response->send(); 
+        $response->send();
     }
 }

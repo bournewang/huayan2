@@ -30,7 +30,9 @@ class Store extends BaseModel
         'street',
         'status',
         'manager_id',
+        'vice_manager_id',
         'salesman_id',
+        'profit_sharing'
         // 'commission'
     ];
 
@@ -41,6 +43,7 @@ class Store extends BaseModel
         'account_no' => 'string',
         'contact' => 'string',
         'mobile' => 'string',
+        'profit_sharing' => 'json'
         // 'license_img' => 'string',
         // 'commission' => 'integer'
     ];
@@ -82,6 +85,10 @@ class Store extends BaseModel
         flush_tag("store.$this->id");
     }
 
+    public function setting()
+    {
+        return $this->hasOne(Setting::class);
+    }
     public function users()
     {
         return $this->hasMany(User::class);//->withPivot('superior_id', 'level', 'sharing');
