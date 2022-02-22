@@ -60,6 +60,7 @@ class BillItem extends BaseModel
 
     static public function generate($order)
     {
+        if (!$order->paid_at) return;
         $data = [
             'store_id' => $order->store_id,
             'order_type' => get_class($order),
