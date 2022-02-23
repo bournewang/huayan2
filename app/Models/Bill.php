@@ -64,7 +64,10 @@ class Bill extends BaseModel
     public function info()
     {
         return [
-            'period' => implode('-',[$this->year, $this->month, __('Period Index', ['period' => $this->period])]),
+            'year' => $this->year,
+            'month' => $this->month,
+            'period' => $this->period,
+            'period_label' => implode('-',[$this->year, $this->month, __('Period Index', ['period' => $this->period])]),
             'amount' => money($this->amount),
             'status_label' => $this->statusLabel()
         ];

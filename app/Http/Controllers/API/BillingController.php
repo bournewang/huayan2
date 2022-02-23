@@ -33,7 +33,7 @@ class BillingController extends ApiBaseController
             $builder->where('month', $month);
         }
         $data = $this->paginateInfo($builder, $request);
-        $data['titles'] = ['period' => __('Settlement Period'), 'amount' => __('Amount'), 'status_label' => __('Status')];
+        $data['titles'] = ['period_label' => __('Settlement Period'), 'amount' => __('Amount'), 'status_label' => __('Status')];
         return $this->sendResponse($data);
     }
 
