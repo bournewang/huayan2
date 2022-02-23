@@ -20,7 +20,7 @@ class MoreUserSeeder extends Seeder
                 'name' => 'test-'.$i,
                 'email' => 'test-'.$i."@test.com",
                 'password' => bcrypt('111111'),
-                'senior_id' => $ids[rand(0, count($ids)-1)],
+                'referer_id' => $ids[rand(0, count($ids)-1)],
                 'apply_status' => User::GRANT
             ]);
             echo "create user $user->name \n";

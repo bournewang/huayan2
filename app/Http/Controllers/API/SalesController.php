@@ -16,14 +16,14 @@ class SalesController extends ApiBaseController
      *  tags={"Sales"},
      *  @OA\Parameter(name="prev_month",    in="query",required=false,explode=true,@OA\Schema(type="integer"),description="previous month sales data"),
      *  @OA\Parameter(name="perpage",       in="query",required=false,explode=true,@OA\Schema(type="integer"),description="items per page"),
-     *  @OA\Parameter(name="page",          in="query",required=false,explode=true,@OA\Schema(type="integer"),description="page num"),  
+     *  @OA\Parameter(name="page",          in="query",required=false,explode=true,@OA\Schema(type="integer"),description="page num"),
      *  @OA\Response(response=200,description="successful operation")
      * )
-     */       
+     */
     public function index(Request $request)
     {
         $this->checkStorePermit();
-        $data = StoreHelper::salesStatsBySenior($this->user, date('Y-m'), $request->input('perpage', 20));
+        $data = StoreHelper::salesStatsByReferer($this->user, date('Y-m'), $request->input('perpage', 20));
         return $this->sendResponse($data);
     }
 
@@ -35,21 +35,21 @@ class SalesController extends ApiBaseController
      *  tags={"Sales"},
      *  @OA\Parameter(name="user_id",    in="path",required=true,explode=true,@OA\Schema(type="integer"),description="user id"),
      *  @OA\Parameter(name="perpage",       in="query",required=false,explode=true,@OA\Schema(type="integer"),description="items per page"),
-     *  @OA\Parameter(name="page",          in="query",required=false,explode=true,@OA\Schema(type="integer"),description="page num"),  
+     *  @OA\Parameter(name="page",          in="query",required=false,explode=true,@OA\Schema(type="integer"),description="page num"),
      *  @OA\Response(response=200,description="successful operation")
      * )
-     */  
+     */
     public function show($id, Request $request)
     {
         $this->checkStorePermit();
-        
+
         if (!$user = User::find($id) ){
             return $this->sendError("没有找到该顾客");
         }
         if ($user->store_id != $this->user->store_id) {
             return $this->sendError("您只能查看自己门店的数据");
         }
-        $data = StoreHelper::salesItemsBySenior($user, date('Y-m'), $request->input('perpage', 20));
+        $data = StoreHelper::salesItemsByReferer($user, date('Y-m'), $request->input('perpage', 20));
         return $this->sendResponse($data);
     }
 }

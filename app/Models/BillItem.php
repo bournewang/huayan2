@@ -91,7 +91,7 @@ class BillItem extends BaseModel
                     if ($item['role'] == User::ROLE_VICE_MANAGER) {
                         $sharing['user_id'] = $order->store->vice_manager_id;
                     }elseif ($item['role'] == User::ROLE_REFERER) {
-                        $sharing['user_id'] = $order->user->senior_id;
+                        $sharing['user_id'] = $order->user->referer_id;
                     }
                     if (!$sharing['user_id']) {
 //                        echo "user id is null, continue;\n";

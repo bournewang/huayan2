@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('store_id')->unsigned()->nullable();
-            $table->bigInteger('senior_id')->unsigned()->nullable();
+            $table->bigInteger('referer_id')->unsigned()->nullable();
             $table->string('name');
             $table->string('openid', 64)->nullable()->unique();
             $table->string('unionid', 64)->nullable()->unique();
@@ -30,12 +30,12 @@ class CreateUsersTable extends Migration
             $table->string('county', 32)->nullable();
             $table->string('qrcode', 64)->nullable();
             $table->string('id_no', 24)->nullable();
-            
+
             $table->string('wechat', 24)->nullable();
             $table->string('bank_key', 24)->nullable();
             $table->string('bank_name', 32)->nullable();
             $table->string('account_no', 32)->nullable();
-            
+
             $table->enum('type', array_keys(User::typeOptions()));
             $table->enum('status', array_keys(User::statusOptions()));
             $table->string('email')->unique();
@@ -45,9 +45,9 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
-            
-            $table->foreign('store_id')->references('id')->on('stores');
-            $table->foreign('senior_id')->references('id')->on('users');
+
+//            $table->foreign('store_id')->references('id')->on('stores');
+            $table->foreign('referer_id')->references('id')->on('users');
         });
     }
 

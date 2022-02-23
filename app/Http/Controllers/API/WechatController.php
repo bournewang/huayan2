@@ -95,11 +95,13 @@ class WechatController extends ApiBaseController
             $session = json_decode($sess, 1);
             $openid = $session['openid'] ?? null;
             $unionid = $session['unionid'] ?? null;
+            $store_id = intval($request->input('store_id', null));
+            $store_id = $store_id > 0 ? $store_id : null;
             if (!$user = User::where('openid', $openid)->first()) {
                 \Log::debug("try to create user: ");
                 $user = User::create([
-                    'store_id'  => $request->input('store_id', null),
-                    'senior_id' => $request->input('referer_id', null),
+                    'store_id'  => $store_id,
+                    'referer_id' => $request->input('referer_id', null),
                     'openid'    => $openid,
                     'unionid'   => $unionid,
                     'email'     => $openid."@wechat.com",

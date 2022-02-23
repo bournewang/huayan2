@@ -118,7 +118,7 @@ class Store extends BaseModel
 
     public function roots()
     {
-        return $this->users()->whereNull('senior_id')->get();
+        return $this->users()->whereNull('referer_id')->get();
     }
 
     public function orders()

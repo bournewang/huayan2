@@ -35,7 +35,7 @@ class User extends Authenticatable implements HasMedia
         'id_no',
         'id_status',
         // 'superiors',
-        'senior_id',
+        'referer_id',
         'type',
         'email',
         'password',
@@ -87,7 +87,7 @@ class User extends Authenticatable implements HasMedia
         'email_verified_at' => 'datetime',
         'level' => 'integer',
         // 'sharing' => 'integer',
-        'senior_id' => 'integer',
+        'referer_id' => 'integer',
     ];
 
     public static function boot()
@@ -191,14 +191,14 @@ class User extends Authenticatable implements HasMedia
         return $this->belongsToMany(Goods::class);
     }
 
-    public function senior()
+    public function referer()
     {
-        return $this->belongsTo(User::class, 'senior_id');
+        return $this->belongsTo(User::class, 'referer_id');
     }
 
     public function juniors()
     {
-        return $this->hasMany(User::class, 'senior_id');
+        return $this->hasMany(User::class, 'referer_id');
     }
 
     public function healths()

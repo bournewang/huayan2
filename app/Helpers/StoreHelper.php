@@ -95,7 +95,7 @@ class StoreHelper
         if ($user->type == User::MANAGER) {
             $builder->where($table.'.store_id', $user->store_id);
         }else {
-            $builder->where('users.senior_id', $user->id);
+            $builder->where('users.referer_id', $user->id);
         }
         $res = $builder->whereIn($table.'.status', array_keys(Order::validStatus()))
             ->whereBetween($table.'.created_at', [$start, $end])
@@ -121,22 +121,22 @@ class StoreHelper
         // if ($user->type == User::MANAGER) {
         $builder->where($table.'.store_id', $user->store_id);
         // }else {
-        //     $builder->where('users.senior_id', $user->id);
+        //     $builder->where('users.referer_id', $user->id);
         // }
         $res = $builder->whereIn($table.'.status', array_keys(Order::validStatus()))
             ->whereBetween($table.'.created_at', [$start, $end])
-            ->select("senior_id", DB::raw("sum($price_field) as total_amount"))
+            ->select("referer_id", DB::raw("sum($price_field) as total_amount"))
             ->join('users', $table.'.user_id', '=', 'users.id')
-            ->groupBy('senior_id')
+            ->groupBy('referer_id')
             ->orderBy('total_amount', 'desc')
-            ->pluck('total_amount', 'senior_id')
+            ->pluck('total_amount', 'referer_id')
             ->all()
             // ->paginate(20)
             // ->toArray()
             ;
         return $res;
     }
-    static public function salesStatsBySenior($user, $month, $perpage)
+    static public function salesStatsByReferer($user, $month, $perpage)
     {
         $start = date('Y-m-d', strtotime("first day of $month"));
         $end = date('Y-m-d', strtotime("last day of $month")) . ' 23:59:59';
@@ -152,15 +152,15 @@ class StoreHelper
         }
         $data = [];
         $i=1;
-        foreach ($sums as $senior_id => $total_amount) {
-            if ($senior_id) {
-                $senior = User::find($senior_id);
+        foreach ($sums as $referer_id => $total_amount) {
+            if ($referer_id) {
+                $referer = User::find($referer_id);
                 $data[] = [
                     // 'index_no' => $i++,
-                    'user_id' => $senior_id,
-                    'img' => $senior->avatar,
-                    'nickname' => $senior->nickname,
-                    // 'mobile' => $senior->mobile,
+                    'user_id' => $referer_id,
+                    'img' => $referer->avatar,
+                    'nickname' => $referer->nickname,
+                    // 'mobile' => $referer->mobile,
                     'total_amount' => money($total_amount)
                 ];
             }
@@ -180,7 +180,7 @@ class StoreHelper
         // if ($user->type == User::MANAGER) {
         //     $builder->where($table.'.store_id', $user->store_id);
         // }else {
-        $builder->where('users.senior_id', $user->id);
+        $builder->where('users.referer_id', $user->id);
         // }
         $res = $builder->whereIn($table.'.status', array_keys(Order::validStatus()))
             ->whereBetween($table.'.created_at', [$start, $end])
@@ -195,7 +195,7 @@ class StoreHelper
             ;
         return $res;
     }
-    static public function salesItemsBySenior($user, $month, $perpage)
+    static public function salesItemsByReferer($user, $month, $perpage)
     {
         $start = date('Y-m-d', strtotime("first day of $month"));
         $end = date('Y-m-d', strtotime("last day of $month")) . ' 23:59:59';
@@ -219,7 +219,7 @@ class StoreHelper
                     'user_id' => $user_id,
                     'img' => $user->avatar,
                     'nickname' => $user->nickname,
-                    // 'mobile' => $senior->mobile,
+                    // 'mobile' => $referer->mobile,
                     'total_amount' => money($total_amount)
                 ];
             }
