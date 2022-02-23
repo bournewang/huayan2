@@ -61,6 +61,15 @@ class Bill extends BaseModel
         return $this->belongsTo(User::class);
     }
 
+    public function info()
+    {
+        return [
+            'period' => implode('-',[$this->year, $this->month, __('Period Index', ['period' => $this->period])]),
+            'amount' => money($this->amount),
+            'status_label' => $this->statusLabel()
+        ];
+    }
+
     static public function generate($year, $month, $period)
     {
         $res = \DB::table('bill_items')

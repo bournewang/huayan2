@@ -60,6 +60,17 @@ class BillItem extends BaseModel
         return $this->morphTo();
     }
 
+    public function info()
+    {
+        return [
+            'period' => implode('-',[$this->year, $this->month, __('Period Index', ['period' => $this->period])]),
+            'role' => User::sharingRoleOptions()[$this->role] ?? '-',
+            'price' => money($this->price),
+            'share' => $this->share.'%',
+            'amount' => money($this->amount),
+            'created_at' => $this->created_at->format('Y-m-d')
+        ];
+    }
     static public function generate($order)
     {
         if (!$order->paid_at) return;

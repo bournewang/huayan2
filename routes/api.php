@@ -24,6 +24,7 @@ use App\Http\Controllers\API\ClerkController;
 use App\Http\Controllers\API\ServiceController;
 use App\Http\Controllers\API\StockController;
 use App\Http\Controllers\API\HealthController;
+use App\Http\Controllers\API\BillingController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -73,6 +74,9 @@ Route::group(['middleware' => ['auth:api']], function(){
     Route::get ('/health/{id}',         [HealthController::class, 'show']);
 
     Route::post ('/file',               [FileController::class, 'upload']);
+
+    Route::get ('/billing',             [BillingController::class, 'index']);
+    Route::get ('/billing/items',       [BillingController::class, 'items']);
 
     Route::get   ('/cart',              [CartController::class, 'show']);
     Route::post  ('/cart/{goods_id}',   [CartController::class, 'add']);
