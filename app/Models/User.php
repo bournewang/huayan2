@@ -7,7 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
-use Spatie\MediaLibrary\HasMedia; 
+use Spatie\MediaLibrary\HasMedia;
 use App\Helpers\UserHelper;
 class User extends Authenticatable implements HasMedia
 {
@@ -21,7 +21,7 @@ class User extends Authenticatable implements HasMedia
      */
     protected $fillable = [
         'store_id',
-        'name', 
+        'name',
         'openid',
         'unionid',
         'nickname',
@@ -37,13 +37,13 @@ class User extends Authenticatable implements HasMedia
         // 'superiors',
         'senior_id',
         'type',
-        'email', 
+        'email',
         'password',
         'status',
-        // 'level', 
+        // 'level',
         // 'dd',
-        // 'dds',  // number of dd 
-        // 'ppv',  // personal point value 
+        // 'dds',  // number of dd
+        // 'ppv',  // personal point value
         // 'gpv',  // all other sales' personal point value in your group;
         // 'tgpv', // gpv + ppv
         // 'pgpv', // tgpv (exclude qualified directors' tgpv)
@@ -68,7 +68,7 @@ class User extends Authenticatable implements HasMedia
         'mobile' => 'required',
         'status' => 'string'
     ];
-    
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -89,7 +89,7 @@ class User extends Authenticatable implements HasMedia
         // 'sharing' => 'integer',
         'senior_id' => 'integer',
     ];
-    
+
     public static function boot()
     {
         parent::boot();
@@ -112,7 +112,7 @@ class User extends Authenticatable implements HasMedia
             self::REJECT => __(ucfirst(self::REJECT)),
         ];
     }
-    
+
     const MALE = 1;
     const FEMALE = 2;
     public static function genderOptions()
@@ -126,13 +126,13 @@ class User extends Authenticatable implements HasMedia
     {
         return self::genderOptions()[$this->gender] ?? '-';
     }
-    
+
     const CUSTOMER = 'customer';
     const SALESMAN = 'salesman';
     const MANAGER = 'manager';
     const CLERK = 'clerk';
     const EXPERT = 'expert';
-    
+
     public static function typeOptions()
     {
         return [
@@ -143,63 +143,74 @@ class User extends Authenticatable implements HasMedia
             self::EXPERT => __(ucfirst(self::EXPERT)),
         ];
     }
-    
-    
+
     public function typeLabel()
     {
         return __(ucfirst($this->type));
     }
-    
+
+    const ROLE_MANAGER = 'manager';
+    const ROLE_VICE_MANAGER = 'vice_manager';
+    const ROLE_REFERER = 'referer';
+    public static function sharingRoleOptions()
+    {
+        return [
+//            self::ROLE_MANAGER      => __(ucwords(str_replace('_', ' ',self::ROLE_MANAGER))),
+            self::ROLE_VICE_MANAGER => __(ucwords(str_replace('_', ' ',self::ROLE_VICE_MANAGER))),
+            self::ROLE_REFERER      => __(ucwords(str_replace('_', ' ',self::ROLE_REFERER))),
+        ];
+    }
+
     public function store()
     {
         return $this->belongsTo(Store::class);
     }
-    
+
     public function addresses()
     {
         return $this->hasMany(Address::class);
     }
-    
+
     public function cart()
     {
         return $this->hasOne(Cart::class);
     }
-    
+
     public function orders()
     {
         return $this->hasMany(Order::class);
     }
-    
+
     public function serviceOrders()
     {
         return $this->hasMany(ServiceOrder::class);
     }
-    
+
     public function likes()
     {
         return $this->belongsToMany(Goods::class);
     }
-    
+
     public function senior()
     {
         return $this->belongsTo(User::class, 'senior_id');
     }
-    
+
     public function juniors()
     {
         return $this->hasMany(User::class, 'senior_id');
     }
-    
+
     public function healths()
     {
         return $this->hasMany(Health::class);
     }
-    
+
     public function isRoot()
     {
         return $this->id == 1;
     }
-    
+
     public function members()
     {
         $members = $this->juniors;
@@ -208,18 +219,18 @@ class User extends Authenticatable implements HasMedia
         }
         return $members;
     }
-    
+
     public function refreshToken()
     {
         $this->update(['api_token' => \Str::random(32)]);
     }
-    
+
     public function info()
     {
         $attrs = [
             'id',
             'type',
-            'name', 
+            'name',
             'openid',
             'unionid',
             'nickname',
@@ -239,18 +250,18 @@ class User extends Authenticatable implements HasMedia
         $data['type_label'] = $this->typeLabel();
         return $data;
     }
-    
+
     public function detail()
     {
         return $this->info();
     }
-    
+
     // personal bussiness value
     public function revenue($year, $index)
     {
         return $this->revenues()->where('year', $year)->where('index', $index)->first();
     }
-    
+
     public function getCart()
     {
         if (!$cart = $this->cart) {

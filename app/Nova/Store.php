@@ -2,13 +2,17 @@
 
 namespace App\Nova;
 
+use App\Models\Province;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Panel;
 use OptimistDigital\NovaSimpleRepeatable\SimpleRepeatable;
 use WesselPerik\StatusField\StatusField;
+use NovaAjaxSelect\AjaxSelect;
 class Store extends Resource
 {
     public static $model = \App\Models\Store::class;
@@ -42,11 +46,12 @@ class Store extends Resource
             Text::make(__('Company Name'), 'company_name')->rules('required', 'max:255'),
             Text::make(__('License No'), 'license_no')->rules('required', 'max:255'),
             Text::make(__('Account No'), 'account_no')->rules('required', 'max:255'),
-            $this->addressFields(),
+//            $this->addressFields(),
             $this->mediaField(__('Contract'), 'contract'),
             $this->mediaField(__('License'), 'license'),
             $this->mediaField(__('Photo'), 'photo'),
-
+            BelongsTo::make(__('Manager'), 'manager', User::class)->searchable()->nullable(),
+            BelongsTo::make(__('Vice Manager'), 'viceManager', User::class)->searchable()->nullable(),
             // Select::make(__('Status'), 'status')->options((new \App\Models\Store)->statusOptions())->onlyOnForms(),
             StatusField::make(__('Status'), 'status')
                     ->values([
@@ -63,38 +68,42 @@ class Store extends Resource
                     ->displayUsing(function($v){return $v.'%';})
                     ->help('填写1-100之间的整数，最小为1，最大为100')
             ]),
+
+            new Panel(__('Address'), [
+                Select::make(__('Province'), 'province_id')
+                    ->options(Province::pluck('name', 'id')->all())
+                    ->displayUsingLabels()
+                    ->onlyOnForms(),
+
+                AjaxSelect::make(__('City'), 'city_id')
+                    ->get('/api/provinces/{province_id}/cities')
+                    ->parent('province_id')
+                    ->onlyOnForms(),
+
+                AjaxSelect::make(__('District'), 'district_id')
+                    ->get('/api/cities/{city_id}/districts')
+                    ->parent('city_id')
+                    ->onlyOnForms(),
+
+                Text::make(__('Street'), 'street')->onlyOnForms(),
+                Text::make(__('Manager').__('Name'), 'contact')->onlyOnForms()->nullable(),
+                Text::make(__('Manager').__('Mobile'), 'mobile')->onlyOnForms()->nullable(),
+                Text::make(__('Vice Manager').__('Name'), 'vice_contact')->onlyOnForms()->nullable(),
+                Text::make(__('Vice Manager').__('Mobile'), 'vice_mobile')->onlyOnForms()->nullable(),
+
+                Text::make(__('Address'), 'address')->displayUsing(function(){
+                    return $this->display_address() . ($this->vice_mobile ? '('. __('Vice Manager').$this->vice_contact . $this->vice_mobile .')': '');
+                })->onlyOnDetail(),
+                Text::make(__('Address'), 'address')->displayUsing(function(){
+                    $s = $this->display_address();
+                    if (mb_strlen($s) > 15) {
+                        return mb_substr($s, 0, 15) . '...';
+                    }
+                    return $s;
+                })->onlyOnIndex(),
+            ]),
             HasMany::make(__('Device'), 'devices', Device::class),
             HasMany::make(__('Service Order'), 'serviceOrders', ServiceOrder::class)
-            // Text::make(__('Devices'))->onlyOnDetail()->displayUsing(function(){
-            //     $list = json_decode($this->devices);
-            //     $str = "";
-            //     foreach ($list as $item) {
-            //         $product_key = $item->attributes->type;
-            //         $devices = explode("\n", $item->attributes->device_list);
-            //         if (count($devices) < 1)continue;
-            //         \Log::debug($devices);
-            //         $str .= $product_key .':'."<br/>";//. implode('|', $devices) . "<br/>";
-            //         $c = new \App\Iot\Device($product_key, $devices);
-            //         $res = null;
-            //         $res = $c->batchStatus();
-            //         \Log::debug("===res: ");
-            //         \Log::debug($res);
-            //
-            //         $status = [];
-            //         if (!$res) continue;
-            //         foreach ($res['DeviceStatusList']['DeviceStatus'] as $d){
-            //             $status[$d['DeviceName']] = $d['Status'];
-            //             $str .= $d['DeviceName'] . " " . $d['Status'];
-            //             if ($d['Status'] == 'ONLINE') {
-            //                 $str .= "<span class='text text-success'>".view('nova::svg.play')."</span>";
-            //             }else{
-            //                 $str .= "<span class='text text-default'>".view('nova::svg.minus-circle') . "</span>";
-            //             }
-            //             $str .= "<br/>";
-            //         }
-            //     }
-            //     return $str;
-            // })->asHtml()
         ];
     }
 

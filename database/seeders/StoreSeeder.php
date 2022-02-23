@@ -19,6 +19,17 @@ class StoreSeeder extends Seeder
             'license_no' => 'GMA33112234433',
             'contact' => '王先生',
             'mobile' => '13811112222',
+            'vice_manager_id' => 2,
+            'profit_sharing' => [
+                [
+                    "role" => "referer",
+                    "sharing_ratio" => 15,
+                ],
+                [
+                    "role" => "vice_manager",
+                    "sharing_ratio" => 20,
+                ],
+            ]
             // 'commission' => 30
         ]);
     }

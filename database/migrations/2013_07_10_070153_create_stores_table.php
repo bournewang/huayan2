@@ -22,6 +22,8 @@ class CreateStoresTable extends Migration
             $table->string('account_no')->nullable();
             $table->string('contact')->index()->nullable();
             $table->string('mobile')->index()->nullable();
+            $table->string('vice_contact')->index()->nullable();
+            $table->string('vice_mobile')->index()->nullable();
             $table->bigInteger('manager_id')->unsigned()->nullable();
             $table->bigInteger('vice_manager_id')->unsigned()->nullable();
             $table->bigInteger('salesman_id')->unsigned()->nullable();

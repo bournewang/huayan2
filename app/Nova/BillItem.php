@@ -70,6 +70,7 @@ class BillItem extends Resource
 //            Text::make(__('Month'), 'month')->onlyOnForms(),
 //            Number::make(__('Period'), 'period')->onlyOnForms(),
             Text::make(__('Settlement Period'))->displayUsing(function(){return $this->year.'-'.$this->month .  __('Month').__('Period Index', ['period' => $this->period ]);})->exceptOnForms(),
+            Text::make(__('Role'), 'role')->displayUsing(function(){return \App\Models\User::sharingRoleOptions()[$this->role] ?? null;}),
             Currency::make(__('Consume Price'), 'price', )->currency('CNY'),
             Text::make(__('Share'), 'share')->displayUsing(function(){return $this->share.'%';}),
             Currency::make(__('Amount'), 'amount')->currency('CNY'),

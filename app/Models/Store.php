@@ -24,6 +24,8 @@ class Store extends BaseModel
         'account_no',
         'contact',
         'mobile',
+        'vice_contact',
+        'vice_mobile',
         'province_id',
         'city_id',
         'district_id',
@@ -43,6 +45,8 @@ class Store extends BaseModel
         'account_no' => 'string',
         'contact' => 'string',
         'mobile' => 'string',
+        'vice_contact' => 'string',
+        'vice_mobile' => 'string',
         'profit_sharing' => 'json'
         // 'license_img' => 'string',
         // 'commission' => 'integer'
@@ -63,22 +67,30 @@ class Store extends BaseModel
         // 'shopId',
     ];
 
+     protected static function beforesave(&$instance)
+     {
+         if (!$instance->manager_id && $instance->mobile) {
+             if ($user = User::where('mobile', $instance->mobile)->first()){
+                 $instance->manager_id = $user->id;
+             }
+         }
+         if (!$instance->vice_manager_id && $instance->vice_mobile) {
+             if ($user = User::where('mobile', $instance->vice_mobile)->first()){
+                 $instance->vice_manager_id = $user->id;
+             }
+         }
+     }
 
-
-    // protected static function beforesave(&$instance)
-    // {
-    // }
-    //
-    // public static function boot()
-    // {
-    //     parent::boot();
-    //     static::creating(function ($instance) {
-    //         self::beforesave($instance);
-    //     });
-    //     static::updating(function ($instance) {
-    //         self::beforesave($instance);
-    //     });
-    // }
+     public static function boot()
+     {
+         parent::boot();
+         static::creating(function ($instance) {
+             self::beforesave($instance);
+         });
+         static::updating(function ($instance) {
+             self::beforesave($instance);
+         });
+     }
 
     public function flush()
     {
@@ -120,6 +132,7 @@ class Store extends BaseModel
     }
 
     public function manager(){return $this->belongsTo(User::class);}
+    public function viceManager(){return $this->belongsTo(User::class);}
     public function salesman(){return $this->belongsTo(User::class);}
     public function devices(){return $this->hasMany(Device::class);}
 

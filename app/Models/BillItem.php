@@ -21,6 +21,7 @@ class BillItem extends BaseModel
         'year',
         'month',
         'period',
+        'role',
         'price',
         'share',
         'amount'
@@ -34,6 +35,7 @@ class BillItem extends BaseModel
         'year' => 'integer',
         'month' => 'integer',
         'period' => 'integer',
+        'role' => 'string',
         'price' => 'integer',
         'share' => 'integer',
         'amount' => 'float',
@@ -84,6 +86,7 @@ class BillItem extends BaseModel
 //                        echo "user id is null, continue;\n";
                         continue;
                     }
+                    $sharing['role'] = $item['role'];
                     $ratio = intval($item['sharing_ratio']);
                     $sharing['share'] = $ratio;
                     if ($ratio < 1 || $ratio > 100) {

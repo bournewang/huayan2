@@ -22,6 +22,7 @@ class CreateBillItemsTable extends Migration
             $table->smallInteger('year');
             $table->tinyInteger('month');
             $table->tinyInteger('period')->unsigned();
+            $table->string('role',16)->nullable();
             $table->decimal('price', 10,2);
             $table->decimal('share', 4,2);
             $table->decimal('amount', 10,2);
