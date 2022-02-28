@@ -13,6 +13,7 @@ return [
     // resource to build permissions of View/Create/Update/Delete/ForceDelete
     // new resource must put here
     'resources' => [
+	    'MembershipCard',
 	    'Bill', 'BillItem',
         "Address","Banner","BaseModel","Cart","Category","City","Clerk",
         "Customer","Device","District","Example","Expert","Goods","Logistic","Order",
