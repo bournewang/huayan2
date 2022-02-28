@@ -10,6 +10,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Manager extends Resource
 {
+    use UserTrait;
     /**
      * The model the resource corresponds to.
      *
@@ -52,14 +53,7 @@ class Manager extends Resource
      */
     public function fields(Request $request)
     {
-        return [
-            ID::make(__('ID'), 'id')->sortable(),
-            Text::make(__('Realname'), 'name')->sortable()->rules('required', 'max:255'),
-            Text::make(__('Gender'), 'gender'),
-            Text::make(__('Mobile'), 'mobile'),
-            Select::make(__("Status"), 'status')->options(function(){return \App\Models\User::statusOptions();})->displayUsingLabels(),
-            $this->mediaField(__('Id Card'), 'id_card')
-        ];
+        return $this->userFields($request);
     }
 
     /**
@@ -105,7 +99,7 @@ class Manager extends Resource
     {
         return [];
     }
-    
+
     public static function indexQuery(NovaRequest $request, $query)
     {
         return parent::indexQuery($request, $query)->where('type', \App\Models\User::MANAGER);

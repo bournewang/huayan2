@@ -11,6 +11,7 @@ use Epartment\NovaDependencyContainer\HasDependencies;
 use Epartment\NovaDependencyContainer\NovaDependencyContainer;
 class Expert extends Resource
 {
+    use UserTrait;
     use HasDependencies;
     /**
      * The model the resource corresponds to.
@@ -55,12 +56,12 @@ class Expert extends Resource
      */
     public function fields(Request $request)
     {
-        return [
-            ID::make(__('ID'), 'id')->sortable(),
-            Text::make(__('Realname'), 'name')->sortable()->rules('required', 'max:255'),
-            Text::make(__('Gender'), 'gender'),
-            Text::make(__('Mobile'), 'mobile'),
-            Text::make(__('Wechat Account'), 'wechat'),
+        return array_merge($this->userFields($request), [
+//            ID::make(__('ID'), 'id')->sortable(),
+//            Text::make(__('Realname'), 'name')->sortable()->rules('required', 'max:255'),
+//            Text::make(__('Gender'), 'gender'),
+//            Text::make(__('Mobile'), 'mobile'),
+//            Text::make(__('Wechat Account'), 'wechat'),
             Select::make(__('Bank'), 'bank_key')
                 ->options(\App\Models\Setting::first()->banks)
                 ->displayUsing(function(){
@@ -75,7 +76,7 @@ class Expert extends Resource
             ])->dependsOn('bank_key', 'OTHER')->onlyOnForms(),
             Text::make(__('Account No'), 'account_no'),
 
-        ];
+        ]);
     }
 
     /**

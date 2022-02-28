@@ -9,6 +9,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Clerk extends Resource
 {
+    use UserTrait;
     /**
      * The model the resource corresponds to.
      *
@@ -54,12 +55,7 @@ class Clerk extends Resource
      */
     public function fields(Request $request)
     {
-        return [
-            ID::make(__('ID'), 'id')->sortable(),
-            Text::make(__('Realname'), 'name')->sortable()->rules('required', 'max:255'),
-            Text::make(__('Gender'), 'gender'),
-            Text::make(__('Mobile'), 'mobile'),
-        ];
+        return $this->userFields($request);
     }
 
     /**

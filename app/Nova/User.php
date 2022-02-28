@@ -20,10 +20,12 @@ use Vyuldashev\NovaPermission\RoleSelect;
 
 class User extends Resource
 {
+    use UserTrait;
     /**
      * The model the resource corresponds to.
      *
      * @var string
+     *
      */
     public static $model = \App\Models\User::class;
 
@@ -71,34 +73,12 @@ class User extends Resource
      */
     public function fields(Request $request)
     {
-        return [
-            ID::make()->sortable(),
-            BelongsTo::make(__('Store'),'store', Store::class)->nullable(),
-            Image::make(__('Avatar'), 'avatar')->maxWidth(50)->preview(function($val){return $val;})->thumbnail(function($val){return $val;}),
-            Text::make(__('Nickname'), 'nickname'),
-            Text::make(__('Realname'), 'name')->sortable()->rules('required', 'max:255'),
-            Text::make(__('Province'), 'province'),
-            Text::make(__('City'), 'city'),
-            Text::make(__('Gender'), 'gender'),
-            Text::make(__('Mobile'), 'mobile'),
-            Select::make(__("Status"), 'status')->options(function(){return \App\Models\User::statusOptions();})->displayUsingLabels(),
-            // Image::make(__('QR Code'), 'qrcode'),
-            // Text::make(__('Email'), 'email')
-            //     ->sortable()
-            //     ->rules('required', 'email', 'max:254')
-            //     ->creationRules('unique:users,email')
-            //     ->updateRules('unique:users,email,{{resourceId}}'),
-
-            Password::make('Password')
-                ->onlyOnForms()
-                ->creationRules('required', 'string', 'min:8')
-                ->updateRules('nullable', 'string', 'min:8'),
-            $this->mediaField(__('ID'), 'id card'),
+        return array_merge($this->userFields($request), [
             RoleSelect::make(__('Roles'), 'roles'),
             // PermissionBooleanGroup::make('Permissions'),
-            HasMany::make(__("Address"), 'addresses', Address::class),
-            HasMany::make(__('Service Order'), 'serviceOrders', ServiceOrder::class)
-        ];
+            HasMany::make(__("Address"), 'addresses', Address::class)->canSee(function (){return static::$model == \App\Models\User::class;}),
+            HasMany::make(__('Service Order'), 'serviceOrders', ServiceOrder::class)->canSee(function (){return static::$model == \App\Models\User::class;}),
+        ]);
     }
 
     /**

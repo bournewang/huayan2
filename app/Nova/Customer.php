@@ -9,6 +9,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Customer extends Resource
 {
+    use UserTrait;
     /**
      * The model the resource corresponds to.
      *
@@ -55,12 +56,7 @@ class Customer extends Resource
      */
     public function fields(Request $request)
     {
-        return [
-            ID::make(__('ID'), 'id')->sortable(),
-            Text::make(__('Realname'), 'name')->sortable()->rules('required', 'max:255'),
-            Text::make(__('Gender'), 'gender'),
-            Text::make(__('Mobile'), 'mobile'),
-        ];
+        return $this->userFields($request);
     }
 
     /**
@@ -106,7 +102,7 @@ class Customer extends Resource
     {
         return [];
     }
-    
+
     public static function indexQuery(NovaRequest $request, $query)
     {
         return parent::indexQuery($request, $query)->where('type', \App\Models\User::CUSTOMER);

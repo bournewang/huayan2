@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Manager extends BaseModel
+class Manager extends User
 {
     use HasFactory;
-    
+
     public $table = 'users';
-    
+
     public static function boot()
     {
         parent::boot();
