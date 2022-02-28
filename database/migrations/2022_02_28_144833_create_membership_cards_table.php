@@ -32,6 +32,8 @@ class CreateMembershipCardsTable extends Migration
             $table->foreign('store_id')->references('id')->on('stores');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('customer_id')->references('id')->on('users');
+
+            $table->unique(['store_id', 'card_no']);
         });
     }
 

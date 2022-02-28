@@ -34,6 +34,9 @@ class MembershipCard extends Resource
     {
         return view("nova::svg.credit-card");
     }
+    public static $combo_rules = [
+        ['card_no', 'store_id', 'store', "该卡号已存在"]
+    ];
 //    public static function availableForNavigation(Request $request): bool
 //    {
 //        return false;
@@ -62,23 +65,24 @@ class MembershipCard extends Resource
      */
     public function fields(Request $request)
     {
+        $user = $request->user();
         return [
 //            ID::make(__('ID'), 'id')->sortable(),
-            BelongsTo::make(__('Store'), 'store', Store::class)->withoutTrashed(),
-            BelongsTo::make(__('Clerk'), 'user', Clerk::class),
-            BelongsTo::make(__('Customer'), 'customer', Customer::class),
-            Text::make(__('Card No'), 'card_no'),
+            BelongsTo::make(__('Store'), 'store', Store::class)->rules('required')->withoutTrashed(),
+            BelongsTo::make(__('Clerk'), 'user', Clerk::class)->rules('required'),
+            BelongsTo::make(__('Customer'), 'customer', Customer::class)->rules('required'),
+            Text::make(__('Card No'), 'card_no')->rules('required'),
             Currency::make(__('Total Price'), 'total_price')->currency('CNY'),
-            Currency::make(__('Paid Price'), 'paid_price')->currency('CNY'),
-            Select::make(__('Status'), 'status')->options(\App\Models\MembershipCard::statusOptions())->displayUsingLabels(),
+            Currency::make(__('Paid Price'), 'paid_price')->currency('CNY')->rules('required'),
+            Select::make(__('Status'), 'status')->options(\App\Models\MembershipCard::statusOptions())->displayUsingLabels()->rules('required'),
             Text::make(__('Comment'), 'comment'),
             new Panel(__('Validity Period'), [
-                Select::make(__('Validity Type'), 'validity_type')->options(\App\Models\MembershipCard::periodOptions())->displayUsingLabels()->onlyOnForms(),
-                Number::make(__('Validity Period'), 'validity_period')->onlyOnForms(),
+                Select::make(__('Validity Type'), 'validity_type')->options(\App\Models\MembershipCard::periodOptions())->displayUsingLabels()->onlyOnForms()->rules('required'),
+                Number::make(__('Validity Period'), 'validity_period')->onlyOnForms()->rules('required'),
                 Date::make(__('Validity Start'), 'validity_start')->onlyOnForms(),
                 Date::make(__('Validity To'), 'validity_to')->onlyOnForms(),
                 Text::make(__('Validity Period'))->displayUsing(function(){
-                    return $this->validity_period . $this->periodLabel()."(".$this->validity_start->toDateString() .' ~ '. $this->validity_to->toDateString().")";
+                    return $this->validity_period . $this->periodLabel()." (".$this->validity_start->toDateString() .' ~ '. $this->validity_to->toDateString().")";
                 })->exceptOnForms()
             ])
         ];

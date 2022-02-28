@@ -21,6 +21,7 @@ class MembershipCard extends BaseModel
         'card_no',
         'total_price',
         'paid_price',
+        'validity_type',
         'validity_period',
         'validity_start',
         'validity_to',
@@ -35,6 +36,7 @@ class MembershipCard extends BaseModel
         'card_no' => 'string',
         'total_price' => 'float',
         'paid_price' => 'float',
+        'validity_type' => 'string',
         'validity_period' => 'integer', // days
         'validity_start' => 'date',
         'validity_to' => 'date',
