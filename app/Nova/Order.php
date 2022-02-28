@@ -12,6 +12,7 @@ use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Panel;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Pdmfc\NovaFields\ActionButton;
 
 class Order extends Resource
 {
@@ -33,12 +34,12 @@ class Order extends Resource
     {
         return __("Order");
     }
-    
+
     public static function group()
     {
         return __("Mall");
     }
-    
+
     public static function icon()
     {
         return view("nova::svg.".strtolower(explode('\\', self::class)[2]));
@@ -60,6 +61,7 @@ class Order extends Resource
      */
     public function fields(Request $request)
     {
+        $user = $request->user();
         return [
             // ID::make(__('ID'), 'id')->sortable(),
             BelongsTo::make(__('Store'), 'store', Store::class),
@@ -70,7 +72,9 @@ class Order extends Resource
             $this->addressFields(),
             $this->money(__('Amount'), 'amount'),
             Select::make(__('Status'), 'status')->options(\App\Models\Order::statusOptions())->displayUsingLabels(),
-            
+            ActionButton::make('')->action(Actions\Deliver::class, $this->id)->text(__('Deliver'))
+                ->canSee(function()use($user){return $this->status == \App\Models\Order::PAID && $user->can(__('Delivery'));})
+                ->onlyOnDetail(),
             Panel::make(__('Logistic'), [
                 BelongsTo::make(__('Logistic'), 'logistic', Logistic::class)->nullable(),
                 Text::make(__('Waybill Number'), 'waybill_number')->onlyOnDetail(),
@@ -79,7 +83,7 @@ class Order extends Resource
                     return !$this->logisticProgress ? null : $this->logisticProgress->detail();
                 })->onlyOnDetail()
             ]),
-            
+
             HasOne::make(__('Review'), 'review', Review::class),
             BelongsToMany::make(__('Goods'), 'goods', Goods::class)->fields(new Fields\CartItemFields)
         ];
