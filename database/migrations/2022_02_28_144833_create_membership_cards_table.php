@@ -16,7 +16,7 @@ class CreateMembershipCardsTable extends Migration
         Schema::create('membership_cards', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('store_id')->unsigned()->nullable();
-            $table->bigInteger('clerk_id')->unsigned()->nullable();
+            $table->bigInteger('user_id')->unsigned()->nullable();
             $table->bigInteger('customer_id')->unsigned()->nullable();
             $table->string('card_no');
             $table->decimal('total_price', 8,2);
@@ -30,7 +30,7 @@ class CreateMembershipCardsTable extends Migration
             $table->timestamps();
 
             $table->foreign('store_id')->references('id')->on('stores');
-            $table->foreign('clerk_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('customer_id')->references('id')->on('users');
         });
     }

@@ -71,17 +71,17 @@ class BillItem extends BaseModel
             'created_at' => $this->created_at->format('Y-m-d')
         ];
     }
-    static public function generate($order)
+    static public function generate($order, $field="paid_at")
     {
-        if (!$order->paid_at) return;
+        if (!$order->$field) return;
         $data = [
             'store_id' => $order->store_id,
             'order_type' => get_class($order),
             'order_id' => $order->id,
-            'year' => $order->paid_at->format('Y'),
-            'month' => $order->paid_at->format('m'),
-            'period' => get_period($order->paid_at->format('d')),
-            'price' => $order->amount ?? 0,
+            'year' => $order->$field->format('Y'),
+            'month' => $order->$field->format('m'),
+            'period' => get_period($order->$field->format('d')),
+            'price' => $order->paid_price ??( $order->total_price ?? $order->amount),
         ];
         if ($profit_sharing = $order->store->profit_sharing) {
             $sharing = $data;

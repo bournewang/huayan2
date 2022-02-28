@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\BillItem;
+use App\Models\MembershipCard;
 use App\Models\Order;
 use App\Models\SalesOrder;
 use App\Models\ServiceOrder;
@@ -49,22 +50,21 @@ class GenerateBillItems extends Command
         $start = Carbon::parse($day);
         $end = Carbon::parse($day)->addHours(23)->addMinutes(59)->addSeconds(59);
         echo "start $start, end $end\n";
+        $order_types = [
+            Order::class => 'paid_at',
+            SalesOrder::class => 'created_at',
+            ServiceOrder::class => 'created_at',
+            MembershipCard::class => 'validity_to'
+        ];
+        foreach ($order_types as $class => $field) {
+            echo "process $class\n";
+            foreach ($class::whereBetween($field, [$start, $end])->get() as $order){
+                if (!$order->billItems->first())
+                    BillItem::generate($order, $field);
+                echo "    generate for order $order->id\n";
+            }
+        }
 
-        foreach (Order::whereBetween('paid_at', [$start, $end])->get() as $order){
-            if (!$order->billItems->first())
-                BillItem::generate($order);
-            echo "generate for order $order->id\n";
-        }
-        foreach (SalesOrder::whereBetween('created_at', [$start, $end])->get() as $order){
-            if (!$order->billItems->first())
-                BillItem::generate($order);
-            echo "generate for sales order $order->id\n";
-        }
-        foreach (ServiceOrder::whereBetween('created_at', [$start, $end])->get() as $order){
-            if (!$order->billItems->first())
-                BillItem::generate($order);
-            echo "generate for service order $order->id\n";
-        }
         return 0;
     }
 }

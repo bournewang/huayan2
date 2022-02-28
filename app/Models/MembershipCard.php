@@ -16,7 +16,7 @@ class MembershipCard extends BaseModel
     protected $fillable = [
         'id',
         'store_id',
-        'clerk_id',
+        'user_id',
         'customer_id',
         'card_no',
         'total_price',
@@ -30,7 +30,7 @@ class MembershipCard extends BaseModel
 
     protected $casts = [
         'store_id' => 'integer',
-        'clerk_id' => 'integer',
+        'user_id' => 'integer',
         'customer_id' => 'integer',
         'card_no' => 'string',
         'total_price' => 'float',
@@ -48,15 +48,6 @@ class MembershipCard extends BaseModel
 
     public static function beforesave(&$instance)
     {
-//        \Log::debug(get_class($instance));
-//        $m = new MembershipCard();
-//        \Log::debug("changes: ");
-//        \Log::debug($instance->changes);
-//        \Log::debug("origin validity type: ".$instance->getOriginal('validity_type'));
-//        \Log::debug("       validity type: ".$instance->validity_type);
-//        if($instance->getOriginal('validity_type') != $instance->validity_type) {
-//            \Log::debug("validity type changes");
-//        }
         $instance->validity_start = $instance->validity_start ?? Carbon::today();
         if (!$instance->validity_to || // is empty
             $instance->getOriginal('validity_to') == $instance->validity_to // not changed
@@ -116,13 +107,18 @@ class MembershipCard extends BaseModel
     {
         return $this->belongsTo(Store::class);
     }
-    public function clerk()
+    public function user()
     {
-        return $this->belongsTo(Clerk::class, 'clerk_id');
+        return $this->belongsTo(Clerk::class, 'user_id');
     }
     public function customer()
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    public function billItems()
+    {
+        return $this->morphMany(BillItem::class, 'order');
     }
 }
 

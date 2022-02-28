@@ -43,7 +43,7 @@ class MembershipCard extends Resource
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'card_no';
 
     /**
      * The columns that should be searched.
@@ -65,7 +65,7 @@ class MembershipCard extends Resource
         return [
 //            ID::make(__('ID'), 'id')->sortable(),
             BelongsTo::make(__('Store'), 'store', Store::class)->withoutTrashed(),
-            BelongsTo::make(__('Clerk'), 'clerk', Clerk::class),
+            BelongsTo::make(__('Clerk'), 'user', Clerk::class),
             BelongsTo::make(__('Customer'), 'customer', Customer::class),
             Text::make(__('Card No'), 'card_no'),
             Currency::make(__('Total Price'), 'total_price')->currency('CNY'),
@@ -78,7 +78,7 @@ class MembershipCard extends Resource
                 Date::make(__('Validity Start'), 'validity_start')->onlyOnForms(),
                 Date::make(__('Validity To'), 'validity_to')->onlyOnForms(),
                 Text::make(__('Validity Period'))->displayUsing(function(){
-                    return $this->validity_period . $this->periodLabel()."(".$this->validity_start->toDateString() .'-'. $this->validity_to->toDateString().")";
+                    return $this->validity_period . $this->periodLabel()."(".$this->validity_start->toDateString() .' ~ '. $this->validity_to->toDateString().")";
                 })->exceptOnForms()
             ])
         ];

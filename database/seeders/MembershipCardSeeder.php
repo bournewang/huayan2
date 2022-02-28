@@ -18,7 +18,7 @@ class MembershipCardSeeder extends Seeder
         //
         MembershipCard::create([
             'store_id' => 1,
-            'clerk_id' => 4,
+            'user_id' => 4,
             'customer_id' => 5,
             'card_no' => '223344',
             'total_price' => 118.00,
