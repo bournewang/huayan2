@@ -29,7 +29,6 @@ return [
             "View Store",
             "View Device",
             "View Order",
-            "View"
         ],
         User::MANAGER => [
             "View Customer",
@@ -37,31 +36,49 @@ return [
             "View Order",
             "View ServiceOrder",
             "View Review",
+            "View Category",
             "View Goods",
             'View PurchaseOrder',   'Delete PurchaseOrder', 'StockImport',
             'View SalesOrder',      'Delete SalesOrder',
             'View Stock',
             'View StockItem',
-            "View Cart"
+//            "View Cart"
+        ],
+        User::VICE_MANAGER => [
+            "View Customer",
+            "View Clerk",
+            "View Order",
+            "View ServiceOrder",
+            "View Review",
+            "View Category",
+            "View Goods",
+            'View PurchaseOrder',
+            'View SalesOrder',
+            'View Stock',
+            'View StockItem',
         ],
         User::CLERK => [
             "View Customer",
             "View Order",
+            "View Category",
             "View Goods",
             'Create PurchaseOrder', 'View PurchaseOrder', 'Update PurchaseOrder',
             'Create SalesOrder',    'View SalesOrder', 'Update SalesOrder',
             'View Stock',
             'View StockItem',
-            "View Cart"
         ],
-        'warehouse keeper' => [
+        User::STORE_KEEPER => [
             "View Goods",
             "View Order",
             'Deliver',
         ],
-        'financial' => [
-
-        ]
+        User::FINANCE => [
+            "View Goods",
+            "View Order",
+            'View ServiceOrder',
+//            'View PurchaseOrder',
+//            'View SalesOrder',
+        ],
     ],
     'setting' => [
         'banks' => [
@@ -105,7 +122,10 @@ return [
         ['id' => 3, 'name' => '张店长', 'nickname' => '张店长','email' => 'zhang@test.com',       'mobile' => '13811111112',  'password' => '111111', 'store_id' => 1, 'referer_id' => null, 'openid' => '111112', 'unionid' => '111112', 'type' => User::MANAGER, 'api_token' => '111111'],
         ['id' => 4, 'name' => '小刘/店员', 'nickname' => '小刘','email' => 'liu@test.com',        'mobile' => '13811111113',    'password' => '111111', 'store_id' => 1, 'referer_id' => null,    'openid' => '111113', 'unionid' => '111113', 'type' => User::CLERK],
         ['id' => 5, 'name' => '老赵',  'nickname' => '老赵', 'email' => 'zhao@test.com',       'mobile' => '13811111114',  'password' => '111111', 'store_id' => 1, 'referer_id' => 4,    'openid' => '111114', 'unionid' => '111114', 'type' => User::CUSTOMER],
-        ['id' => 6, 'name' => '黄医生',  'nickname' => '黄医生', 'email' => 'huang@test.com',   'mobile' => '13811111115',  'password' => '111111', 'openid' => '111115', 'unionid' => '111115', 'type' => User::EXPERT],
+        ['id' => 6, 'name' => '黄医生',  'nickname' => '黄医生', 'email' => 'huang@test.com',   'mobile' => '13811111115',  'password' => '111111', 'openid' => '111116', 'unionid' => '111116', 'type' => User::EXPERT],
+        ['id' => 7, 'name' => '李晓丽',  'nickname' => '财务李', 'email' => 'xiaoli@test.com',   'mobile' => '13811111116',  'password' => '111111', 'openid' => '111117', 'unionid' => '111117', 'type' => User::FINANCE],
+        ['id' => 8, 'name' => '刘琳琳',  'nickname' => '仓管', 'email' => 'liulin@test.com',   'mobile' => '13811111117',  'password' => '111111', 'openid' => '111118', 'unionid' => '111118', 'type' => User::STORE_KEEPER],
+        ['id' => 9, 'name' => '唐小名',  'nickname' => '副店长', 'email' => 'tang@test.com',   'mobile' => '13811111118',  'password' => '111111', 'openid' => '111119', 'unionid' => '111119', 'type' => User::VICE_MANAGER],
     ],
     'health' => [
         ['store_id' => 1, 'user_id' => 2,'expert_id' => 6, 'status' => Health::PENDING, 'suggestion' => '多喝开水'],

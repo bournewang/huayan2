@@ -12,7 +12,7 @@ class RoleSeeder extends Seeder
      * @return void
      */
     public function run()
-    {    
+    {
         $role_name = __('System Admin');
         if (!$role = Role::where('name', $role_name)->first()){
             echo "create role $role_name\n";
@@ -20,8 +20,8 @@ class RoleSeeder extends Seeder
         }
         $i=1;
         User::find($i++)->assignRole($role);
-        foreach (config('seed.roles') as $role_name => $array) {
-            $role_name = __(ucwords($role_name));
+        foreach (config('seed.roles') as $role_val => $array) {
+            $role_name = __(ucwords(str_replace('_', ' ', $role_val)));
             if (!$role = Role::where('name', $role_name)->first()){
                 echo "create role $role_name\n";
                 $role = Role::create(['name' => $role_name]);
@@ -36,8 +36,11 @@ class RoleSeeder extends Seeder
             echo implode(',',$perms) . "\n";
             $permissions = Permission::whereIn('name', $perms)->get();
             $role->permissions()->sync($permissions);
-            
-            User::find($i++)->assignRole($role);
-        }        
+
+            if ($user = User::where('type', $role_val)->first()) {
+                $user->assignRole($role);
+                echo "assign $user->name to $role->name\n";
+            }
+        }
     }
 }
