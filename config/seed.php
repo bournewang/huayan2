@@ -55,6 +55,7 @@ return [
             "View Cart"
         ],
         'warehouse keeper' => [
+            "View Goods",
             "View Order",
             'Deliver',
         ],

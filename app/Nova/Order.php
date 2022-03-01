@@ -61,7 +61,6 @@ class Order extends Resource
      */
     public function fields(Request $request)
     {
-        $user = $request->user();
         return [
             // ID::make(__('ID'), 'id')->sortable(),
             BelongsTo::make(__('Store'), 'store', Store::class),
@@ -72,8 +71,9 @@ class Order extends Resource
             $this->addressFields(),
             $this->money(__('Amount'), 'amount'),
             Select::make(__('Status'), 'status')->options(\App\Models\Order::statusOptions())->displayUsingLabels(),
-            ActionButton::make('')->action(Actions\Deliver::class, $this->id)->text(__('Deliver'))
-                ->canSee(function()use($user){return $this->status == \App\Models\Order::PAID && $user->can(__('Delivery'));})
+            ActionButton::make('')->action((new Actions\Deliver), $this->id)
+                ->canSee(function()use($request){return $this->status == \App\Models\Order::PAID && $request->user()->can(__('Deliver'));})
+                ->text(__('Deliver'))
                 ->onlyOnDetail(),
             Panel::make(__('Logistic'), [
                 BelongsTo::make(__('Logistic'), 'logistic', Logistic::class)->nullable(),
@@ -95,6 +95,7 @@ class Order extends Resource
             new Filters\ProvinceFilter,
             new Filters\CityFilter,
             new Filters\DistrictFilter,
+            new Filters\OrderStatusFilter
         ];
     }
 
@@ -129,7 +130,14 @@ class Order extends Resource
     public function actions(Request $request)
     {
         return [
-            new Actions\Deliver,
+            (new Actions\Deliver)
+                    ->canSee(function()use($request) {
+                        $can = $request->user()->can(__('Deliver'));
+                        return $request->getMethod() == 'POST' ? $can :
+                            ($can && $this->status == \App\Models\Order::PAID);})
+                    ->canRun(function()use($request) {
+                        return $request->user()->can(__('Deliver'));
+                    }),
             // new Actions\LogisticQuery
         ];
     }

@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -56,7 +57,12 @@ class Customer extends Resource
      */
     public function fields(Request $request)
     {
-        return $this->userFields($request);
+        return array_merge($this->userFields($request), [
+            HasMany::make(__("Address"), 'addresses', Address::class),
+            HasMany::make(__('Online Order'), 'orders', Order::class),
+            HasMany::make(__('Service Order'), 'serviceOrders', ServiceOrder::class),
+            HasMany::make(__('Sales Order'), 'salesOrders', SalesOrder::class),
+        ]);
     }
 
     /**

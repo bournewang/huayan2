@@ -18,7 +18,7 @@ class Address extends Resource
     public static $search = [
         'id', 'contact', 'mobile'
     ];
-    
+
     public static function label()
     {
         return __("Address");
@@ -31,6 +31,10 @@ class Address extends Resource
     {
         return view("nova::svg.".strtolower(explode('\\', self::class)[2]));
     }
+//    public static function availableForNavigation(Request $request): bool
+//    {
+//        return false;
+//    }
     /**
      * Get the fields displayed by the resource.
      *
@@ -69,7 +73,7 @@ class Address extends Resource
         return [
             new Filters\ProvinceFilter,
             new Filters\CityFilter,
-            new Filters\DistrictFilter,            
+            new Filters\DistrictFilter,
         ];
     }
 

@@ -168,27 +168,32 @@ class User extends Authenticatable implements HasMedia
 
     public function addresses()
     {
-        return $this->hasMany(Address::class);
+        return $this->hasMany(Address::class, 'user_id');
     }
 
     public function cart()
     {
-        return $this->hasOne(Cart::class);
+        return $this->hasOne(Cart::class,'user_id');
     }
 
     public function orders()
     {
-        return $this->hasMany(Order::class);
+        return $this->hasMany(Order::class, 'user_id');
     }
 
     public function serviceOrders()
     {
-        return $this->hasMany(ServiceOrder::class);
+        return $this->hasMany(ServiceOrder::class, 'user_id');
+    }
+
+    public function salesOrders()
+    {
+        return $this->hasMany(SalesOrder::class, 'user_id');
     }
 
     public function likes()
     {
-        return $this->belongsToMany(Goods::class);
+        return $this->belongsToMany(Goods::class, 'user_id');
     }
 
     public function referer()
