@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Helpers\SyncHelper;
 
 class DatabaseSeeder extends Seeder
 {
@@ -32,6 +31,7 @@ class DatabaseSeeder extends Seeder
             ServiceOrderSeeder::class,
             SalesOrderSeeder::class,
             BillSeeder::class,
+            MembershipCardSeeder::class,
             HealthSeeder::class
         ]);
     }
