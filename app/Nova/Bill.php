@@ -5,6 +5,7 @@ namespace App\Nova;
 use App\Nova\Actions\BillClosed;
 use App\Nova\Actions\ImportBills;
 use App\Nova\Actions\Outstanding;
+use App\Nova\Filters\BillStatusFilter;
 use App\Nova\Filters\PeriodFilter;
 use App\Nova\Filters\YearMonthFilter;
 use Illuminate\Http\Request;
@@ -100,7 +101,8 @@ class Bill extends Resource
     {
         return [
             new YearMonthFilter(),
-            new PeriodFilter()
+            new PeriodFilter(),
+            new BillStatusFilter()
         ];
     }
 
