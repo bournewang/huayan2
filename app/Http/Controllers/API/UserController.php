@@ -16,12 +16,12 @@ class UserController extends ApiBaseController
      *  @OA\Response(response=200,description="successful operation"),
      *  security={{ "api_key":{} }}
      * )
-     */   
+     */
     public function info()
     {
         return $this->sendResponse($this->user->info());
     }
-    
+
     /**
      * 修改用户类型
      *
@@ -32,7 +32,7 @@ class UserController extends ApiBaseController
      *  @OA\Response(response=200,description="successful operation"),
      *  security={{ "api_key":{} }}
      * )
-     */      
+     */
     public function type($type, Request $request)
     {
         if (!array_key_exists($type, User::typeOptions())) {
@@ -41,7 +41,7 @@ class UserController extends ApiBaseController
         $this->user->update(['type' => $type, 'status' => User::APPLYING]);
         return $this->sendResponse(null);
     }
-    
+
     // nickname: 誉锟
     // avatar: https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKCmhcdIpvbvbnic0gFt4Tc8gfXpSGaYb5AHcqlr1vpw46ZYJiaAd22oYIqk93G2hpQeFY7fichcGutQ/132
     // city: 闵行
@@ -54,7 +54,7 @@ class UserController extends ApiBaseController
         \Log::debug($request->all());
         return $this->sendResponse([]);
     }
-    
+
     // code: 051prj0008KT6M1Eyb000YG9jS2prj0o
     // encryptedData: vgAcVXTqhTzoRImU/ekjxVVi/dKFx8XfjXbiZVDfxRA72wrmUhPUKOWp8FGqpi9YCR4TNyxfsGtG0/Zf/EQxeWxp3p+q2jXyMjNwQHsyijNfrIaqde43O4/M/fPcdjXGqy1+/VxMlMwHH1lBqlW0dtzXgWAtt18YqFLwrlk1+Q3ZtiaE+oacJhOzzVYy2L00dw9pSHl7ctCcK09KyCrEQw==
     // iv: qcWYc+YzH+CUjOjTyZrH0w==
@@ -75,11 +75,11 @@ class UserController extends ApiBaseController
      *               @OA\Property(property="encryptedData",description="encryptedData from wx.login",type="string"),
      *           )
      *       )
-     *   ),     
+     *   ),
      *  @OA\Response(response=200,description="successful operation"),
      *  security={{ "api_key":{} }}
      * )
-     */      
+     */
     public function mobile(Request $request)
     {
         $mpp = \EasyWeChat::miniProgram();
@@ -87,10 +87,10 @@ class UserController extends ApiBaseController
         if ($mobile = ($data['phone_info']['purePhoneNumber'] ?? $data['phone_info']['phoneNumber'] ?? null)) {
             $this->user->update(['mobile' => $mobile]);
         }
-        
+
         return $this->sendResponse($this->user->info());
     }
-    
+
     // public function revenue(Request $request)
     // {
     //     $last_revenue = $this->user->revenues()->where('year', date('Y'))->where('index', date('m'))->first();
@@ -100,7 +100,7 @@ class UserController extends ApiBaseController
     //         'last_revenue' => $last_revenue ? $last_revenue->info() : null,
     //     ]);
     // }
-    
+
     /**
      * 获取用户二维码
      *
@@ -110,12 +110,11 @@ class UserController extends ApiBaseController
      *  @OA\Response(response=200,description="successful operation"),
      *  security={{ "api_key":{} }}
      * )
-     */      
+     */
     public function qrcode()
     {
         $mpp = \EasyWeChat::miniProgram();
-        $response = $mpp->app_code->getUnlimit("referer_id=".$this->user->id, ['path' => '/']);
-        
+        $response = $mpp->app_code->getUnlimit("referer_id=".$this->user->id, ['page' => 'pages/index/index', 'check_path' => false]);
         \Log::debug($response);
         // 保存小程序码到文件
         $filename = null;

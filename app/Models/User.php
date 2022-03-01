@@ -130,18 +130,28 @@ class User extends Authenticatable implements HasMedia
     const CUSTOMER = 'customer';
     const SALESMAN = 'salesman';
     const MANAGER = 'manager';
+    const VICE_MANAGER = 'vice_manager';
     const CLERK = 'clerk';
     const EXPERT = 'expert';
+    const STORE_KEEPER = 'store_keeper';
+    const FINANCE = 'finance';
 
     public static function typeOptions()
     {
-        return [
-            self::CUSTOMER => __(ucfirst(self::CUSTOMER)),
-            self::SALESMAN => __(ucfirst(self::SALESMAN)),
-            self::MANAGER => __(ucfirst(self::MANAGER)),
-            self::CLERK => __(ucfirst(self::CLERK)),
-            self::EXPERT => __(ucfirst(self::EXPERT)),
-        ];
+        $roles = [];
+        foreach ([
+            self::CUSTOMER,
+            self::SALESMAN,
+            self::MANAGER,
+            self::VICE_MANAGER,
+            self::CLERK,
+            self::EXPERT,
+            self::FINANCE,
+            self::STORE_KEEPER,
+        ] as $role){
+            $roles[$role] = __(ucwords(str_replace('_', ' ', $role)));
+        }
+        return $roles;
     }
 
     public function typeLabel()
