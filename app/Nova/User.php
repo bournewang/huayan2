@@ -29,21 +29,6 @@ class User extends Resource
      */
     public static $model = \App\Models\User::class;
 
-    /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
-     * @var string
-     */
-    // public static $title = 'name';
-    public function title()
-    {
-        return ($this->name ?? $this->nickname) . $this->mobile;
-    }
-    /**
-     * The columns that should be searched.
-     *
-     * @var array
-     */
     public static $search = [
         'id', 'nickname', 'name', 'mobile',
     ];

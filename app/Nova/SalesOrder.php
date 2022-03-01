@@ -69,7 +69,7 @@ class SalesOrder extends Resource
             Text::make(__('Comment'), 'comment'),
             Text::make(__('Edit'), function(){
                 return "<a class='inline-flex cursor-pointer text-70 hover:text-primary mr-3 has-tooltip' onclick='Nova.app.\$router.push({path: \"/sales-orders?id=$this->id&order_type=sales-orders\"})'>".'<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" aria-labelledby="edit" role="presentation" class="fill-current"><path d="M4.3 10.3l10-10a1 1 0 0 1 1.4 0l4 4a1 1 0 0 1 0 1.4l-10 10a1 1 0 0 1-.7.3H5a1 1 0 0 1-1-1v-4a1 1 0 0 1 .3-.7zM6 14h2.59l9-9L15 2.41l-9 9V14zm10-2a1 1 0 0 1 2 0v6a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4c0-1.1.9-2 2-2h6a1 1 0 1 1 0 2H2v14h14v-6z"></path></svg>'."<a/>";
-            })->asHtml(),
+            })->asHtml()->canSeeWhen(__('EditSalesOrder'), $this),
             Flexible::make(__('Goods'), 'items')
                         ->addLayout(null, 'items', [
                             // Text::make(__('Goods'), 'goods'),//, Goods::class),
@@ -112,7 +112,7 @@ class SalesOrder extends Resource
     public function actions(Request $request)
     {
         return [
-            new Actions\ImportSalesOrders
+            (new Actions\ImportSalesOrders)->canSeeWhen(__('AddSalesOrder'), $this)
         ];
     }
 }

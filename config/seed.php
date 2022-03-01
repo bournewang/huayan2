@@ -15,14 +15,16 @@ return [
     'resources' => [
 	    'MembershipCard',
 	    'Bill', 'BillItem',
-        "Address","Banner","BaseModel","Cart","Category","City","Clerk",
-        "Customer","Device","District","Example","Expert","Goods","Logistic","Order",
+        "Address","Banner","Cart","Category","City","Clerk",
+        "Customer","Device","District","Expert","Goods","Logistic","Order",
         "Province","Revenue","Salesman","Setting","Store","Supplier","User",
         "Review", "PurchaseOrder","SalesOrder","Stock", "StockItem", 'Health',
     ],
     // special permissions
     'permissions' => [
-        'Deliver', 'StockImport'
+        'Deliver', 'StockImport',
+        'AddPurchaseOrder',  'EditPurchaseOrder',
+        'AddSalesOrder',     'EditSalesOrder',
     ],
     'roles' => [
         User::SALESMAN => [
@@ -38,8 +40,8 @@ return [
             "View Review",
             "View Category",
             "View Goods",
-            'View PurchaseOrder',   'Delete PurchaseOrder', 'StockImport',
-            'View SalesOrder',      'Delete SalesOrder',
+            'View PurchaseOrder',   'AddPurchaseOrder',  'EditPurchaseOrder',  'Delete PurchaseOrder', 'StockImport',
+            'View SalesOrder',      'AddSalesOrder',     'EditSalesOrder',     'Delete SalesOrder',
             'View Stock',
             'View StockItem',
 //            "View Cart"
@@ -62,8 +64,8 @@ return [
             "View Order",
             "View Category",
             "View Goods",
-            'Create PurchaseOrder', 'View PurchaseOrder', 'Update PurchaseOrder',
-            'Create SalesOrder',    'View SalesOrder', 'Update SalesOrder',
+            'View PurchaseOrder',   'CreatePurchaseOrder',  'UpdatePurchaseOrder',  'StockImport',
+            'View SalesOrder',      'CreateSalesOrder',     'UpdateSalesOrder',
             'View Stock',
             'View StockItem',
         ],

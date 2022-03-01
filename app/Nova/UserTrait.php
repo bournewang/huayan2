@@ -13,6 +13,10 @@ use Laravel\Nova\Fields\Select;
 use Vyuldashev\NovaPermission\RoleSelect;
 
 trait UserTrait{
+    public function title()
+    {
+        return ($this->name ?? $this->nickname) . $this->mobile;
+    }
     public function userFields(Request $request)
     {
         return [

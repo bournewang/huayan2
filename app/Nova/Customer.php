@@ -29,26 +29,9 @@ class Customer extends Resource
     {
         return view("nova::svg.".strtolower(explode('\\', self::class)[2]));
     }
-    /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
-     * @var string
-     */
-    // public static $title = 'mobile';
-    public function title()
-    {
-        return ($this->name ?? $this->nickname) . $this->mobile;
-    }
-
-    /**
-     * The columns that should be searched.
-     *
-     * @var array
-     */
     public static $search = [
-        'id', 'name', 'nickname', 'mobile'
+        'id', 'nickname', 'name', 'mobile',
     ];
-
     /**
      * Get the fields displayed by the resource.
      *

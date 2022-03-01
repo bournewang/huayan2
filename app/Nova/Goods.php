@@ -113,7 +113,7 @@ class Goods extends Resource
             new Actions\OnShelf,
             new Actions\OffShelf,
 //            $this->actionButton(new Actions\AddToCart, 'Ordering', $request),
-            new Actions\ImportGoods
+            (new Actions\ImportGoods)->canSeeWhen(__('Create').__('Goods'), $this)
         ];
     }
 

@@ -27,22 +27,9 @@ class Expert extends Resource
     {
         return __("Expert");
     }
-    /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
-     * @var string
-     */
-    public static $title = 'nickname';
-
-    /**
-     * The columns that should be searched.
-     *
-     * @var array
-     */
     public static $search = [
-        'id',
+        'id', 'nickname', 'name', 'mobile',
     ];
-
     public static function icon()
     {
         return view("nova::svg.".strtolower(explode('\\', self::class)[2]));
