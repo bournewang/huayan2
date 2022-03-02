@@ -20,19 +20,19 @@ class Category extends Resource
     public static $title = 'name';
     public static $with = ['parent'];
     public static $search = [
-        'id', 'name', 
+        'id', 'name',
     ];
 
     public static function label()
     {
         return __('Category');
     }
-    
+
     public static function group()
     {
         return __("Mall");
     }
-    
+
     public static function icon()
     {
         return view("nova::svg.".strtolower(explode('\\', self::class)[2]));
@@ -103,5 +103,9 @@ class Category extends Resource
             new Actions\OffShelf,
             // new Actions\Derecommend,
         ];
+    }
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        return $query;
     }
 }
