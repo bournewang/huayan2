@@ -203,7 +203,7 @@ class User extends Authenticatable implements HasMedia
 
     public function likes()
     {
-        return $this->belongsToMany(Goods::class, 'user_id');
+        return $this->belongsToMany(Goods::class);
     }
 
     public function referer()
