@@ -121,7 +121,7 @@ class UserController extends ApiBaseController
         if ($response instanceof \EasyWeChat\Kernel\Http\StreamResponse) {
             $filename = $response->save(\Storage::disk('public')->path('user'), $this->user->id.".jpg");
             \Log::debug("save to $filename");
-            $url = '/storage/user/'.$filename;
+            $url = 'user/'.$filename;
             $this->user->update(['qrcode' => $url]);
             return $this->sendResponse(url($url));
         }
