@@ -1,5 +1,6 @@
 <?php
 namespace Database\Seeders;
+use App\Models\Address;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Store;
@@ -45,7 +46,11 @@ class CartSeeder extends Seeder
             $date = Carbon::today()->subDay(rand(1, 30)-1)->subHour(rand(0,12))->subMinute(rand(0,59))->subSecond(rand(0, 59));
 
             echo "$user->id $user->name addresses: ". $user->addresses->count()."\n";
-            $order = $cart->refresh()->submit($user->addresses->first(), $date);
+            if (!$address = $user->addresses->first()) {
+                $address = (new Address(['contact' => 'test', 'mobile' => '10000000'.rand(100,999), 'province_id' => 1,'city_id'=>1, 'district_id'=>1, 'street' => '-']));
+                \Log::debug("create address");
+            }
+            $order = $cart->refresh()->submit($address, $date);
             $order->update(['status' => 'shipped', 'paid_at' => $date]);
 
         }
