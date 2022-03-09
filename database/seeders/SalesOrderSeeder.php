@@ -23,8 +23,10 @@ class SalesOrderSeeder extends Seeder
                 ["layout" => "items", "key" => '111111', "attributes" => ["goods_id" => 1, "quantity" => 2]],
                 ["layout" => "items", "key" => '111111', "attributes" => ["goods_id" => 2, "quantity" => 3]]
             ],
+            'total_price' => 22,
+            'paid_price' => 20,
             'status' => 'shipped'
         ]);
-        
+
     }
 }

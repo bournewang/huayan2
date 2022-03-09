@@ -2,8 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Iot\Device;
 use App\Models\BillItem;
+use App\Models\DeviceRental;
 use App\Models\MembershipCard;
+use App\Models\MembershipUsedItem;
 use App\Models\Order;
 use App\Models\SalesOrder;
 use App\Models\ServiceOrder;
@@ -54,13 +57,18 @@ class GenerateBillItems extends Command
             Order::class => 'paid_at',
             SalesOrder::class => 'created_at',
             ServiceOrder::class => 'created_at',
-            MembershipCard::class => 'validity_to'
+            MembershipCard::class => 'validity_to',
+            MembershipUsedItem::class => 'created_at',
+            DeviceRental::class => 'validity_to',
         ];
         foreach ($order_types as $class => $field) {
-            echo "process $class\n";
+            echo "process $class  $field between [$start, $end]\n";
             foreach ($class::whereBetween($field, [$start, $end])->get() as $order){
                 if (!$order->billItems->first())
                     BillItem::generate($order, $field);
+                if (in_array($class, [MembershipCard::class, DeviceRental::class])) {
+                    $order->update(['status' => MembershipCard::EXPIRED]);
+                }
                 echo "    generate for order $order->id\n";
             }
         }

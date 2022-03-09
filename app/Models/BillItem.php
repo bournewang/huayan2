@@ -103,7 +103,7 @@ class BillItem extends BaseModel
                     if ($ratio < 1 || $ratio > 100) {
                         throw new \Exception(__("Invalid Sharing Ratio", ['ratio' => $ratio]));
                     }
-                    $sharing['amount'] = round($order->amount * $ratio / 100, 2);
+                    $sharing['amount'] = round($data['price'] * $ratio / 100, 2);
                     self::create($sharing);
                 }
             }

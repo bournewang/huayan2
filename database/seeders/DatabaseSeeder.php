@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
             SalesOrderSeeder::class,
             BillSeeder::class,
             MembershipCardSeeder::class,
+            DeviceRentalSeeder::class,
             HealthSeeder::class
         ]);
     }

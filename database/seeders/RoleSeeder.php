@@ -13,7 +13,9 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        Role::create(['name'=>'-'])->permissions()->sync(Permission::all());
+        if (!$role = Role::where('name', '-')->first()) {
+            Role::create(['name' => '-'])->permissions()->sync(Permission::all());
+        }
 
         $role_name = __('System Admin');
         if (!$role = Role::where('name', $role_name)->first()){

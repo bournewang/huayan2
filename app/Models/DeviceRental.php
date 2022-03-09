@@ -4,13 +4,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
-use Auth;
 
-class MembershipCard extends BaseModel
+class DeviceRental extends BaseModel
 {
     use HasFactory;
 
-    public $table = 'membership_cards';
+    public $table = 'device_rentals';
 
     protected $dates = ['deleted_at'];
 
@@ -19,32 +18,29 @@ class MembershipCard extends BaseModel
         'store_id',
         'user_id',
         'customer_id',
-        'card_no',
-        'total_price',
+        'deposit_price',
         'paid_price',
-        'single_price',
         'validity_type',
         'validity_period',
         'validity_start',
         'validity_to',
-        'used_times',
         'status',
         'comment'
     ];
+
 
     protected $casts = [
         'store_id' => 'integer',
         'user_id' => 'integer',
         'customer_id' => 'integer',
-        'card_no' => 'string',
-        'total_price' => 'float',
+//        'card_no' => 'string',
+//        'total_price' => 'float',
+        'deposit_price' => 'float',
         'paid_price' => 'float',
-        'single_price' => 'float',
         'validity_type' => 'string',
-        'validity_period' => 'integer', // days
+        'validity_period' => 'integer',
         'validity_start' => 'date',
         'validity_to' => 'date',
-        'used_times' => 'integer',
         'status' => 'string',
         'comment' => 'string',
     ];
@@ -55,14 +51,10 @@ class MembershipCard extends BaseModel
 
     public static function beforesave(&$instance)
     {
-        $instance->store_id = $instance->store_id ?? Auth::user()->store_id;
-        $instance->user_id = $instance->user_id ?? Auth::user()->id;
         $instance->validity_start = $instance->validity_start ?? Carbon::today();
         $instance->store_id = $instance->user->store_id;
-        if ($instance->validity_type == self::ACCOUNT) {
-            $instance->single_price = round($instance->paid_price / $instance->validity_period, 2);
-            $instance->used_times = $instance->used_times ?? $instance->validity_period;
-        }elseif (!$instance->validity_to || // is empty
+//        if ($instance->validity_type == self::ACCOUNT) return;
+        if (!$instance->validity_to || // is empty
             $instance->getOriginal('validity_to') == $instance->validity_to // not changed
         ) {
             if (array_key_exists($instance->validity_type, self::periodOptions())) {
@@ -85,14 +77,14 @@ class MembershipCard extends BaseModel
     const YEAR = 'year';
     const MONTH = 'month';
     const DAY = 'day';
-    const ACCOUNT = 'account';
+//    const ACCOUNT = 'account';
     static public function periodOptions()
     {
         return [
-            self::YEAR  => __(ucfirst(self::YEAR)) . __('Card'),
-            self::MONTH => __(ucfirst(self::MONTH)) . __('Card'),
-            self::DAY   => __(ucfirst(self::DAY)) . __('Card'),
-            self::ACCOUNT => __(ucfirst(self::ACCOUNT)). __('Card')
+            self::YEAR  => __(ucfirst(self::YEAR)) . __('Rental'),
+            self::MONTH => __(ucfirst(self::MONTH)) . __('Rental'),
+            self::DAY   => __(ucfirst(self::DAY)) . __('Rental'),
+//            self::ACCOUNT => __(ucfirst(self::ACCOUNT)). __('Card')
         ];
     }
     public function periodLabel()
@@ -131,31 +123,9 @@ class MembershipCard extends BaseModel
         return $this->belongsTo(Customer::class);
     }
 
-    public function membershipUsedItems()
-    {
-        return $this->hasMany(MembershipUsedItem::class);
-    }
-
     public function billItems()
     {
         return $this->morphMany(BillItem::class, 'order');
-    }
-
-    public function writeOff()
-    {
-        if ($this->validity_type == self::ACCOUNT && $this->used_times > 0) {
-            if ($this->used_times == 1)
-                $this->update(['status' => self::EXPIRED]);
-            $this->update(['used_times' => ($this->used_times-1)]);
-
-            MembershipUsedItem::create([
-                'membership_card_id' => $this->id,
-                'store_id' => $this->store_id,
-                'user_id' => Auth::user()->id ?? $this->user_id,
-                'customer_id' => $this->customer_id,
-                'paid_price' => $this->single_price
-            ]);
-        }
     }
 }
 

@@ -22,7 +22,7 @@ class PermissionSeeder extends Seeder
                 $perm = Permission::create(['name' => $label, 'guard_name' => 'web']);
             }
         }
-        
+
         foreach (config('seed.permissions') as $name) {
             $perm = Permission::create(['name' => __($name), 'guard_name' => 'web']);
         }
