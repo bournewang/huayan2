@@ -23,8 +23,8 @@ class CreateMembershipCardsTable extends Migration
             $table->decimal('paid_price', 8,2);
             $table->string  ('validity_type');
             $table->integer ('validity_period');
-            $table->date('validity_start');
-            $table->date('validity_to');
+            $table->date('validity_start')->nullable();
+            $table->date('validity_to')->nullable();
             $table->enum('status', array_keys(\App\Models\MembershipCard::statusOptions()));
             $table->string('comment')->nullable();
             $table->timestamps();

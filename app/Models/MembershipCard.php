@@ -51,6 +51,8 @@ class MembershipCard extends BaseModel
     public static function beforesave(&$instance)
     {
         $instance->validity_start = $instance->validity_start ?? Carbon::today();
+        $instance->store_id = $instance->user->store_id;
+        if ($instance->validity_type == self::ACCOUNT) return;
         if (!$instance->validity_to || // is empty
             $instance->getOriginal('validity_to') == $instance->validity_to // not changed
         ) {
@@ -74,12 +76,14 @@ class MembershipCard extends BaseModel
     const YEAR = 'year';
     const MONTH = 'month';
     const DAY = 'day';
+    const ACCOUNT = 'account';
     static public function periodOptions()
     {
         return [
             self::YEAR  => __(ucfirst(self::YEAR)) . __('Card'),
             self::MONTH => __(ucfirst(self::MONTH)) . __('Card'),
-            self::DAY   => __(ucfirst(self::DAY)) . __('Card')
+            self::DAY   => __(ucfirst(self::DAY)) . __('Card'),
+            self::ACCOUNT => __(ucfirst(self::ACCOUNT)). __('Card')
         ];
     }
     public function periodLabel()
@@ -121,6 +125,13 @@ class MembershipCard extends BaseModel
     public function billItems()
     {
         return $this->morphMany(BillItem::class, 'order');
+    }
+
+    public function writeOff()
+    {
+        if ($this->validity_type == self::ACCOUNT && $this->validity_period > 0) {
+            $this->update(['validity_period' => ($this->validity_period - 1)]);
+        }
     }
 }
 

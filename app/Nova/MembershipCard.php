@@ -2,6 +2,8 @@
 
 namespace App\Nova;
 
+use App\Nova\Actions\WriteOff;
+use Epartment\NovaDependencyContainer\NovaDependencyContainer;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Currency;
@@ -13,6 +15,7 @@ use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
+use Pdmfc\NovaFields\ActionButton;
 
 class MembershipCard extends Resource
 {
@@ -75,16 +78,25 @@ class MembershipCard extends Resource
             Currency::make(__('Total Price'), 'total_price')->currency('CNY'),
             Currency::make(__('Paid Price'), 'paid_price')->currency('CNY')->rules('required'),
             Select::make(__('Status'), 'status')->options(\App\Models\MembershipCard::statusOptions())->displayUsingLabels()->rules('required'),
-            Text::make(__('Comment'), 'comment'),
+            Text::make(__('Comment'), 'comment')->hideFromIndex(),
             new Panel(__('Validity Period'), [
                 Select::make(__('Validity Type'), 'validity_type')->options(\App\Models\MembershipCard::periodOptions())->displayUsingLabels()->onlyOnForms()->rules('required'),
-                Number::make(__('Validity Period'), 'validity_period')->onlyOnForms()->rules('required'),
-                Date::make(__('Validity Start'), 'validity_start')->onlyOnForms(),
-                Date::make(__('Validity To'), 'validity_to')->onlyOnForms(),
+                NovaDependencyContainer::make([
+                    Number::make(__('Validity Period'), 'validity_period')->onlyOnForms()->rules('required'),
+                    Date::make(__('Validity Start'), 'validity_start')->onlyOnForms()->nullable(),
+                    Date::make(__('Validity To'), 'validity_to')->onlyOnForms()->nullable(),
+                ])->dependsOnNot('validity_type', \App\Models\MembershipCard::ACCOUNT)->onlyOnForms(),
+                NovaDependencyContainer::make([
+                    Text::make(__('Account Times'), 'validity_period'),
+                ])->dependsOn('validity_type', \App\Models\MembershipCard::ACCOUNT)->onlyOnForms(),
                 Text::make(__('Validity Period'))->displayUsing(function(){
-                    return $this->validity_period . $this->periodLabel()." (".$this->validity_start->toDateString() .' ~ '. $this->validity_to->toDateString().")";
+                    return $this->validity_period . ($this->validity_type == \App\Models\MembershipCard::ACCOUNT ? __("Account") : $this->periodLabel()." (".$this->validity_start->toDateString() .' ~ '. $this->validity_to->toDateString().")");
                 })->exceptOnForms()
-            ])
+            ]),
+            ActionButton::make(__('WriteOff'))->action($this->validity_type == \App\Models\MembershipCard::ACCOUNT ? WriteOff::class : null, $this->id)->text(__('Write Off'))->buttonColor("var(--danger)")
+                ->readonly(function(){return $this->validity_type != \App\Models\MembershipCard::ACCOUNT;})
+                ->withMeta(['color' => 'green'])
+            ,
         ];
     }
 
@@ -129,6 +141,8 @@ class MembershipCard extends Resource
      */
     public function actions(Request $request)
     {
-        return [];
+        return [
+            new WriteOff()
+        ];
     }
 }
