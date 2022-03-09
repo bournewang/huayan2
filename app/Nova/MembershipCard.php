@@ -78,7 +78,7 @@ class MembershipCard extends Resource
             Text::make(__('Card No'), 'card_no')->rules('required'),
 //            Currency::make(__('Total Price'), 'total_price')->currency('CNY'),
             Currency::make(__('Amount'), 'paid_price')->currency('CNY')->rules('required'),
-            Select::make(__('Status'), 'status')->options(\App\Models\MembershipCard::statusOptions())->displayUsingLabels()->rules('required'),
+            Select::make(__('Status'), 'status')->options(\App\Models\MembershipCard::statusOptions())->displayUsingLabels()->rules('required')->exceptOnForms(),
             Text::make(__('Comment'), 'comment')->hideFromIndex(),
             new Panel(__('Validity Period'), [
                 Select::make(__('Validity Type'), 'validity_type')->options(\App\Models\MembershipCard::periodOptions())->displayUsingLabels()->onlyOnForms()->rules('required'),
@@ -88,7 +88,7 @@ class MembershipCard extends Resource
                     Date::make(__('Validity To'), 'validity_to')->onlyOnForms()->nullable(),
                 ])->dependsOnNot('validity_type', \App\Models\MembershipCard::ACCOUNT)->onlyOnForms(),
                 NovaDependencyContainer::make([
-                    Text::make(__('Account Times'), 'validity_period'),
+                    Number::make(__('Account Times'), 'validity_period'),
                 ])->dependsOn('validity_type', \App\Models\MembershipCard::ACCOUNT)->onlyOnForms(),
                 Text::make(__('Validity Period'))->displayUsing(function(){
                     return $this->validity_period . ($this->validity_type == \App\Models\MembershipCard::ACCOUNT ? "/".$this->used_times .__("Account") : $this->periodLabel()." (".$this->validity_start->toDateString() .' ~ '. $this->validity_to->toDateString().")");
@@ -97,8 +97,8 @@ class MembershipCard extends Resource
             ActionButton::make(__('WriteOff'))->action($this->validity_type == \App\Models\MembershipCard::ACCOUNT ? WriteOff::class : null, $this->id)->text(__('Write Off'))->buttonColor("var(--danger)")
                 ->readonly(function(){return $this->validity_type != \App\Models\MembershipCard::ACCOUNT;})
                 ->withMeta(['color' => 'green'])
-            ,
-            HasMany::make(__('Membership Used Items'), 'membershipUsedItems', MembershipUsedItem::class)->canSee(function(){return $this->validity_type == \App\Models\MembershipCard::ACCOUNT;})
+                ->exceptOnForms(),
+          HasMany::make(__('Membership Used Items'), 'membershipUsedItems', MembershipUsedItem::class)->onlyOnDetail()->canSee(function(){return $this->validity_type == \App\Models\MembershipCard::ACCOUNT;})
         ];
     }
 

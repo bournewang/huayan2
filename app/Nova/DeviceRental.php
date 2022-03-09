@@ -70,8 +70,8 @@ class DeviceRental extends Resource
             BelongsTo::make(__('Customer'), 'customer', Customer::class)->rules('required'),
 //            Text::make(__('Card No'), 'card_no')->rules('required'),
             Currency::make(__('Deposit Price'), 'deposit_price')->currency('CNY')->rules('required'),
-            Currency::make(__('Paid Price'), 'paid_price')->currency('CNY')->rules('required'),
-            Select::make(__('Status'), 'status')->options(\App\Models\DeviceRental::statusOptions())->displayUsingLabels()->rules('required'),
+            Currency::make(__('Rental Price'), 'paid_price')->currency('CNY')->rules('required'),
+            Select::make(__('Status'), 'status')->options(\App\Models\DeviceRental::statusOptions())->displayUsingLabels()->rules('required')->exceptOnForms(),
             Text::make(__('Comment'), 'comment')->hideFromIndex(),
             new Panel(__('Validity Period'), [
                 Select::make(__('Validity Type'), 'validity_type')->options(\App\Models\DeviceRental::periodOptions())->displayUsingLabels()->onlyOnForms()->rules('required'),

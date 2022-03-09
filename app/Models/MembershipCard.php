@@ -58,7 +58,7 @@ class MembershipCard extends BaseModel
         $instance->store_id = $instance->store_id ?? Auth::user()->store_id;
         $instance->user_id = $instance->user_id ?? Auth::user()->id;
         $instance->validity_start = $instance->validity_start ?? Carbon::today();
-        $instance->store_id = $instance->user->store_id;
+        $instance->status = $instance->status ?? self::VALID;
         if ($instance->validity_type == self::ACCOUNT) {
             $instance->single_price = round($instance->paid_price / $instance->validity_period, 2);
             $instance->used_times = $instance->used_times ?? $instance->validity_period;

@@ -4,6 +4,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Auth;
 
 class DeviceRental extends BaseModel
 {
@@ -51,9 +52,10 @@ class DeviceRental extends BaseModel
 
     public static function beforesave(&$instance)
     {
+        $instance->store_id = $instance->store_id ?? Auth::user()->store_id;
+        $instance->user_id = $instance->user_id ?? Auth::user()->id;
         $instance->validity_start = $instance->validity_start ?? Carbon::today();
-        $instance->store_id = $instance->user->store_id;
-//        if ($instance->validity_type == self::ACCOUNT) return;
+        $instance->status = $instance->status ?? self::VALID;
         if (!$instance->validity_to || // is empty
             $instance->getOriginal('validity_to') == $instance->validity_to // not changed
         ) {

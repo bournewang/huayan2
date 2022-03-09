@@ -60,7 +60,7 @@ class MembershipUsedItem extends Resource
 //            ID::make(__('ID'), 'id')->sortable(),
             BelongsTo::make(__('Membership Card'), 'membershipCard', MembershipCard::class)->rules('required')->withoutTrashed(),
             BelongsTo::make(__('Store'), 'store', Store::class)->rules('required')->withoutTrashed(),
-            BelongsTo::make(__('Clerk'), 'user', Clerk::class)->rules('required'),
+            BelongsTo::make(__('Handler'), 'user', Clerk::class)->rules('required'),
             BelongsTo::make(__('Customer'), 'customer', Customer::class)->rules('required'),
 //            Text::make(__('Card No'), 'card_no')->rules('required'),
 //            Currency::make(__('Total Price'), 'total_price')->currency('CNY')->rules('required'),
