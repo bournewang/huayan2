@@ -76,8 +76,8 @@ class MembershipCard extends Resource
             BelongsTo::make(__('Clerk'), 'user', Clerk::class)->rules('required')->exceptOnForms(),
             BelongsTo::make(__('Customer'), 'customer', Customer::class)->rules('required')->searchable(),
             Text::make(__('Card No'), 'card_no')->rules('required'),
-            Currency::make(__('Total Price'), 'total_price')->currency('CNY'),
-            Currency::make(__('Paid Price'), 'paid_price')->currency('CNY')->rules('required'),
+//            Currency::make(__('Total Price'), 'total_price')->currency('CNY'),
+            Currency::make(__('Amount'), 'paid_price')->currency('CNY')->rules('required'),
             Select::make(__('Status'), 'status')->options(\App\Models\MembershipCard::statusOptions())->displayUsingLabels()->rules('required'),
             Text::make(__('Comment'), 'comment')->hideFromIndex(),
             new Panel(__('Validity Period'), [
@@ -98,7 +98,7 @@ class MembershipCard extends Resource
                 ->readonly(function(){return $this->validity_type != \App\Models\MembershipCard::ACCOUNT;})
                 ->withMeta(['color' => 'green'])
             ,
-            HasMany::make(__('Membership Used Items'), 'membershipUsedItems', MembershipUsedItem::class)
+            HasMany::make(__('Membership Used Items'), 'membershipUsedItems', MembershipUsedItem::class)->canSee(function(){return $this->validity_type == \App\Models\MembershipCard::ACCOUNT;})
         ];
     }
 

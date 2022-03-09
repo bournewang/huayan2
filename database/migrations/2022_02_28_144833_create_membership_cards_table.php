@@ -19,7 +19,7 @@ class CreateMembershipCardsTable extends Migration
             $table->bigInteger('user_id')->unsigned()->nullable();
             $table->bigInteger('customer_id')->unsigned()->nullable();
             $table->string('card_no');
-            $table->decimal('total_price', 8,2);
+            $table->decimal('total_price', 8,2)->nullable();
             $table->decimal('paid_price', 8,2);
             $table->decimal('single_price', 8, 2)->nullable();
             $table->string  ('validity_type');

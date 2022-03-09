@@ -73,7 +73,7 @@ class BillItem extends Resource
             Text::make(__('Role'), 'role')->displayUsing(function(){return \App\Models\User::sharingRoleOptions()[$this->role] ?? null;}),
             Currency::make(__('Consume Price'), 'price', )->currency('CNY'),
             Text::make(__('Share'), 'share')->displayUsing(function(){return $this->share.'%';}),
-            Currency::make(__('Amount'), 'amount')->currency('CNY'),
+            Currency::make(__('Sharing').__('Amount'), 'amount')->currency('CNY'),
         ];
     }
 

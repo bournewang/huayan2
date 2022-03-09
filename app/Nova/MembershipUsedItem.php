@@ -64,7 +64,7 @@ class MembershipUsedItem extends Resource
             BelongsTo::make(__('Customer'), 'customer', Customer::class)->rules('required'),
 //            Text::make(__('Card No'), 'card_no')->rules('required'),
 //            Currency::make(__('Total Price'), 'total_price')->currency('CNY')->rules('required'),
-            Currency::make(__('Paid Price'), 'paid_price')->currency('CNY')->rules('required'),
+            Currency::make(__('Amount'), 'paid_price')->currency('CNY')->rules('required'),
 
         ];
     }
